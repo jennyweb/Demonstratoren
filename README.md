@@ -3,3 +3,4 @@
 - Mini simulation
 - Beispiel für Objektorientierung
 - Einlesen von Dateien mit Datenverarbeitung
+- Datenreihen integrieren
