@@ -33,3 +33,13 @@ $$
 $$
 
 for stone boundary particles
+
+$$
+\dot{H}  = \dot{H}_\text{radiation} + ..
+$$
+
+and
+
+$$
+\dot{H}(t) =   \dot{H}(t-1) + \dot{H} d\text{t}
+$$
