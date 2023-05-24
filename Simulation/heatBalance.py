@@ -40,7 +40,7 @@ def visualizeObjectAssignement(objectAssignment):
     cmap = LinearSegmentedColormap.from_list('colorMapObjectAssignment', colorsNormalized, N= 4)
     plt.imshow(objectAssignment, cmap=cmap)
     plt.savefig(f'{dir_path}/objectAssignment.png')
-    plt.close
+    plt.close()
 
 visualizeObjectAssignement(objectAssignment)
 
@@ -57,7 +57,7 @@ def visualizeIsBoundary(isBoundary):
     cmap = LinearSegmentedColormap.from_list('colorMapIsBoundaryAssignment', colors, N= 3)
     plt.imshow(isBoundary, cmap=cmap)
     plt.savefig(f'{dir_path}/isBoundary.png')
-    plt.close
+    plt.close()
 
 visualizeIsBoundary(isBoundary)
 
@@ -97,48 +97,40 @@ def getMass(i,j):
     mass = getDensity(i,j) * volumen
     return mass
 
-enthalpyArray = np.ones((discretization[0],discretization[1])) 
-for i in range(discretization[0]):
-    for j in range(discretization[1]):
-        if objectAssignment[i,j] == objectIndex['stone']:
-            enthalpyArray[i,j] == getMass(i,j) * getcp(i,j) * temperatureArray[i,j]
+def getEnthalpyArray(temperatureArray):
+    enthalpyArray = np.ones((discretization[0],discretization[1])) 
+    for i in range(discretization[0]):
+        for j in range(discretization[1]):
+                enthalpyArray[i,j] = getMass(i,j) * getcp(i,j) * temperatureArray[i,j]
+    return enthalpyArray
 
-for i in range(discretization[0]):
-    for j in range(discretization[1]):
-        if objectAssignment[i,j] == objectIndex['coal']:
-            enthalpyArray[i,j] == getMass(i,j) * getcp(i,j) * temperatureArray[i,j]
-
-for i in range(discretization[0]):
-    for j in range(discretization[1]):
-        if objectAssignment[i,j] == objectIndex['soil']:
-            enthalpyArray[i,j] == getMass(i,j) * getcp(i,j) * temperatureArray[i,j]
-
-for i in range(discretization[0]):
-    for j in range(discretization[1]):
-        if objectAssignment[i,j] == objectIndex['hotAir']:
-            enthalpyArray[i,j] == getMass(i,j) * getcp(i,j) * temperatureArray[i,j]
 
 def visualizeEnthalpyArray(enthalpyArray,filename):
     plt.imshow(enthalpyArray, cmap='hot')
     plt.savefig(f'{dir_path}/{filename}')
-    plt.close
-
-visualizeEnthalpyArray(enthalpyArray,1)
+    plt.close()
 
 t = 0
 tmax = 100
-dT = 0.001
+dT = 0.1
 iteration = 0
 picNumber = 1
 while t < tmax:
     t = t + dT
+    print(t)
     iteration += 1
     if iteration % 100 == 0:
         picNumber += 1
         filename = (f'{picNumber}')
-        # visualizeTemperatureField(temperatureArray, filename)
-        # visualizeEnthalpyArray(enthalpyArray, filename)
+        visualizeTemperatureField(temperatureArray, filename)
+        visualizeEnthalpyArray(getEnthalpyArray(temperatureArray), filename)
 
 
+def getTempArrayFromEnthalpie(enthalpyArray):
+    temperatureArray = np.ones((discretization[0],discretization[1])) 
+    for i in range(discretization[0]):
+        for j in range(discretization[1]):
+            temperatureArray[i,j] = enthalpyArray[i,j] / (getcp(i,j) * getMass(i,j))
+    return temperatureArray
 
 
