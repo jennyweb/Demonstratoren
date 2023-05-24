@@ -41,5 +41,5 @@ $$
 and
 
 $$
-\dot{H}(t) =   \dot{H}(t-1) + \dot{H} d\text{t}
+H(t) =   H(t-1) + \dot{H} d\text{t}
 $$
