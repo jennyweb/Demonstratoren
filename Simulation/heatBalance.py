@@ -104,6 +104,12 @@ def getEnthalpyArray(temperatureArray):
                 enthalpyArray[i,j] = getMass(i,j) * getcp(i,j) * temperatureArray[i,j]
     return enthalpyArray
 
+def getTempArrayFromEnthalpie(enthalpyArray):
+    temperatureArray = np.ones((discretization[0],discretization[1])) 
+    for i in range(discretization[0]):
+        for j in range(discretization[1]):
+            temperatureArray[i,j] = enthalpyArray[i,j] / (getcp(i,j) * getMass(i,j))
+    return temperatureArray
 
 def visualizeEnthalpyArray(enthalpyArray,filename):
     plt.imshow(enthalpyArray, cmap='hot')
@@ -117,12 +123,9 @@ iteration = 0
 picNumber = 1
 while t < tmax:
     t = t + dT
-    enthalpyArray = enthalpyArray
-    for i in range(discretization[0]):
-        for j in range(discretization[1]):
-            temperatureArray[i,j] = enthalpyArray[i,j] / (getMass(i,j) * getcp(i,j))
-    enthalpyRateArray = np.ones((discretization[0], discretization[1]))
-    print(t)
+    temperatureArray = getTempArrayFromEnthalpie(enthalpyArray)
+    enthalpyRateArray = np.zeros((discretization[0], discretization[1]))
+    enthalpyArray = (enthalpyArray + enthalpyRateArray) * dT
     iteration += 1
     if iteration % 100 == 0:
         picNumber += 1
@@ -132,11 +135,6 @@ while t < tmax:
         visualizeEnthalpyArray(getEnthalpyArray(temperatureArray), filenameEnthalpy)
 
 
-def getTempArrayFromEnthalpie(enthalpyArray):
-    temperatureArray = np.ones((discretization[0],discretization[1])) 
-    for i in range(discretization[0]):
-        for j in range(discretization[1]):
-            temperatureArray[i,j] = enthalpyArray[i,j] / (getcp(i,j) * getMass(i,j))
-    return temperatureArray
+
 
 
