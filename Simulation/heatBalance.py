@@ -10,7 +10,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 objectIndex = {'stone': 0, 'coal': 1, 'soil': 2, 'hotAir': 3}
 
 # discretization resolution
-meshSize = 0.001
+meshSize = 0.005
 
 totalSize = (0.5, 1.) #in meters
 discretization = (np.array(totalSize)/meshSize).astype(int) #number of discretization points
@@ -109,7 +109,7 @@ def visualizeEnthalpyArray(enthalpyArray,filename):
     plt.imshow(enthalpyArray, cmap='hot')
     plt.savefig(f'{dir_path}/{filename}')
     plt.close()
-
+enthalpyArray =getEnthalpyArray(temperatureArray)
 t = 0
 tmax = 100
 dT = 0.1
@@ -117,7 +117,10 @@ iteration = 0
 picNumber = 1
 while t < tmax:
     t = t + dT
-    # enthalpyArray = getEnthalpyArray()
+    enthalpyArray = enthalpyArray
+    for i in range(discretization[0]):
+        for j in range(discretization[1]):
+            temperatureArray[i,j] = enthalpyArray[i,j] / (getMass(i,j) * getcp(i,j))
     enthalpyRateArray = np.ones((discretization[0], discretization[1]))
     print(t)
     iteration += 1
