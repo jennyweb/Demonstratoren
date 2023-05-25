@@ -74,7 +74,7 @@ for i in range(discretization[0]):
 def visualizeTemperatureField(temperatureArray, filename):
     # cmap = LinearSegmentedColormap.from_list('colorMaptempArray', N= 4)
     plt.imshow(temperatureArray, cmap='hot')
-    plt.savefig(f'{dir_path}/TemperatureArray{filename}t')
+    plt.savefig(f'{dir_path}/{filename}')
     plt.close()
 
 
@@ -117,13 +117,16 @@ iteration = 0
 picNumber = 1
 while t < tmax:
     t = t + dT
+    # enthalpyArray = getEnthalpyArray()
+    enthalpyRateArray = np.ones((discretization[0], discretization[1]))
     print(t)
     iteration += 1
     if iteration % 100 == 0:
         picNumber += 1
-        filename = (f'{picNumber}')
-        visualizeTemperatureField(temperatureArray, filename)
-        visualizeEnthalpyArray(getEnthalpyArray(temperatureArray), filename)
+        filenameTemperature = (f'temperature-{picNumber:02d}.png')
+        filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
+        visualizeTemperatureField(temperatureArray, filenameTemperature)
+        visualizeEnthalpyArray(getEnthalpyArray(temperatureArray), filenameEnthalpy)
 
 
 def getTempArrayFromEnthalpie(enthalpyArray):
