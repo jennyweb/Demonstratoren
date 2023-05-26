@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 from matplotlib.colors import LinearSegmentedColormap
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # paths
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -75,7 +76,7 @@ def visualizeObjectAssignement(objectAssignment):
     # bins = [-0.5, 0.5, 1.5, 2.5, 3.5]
     cmap = LinearSegmentedColormap.from_list('colorMapObjectAssignment', colorsNormalized, N= 4)
     plt.imshow(objectAssignment, cmap=cmap)
-    plt.savefig(f'{dir_path}/objectAssignment.png')
+    plt.savefig(f'{dir_path}/Images/objectAssignment.png')
     plt.close()
 
 visualizeObjectAssignement(objectAssignment)
@@ -84,7 +85,7 @@ def visualizeIsBoundary(isBoundary):
     colors = [(1,1,1), (0,0,0)]
     cmap = LinearSegmentedColormap.from_list('colorMapIsBoundaryAssignment', colors, N= 3)
     plt.imshow(isBoundary, cmap=cmap)
-    plt.savefig(f'{dir_path}/isBoundary.png')
+    plt.savefig(f'{dir_path}/Images/isBoundary.png')
     plt.close()
 
 visualizeIsBoundary(isBoundary)
@@ -92,26 +93,24 @@ visualizeIsBoundary(isBoundary)
 def visualizeTemperatureField(temperatureArray, filename):
     # cmap = LinearSegmentedColormap.from_list('colorMaptempArray', N= 4)
     plt.imshow(temperatureArray, cmap='hot')
-    plt.savefig(f'{dir_path}/{filename}')
+    plt.savefig(f'{dir_path}/Images/{filename}')
     plt.close()
 
-def getcp(i,j):
-    return lambda i,j: cpDict[objectAssignment[i,j]]
+getcp = lambda i,j: cpDict[objectAssignment[i,j]]
 # def getcp(i,j):
 #     oa = objectAssignment[i,j]
 #     cp = cpDict[oa]
 #     return cp
-def getDensity(i,j):
-    return lambda i,j: densityDict[objectAssignment[i,j]]
+getDensity = lambda i,j: densityDict[objectAssignment[i,j]]
 # def getDensity(i,j):
 #     oa = objectAssignment[i,j]
 #     density = densityDict[oa]
 #     return density
-
-def getMass(i,j):
-    volumen = meshSize**2
-    mass = getDensity(i,j) * volumen
-    return mass
+getMass = lambda i,j: getDensity(i,j) * meshSize**2
+# def getMass(i,j):
+#     volumen = meshSize**2
+#     mass = getDensity(i,j) * volumen
+#     return mass
 
 def getEnthalpyArray(temperatureArray):
     enthalpyArray = np.ones((discretization[0],discretization[1])) 
@@ -121,8 +120,13 @@ def getEnthalpyArray(temperatureArray):
     return enthalpyArray
 
 def visualizeEnthalpyArray(enthalpyArray,filename):
+    ax = plt.subplot()
+    im = ax.imshow(np.arange(100).reshape((10,10)))
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size = "5%", pad = 0.05)
+    plt.colorbar(im,cax= cax)
     plt.imshow(enthalpyArray, cmap='hot')
-    plt.savefig(f'{dir_path}/{filename}')
+    plt.savefig(f'{dir_path}/Images/{filename}')
     plt.close()
 
 def getTempArrayFromEnthalpie(enthalpyArray):
