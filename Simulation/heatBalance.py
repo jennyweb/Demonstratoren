@@ -66,6 +66,12 @@ def visualizeIsBoundary(isBoundary):
     plt.savefig(f'{dir_path}/isBoundary.png')
     plt.close()
 
+for i in range(discretization[0]):
+    for j in range(discretization[1]):
+        if isBoundary[i,j] == 1:
+            boundaryParticel = (i,j)
+            break
+
 visualizeIsBoundary(isBoundary)
 
 temperatureArray = np.ones((discretization[0],discretization[1])) * 270
@@ -86,7 +92,7 @@ def visualizeTemperatureField(temperatureArray, filename):
 
 
 cpDict = {objectIndex['stone']: 1, objectIndex['coal']: 1.02, objectIndex['soil']: 0.8, objectIndex['hotAir']: 1.005} #in kJ kg-1 K-1  ; urch Erhöhung der Pyrolyseendtemperatur von 400 auf 1200 °C steigt die spezifische Wärme der H. von 1,02 auf 1,60 kJ/kg K an
-densityDict = {objectIndex['stone']: 2.5, objectIndex['coal']: 0.25, objectIndex['soil']: 0.92, objectIndex['hotAir']: 0.783 } # in g cm-3 
+densityDict = {objectIndex['stone']: 2.5e3, objectIndex['coal']: 0.25e3, objectIndex['soil']: 0.92e3, objectIndex['hotAir']: 0.783e3 } # in g cm-3 
 thermalConductivityDict = {objectIndex['stone']: 2.0, objectIndex['hotAir']: 0.02} #in J s-1 m-1 K-1
 
 def getcp(i,j):
@@ -121,6 +127,8 @@ def visualizeEnthalpyArray(enthalpyArray,filename):
     plt.imshow(enthalpyArray, cmap='hot')
     plt.savefig(f'{dir_path}/{filename}')
     plt.close()
+
+temperatureAtIJBoundary = []
 enthalpyArray = getEnthalpyArray(temperatureArray)
 t = 0
 tmax = 100
@@ -130,11 +138,12 @@ picNumber = 1
 while t < tmax:
     t = t + dt
     temperatureArray = getTempArrayFromEnthalpie(enthalpyArray)
+    temperatureAtIJBoundary.append(temperatureArray[boundaryParticel])
     enthalpyRateArray = np.zeros((discretization[0], discretization[1]))
     for i in range(discretization[0]):
         for j in range(discretization[1]):
             if isBoundary[i,j] == 1:
-                enthalpyRateArray[i,j] = epsilon * sigma * A ((temperatureArray[i,j])**4 - Ta**4)
+                enthalpyRateArray[i,j] = -epsilon * sigma * A * ((temperatureArray[i,j])**4 - Ta**4)
     enthalpyArray = enthalpyArray + enthalpyRateArray * dt
     iteration += 1
     if iteration % 100 == 0:
@@ -143,6 +152,11 @@ while t < tmax:
         filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
         visualizeTemperatureField(temperatureArray, filenameTemperature)
         visualizeEnthalpyArray(enthalpyArray, filenameEnthalpy)
+
+
+plt.plot(temperatureAtIJBoundary)
+plt.savefig(f'{dir_path}/Temp_at_Boundary')
+plt.close()
 
 
 
