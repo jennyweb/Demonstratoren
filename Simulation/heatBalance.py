@@ -7,6 +7,10 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 # paths
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
+# create intermediate folders
+if not os.path.isdir(f'{dir_path}/Images'):
+    os.mkdir(f'{dir_path}/Images')
+
 # index assignment
 objectIndex = {'stone': 0, 'coal': 1, 'soil': 2, 'hotAir': 3}
 
@@ -66,7 +70,7 @@ iteration = 0
 picNumber = 1
 
 cpDict = {objectIndex['stone']: 1, objectIndex['coal']: 1.02, objectIndex['soil']: 0.8, objectIndex['hotAir']: 1.005} #in kJ kg-1 K-1  ; urch Erhöhung der Pyrolyseendtemperatur von 400 auf 1200 °C steigt die spezifische Wärme der H. von 1,02 auf 1,60 kJ/kg K an
-densityDict = {objectIndex['stone']: 2.5e3, objectIndex['coal']: 0.25e3, objectIndex['soil']: 0.92e3, objectIndex['hotAir']: 0.783e3 } # in g cm-3 
+densityDict = {objectIndex['stone']: 2.5e3, objectIndex['coal']: 0.25e3, objectIndex['soil']: 0.92e3, objectIndex['hotAir']: 0.783e3 } # in kg cm-3 
 thermalConductivityDict = {objectIndex['stone']: 2.0, objectIndex['hotAir']: 0.02} #in J s-1 m-1 K-1
 
 
@@ -79,7 +83,6 @@ def visualizeObjectAssignement(objectAssignment):
     plt.savefig(f'{dir_path}/Images/objectAssignment.png')
     plt.close()
 
-visualizeObjectAssignement(objectAssignment)
 
 def visualizeIsBoundary(isBoundary):
     colors = [(1,1,1), (0,0,0)]
@@ -88,29 +91,21 @@ def visualizeIsBoundary(isBoundary):
     plt.savefig(f'{dir_path}/Images/isBoundary.png')
     plt.close()
 
-visualizeIsBoundary(isBoundary)
 
 def visualizeTemperatureField(temperatureArray, filename):
-    # cmap = LinearSegmentedColormap.from_list('colorMaptempArray', N= 4)
-    plt.imshow(temperatureArray, cmap='hot')
+    ax = plt.subplot()
+    plt.axis('off')
+    im = plt.imshow(temperatureArray-273, cmap='hot')
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size = "5%", pad = 0.05)
+    cbar = plt.colorbar(im,cax= cax)
+    cbar.set_label('$T$ in degree C', rotation = 270)
     plt.savefig(f'{dir_path}/Images/{filename}')
     plt.close()
 
 getcp = lambda i,j: cpDict[objectAssignment[i,j]]
-# def getcp(i,j):
-#     oa = objectAssignment[i,j]
-#     cp = cpDict[oa]
-#     return cp
 getDensity = lambda i,j: densityDict[objectAssignment[i,j]]
-# def getDensity(i,j):
-#     oa = objectAssignment[i,j]
-#     density = densityDict[oa]
-#     return density
 getMass = lambda i,j: getDensity(i,j) * meshSize**2
-# def getMass(i,j):
-#     volumen = meshSize**2
-#     mass = getDensity(i,j) * volumen
-#     return mass
 
 def getEnthalpyArray(temperatureArray):
     enthalpyArray = np.ones((discretization[0],discretization[1])) 
@@ -136,27 +131,36 @@ def getTempArrayFromEnthalpie(enthalpyArray):
             temperatureArray[i,j] = enthalpyArray[i,j] / (getcp(i,j) * getMass(i,j))
     return temperatureArray
 
+visualizeObjectAssignement(objectAssignment)
+visualizeIsBoundary(isBoundary)
 enthalpyArray = getEnthalpyArray(temperatureArray)
+
 #begin simulation
 while t < tmax:
-    #increase counter
-    t = t + dt
+
+    # recover temperature array from enthalpy
     temperatureArray = getTempArrayFromEnthalpie(enthalpyArray)
+
     # apply physics
     enthalpyRateArray = np.zeros((discretization[0], discretization[1]))
     for i in range(discretization[0]):
         for j in range(discretization[1]):
+            # boundary related physics
             if isBoundary[i,j] == 1:
                 enthalpyRateArray[i,j] = -epsilon * sigma * A * ((temperatureArray[i,j])**4 - Ta**4)
     enthalpyArray = enthalpyArray + enthalpyRateArray * dt
+
     #visual output
-    iteration += 1
     if iteration % 100 == 0:
         picNumber += 1
         filenameTemperature = (f'temperature-{picNumber:02d}.png')
         filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
         visualizeTemperatureField(temperatureArray, filenameTemperature)
         visualizeEnthalpyArray(enthalpyArray, filenameEnthalpy)
+    
+    #increase counter
+    t = t + dt
+    iteration += 1
 
 
 
