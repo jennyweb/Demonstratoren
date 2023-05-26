@@ -33,6 +33,13 @@ for i in range(discretization[0]):
 objectAssignment[coalTopPosition:coalBottomPosition,:] = objectIndex['coal']
 objectAssignment[soilTopPosition:soilBottomPosition,:] = objectIndex['soil']
 
+#mathematical constants
+sigma = 5.67037321 * 10**-8 # Boltzmann constant W m-2 K-4
+epsilon = 0.3 # emissivity factor
+A = meshSize #m
+Ta = 278 # ambient surrounding temperature K
+Tair = 278 # surrounding air temperature K
+
 def visualizeObjectAssignement(objectAssignment):
     colors = [(173,156,146), (203,56,23), (100,78,20), (249,178,75)]
     colorsNormalized = [[x/256. for x in rgbCode] for rgbCode in colors]
@@ -110,29 +117,32 @@ def getTempArrayFromEnthalpie(enthalpyArray):
         for j in range(discretization[1]):
             temperatureArray[i,j] = enthalpyArray[i,j] / (getcp(i,j) * getMass(i,j))
     return temperatureArray
-
 def visualizeEnthalpyArray(enthalpyArray,filename):
     plt.imshow(enthalpyArray, cmap='hot')
     plt.savefig(f'{dir_path}/{filename}')
     plt.close()
-enthalpyArray =getEnthalpyArray(temperatureArray)
+enthalpyArray = getEnthalpyArray(temperatureArray)
 t = 0
 tmax = 100
-dT = 0.1
+dt = 0.1
 iteration = 0
 picNumber = 1
 while t < tmax:
-    t = t + dT
+    t = t + dt
     temperatureArray = getTempArrayFromEnthalpie(enthalpyArray)
     enthalpyRateArray = np.zeros((discretization[0], discretization[1]))
-    enthalpyArray = (enthalpyArray + enthalpyRateArray) * dT
+    for i in range(discretization[0]):
+        for j in range(discretization[1]):
+            if isBoundary[i,j] == 1:
+                enthalpyRateArray[i,j] = epsilon * sigma * A ((temperatureArray[i,j])**4 - Ta**4)
+    enthalpyArray = enthalpyArray + enthalpyRateArray * dt
     iteration += 1
     if iteration % 100 == 0:
         picNumber += 1
         filenameTemperature = (f'temperature-{picNumber:02d}.png')
         filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
         visualizeTemperatureField(temperatureArray, filenameTemperature)
-        visualizeEnthalpyArray(getEnthalpyArray(temperatureArray), filenameEnthalpy)
+        visualizeEnthalpyArray(enthalpyArray, filenameEnthalpy)
 
 
 
