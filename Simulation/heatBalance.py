@@ -116,11 +116,12 @@ def getEnthalpyArray(temperatureArray):
 
 def visualizeEnthalpyArray(enthalpyArray,filename):
     ax = plt.subplot()
-    im = ax.imshow(np.arange(100).reshape((10,10)))
+    plt.axis('off')
+    im = plt.imshow(enthalpyArray, cmap='hot')
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size = "5%", pad = 0.05)
-    plt.colorbar(im,cax= cax)
-    plt.imshow(enthalpyArray, cmap='hot')
+    cbar = plt.colorbar(im,cax= cax)
+    cbar.set_label('$H$ in J')
     plt.savefig(f'{dir_path}/Images/{filename}')
     plt.close()
 
