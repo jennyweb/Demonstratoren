@@ -22,6 +22,8 @@ soilTopPosition = soilBottomPosition - int(soilSize[0]/meshSize)
 coalBottomPosition = soilTopPosition 
 coalTopPosition = coalBottomPosition - int(coalSize[0]/meshSize)
 stoneCenterOfGravity = (coalTopPosition - int((stoneDiameter/2)/meshSize), int(discretization[1]/2))
+
+# array asignment
 objectAssignment = np.ones((discretization[0],discretization[1])) * objectIndex['hotAir'] #assign air as default
 
 for i in range(discretization[0]):
@@ -33,12 +35,39 @@ for i in range(discretization[0]):
 objectAssignment[coalTopPosition:coalBottomPosition,:] = objectIndex['coal']
 objectAssignment[soilTopPosition:soilBottomPosition,:] = objectIndex['soil']
 
-#mathematical constants
+isBoundary = np.zeros((discretization[0],discretization[1]))
+for i in range(discretization[0]):
+    for j in range(discretization[1]):
+        if objectAssignment[i,j] == objectIndex['stone']:
+            if objectAssignment[i+1][j] !=objectIndex['stone'] or objectAssignment[i-1][j] !=objectIndex['stone'] or objectAssignment[i][j+1] !=objectIndex['stone'] or objectAssignment[i][j-1] !=objectIndex['stone']:
+                isBoundary[i][j] = 1
+
+temperatureArray = np.ones((discretization[0],discretization[1])) * 270
+temperatureArray[coalTopPosition:coalBottomPosition,:] = 1070
+temperatureArray[soilTopPosition:soilBottomPosition,:] = 270
+for i in range(discretization[0]):
+    for j in range(discretization[1]):
+        d = ((j - stoneCenterOfGravity[1])**2 + (i - stoneCenterOfGravity[0])**2)**0.5
+        if d <=  int((stoneDiameter/2)/meshSize):
+            temperatureArray[i,j] = 390
+
+#physical constants and used variables
 sigma = 5.67037321 * 10**-8 # Boltzmann constant W m-2 K-4
 epsilon = 0.3 # emissivity factor
 A = meshSize #m
 Ta = 278 # ambient surrounding temperature K
 Tair = 278 # surrounding air temperature K
+
+t = 0
+tmax = 100
+dt = 0.1
+iteration = 0
+picNumber = 1
+
+cpDict = {objectIndex['stone']: 1, objectIndex['coal']: 1.02, objectIndex['soil']: 0.8, objectIndex['hotAir']: 1.005} #in kJ kg-1 K-1  ; urch Erhöhung der Pyrolyseendtemperatur von 400 auf 1200 °C steigt die spezifische Wärme der H. von 1,02 auf 1,60 kJ/kg K an
+densityDict = {objectIndex['stone']: 2.5e3, objectIndex['coal']: 0.25e3, objectIndex['soil']: 0.92e3, objectIndex['hotAir']: 0.783e3 } # in g cm-3 
+thermalConductivityDict = {objectIndex['stone']: 2.0, objectIndex['hotAir']: 0.02} #in J s-1 m-1 K-1
+
 
 def visualizeObjectAssignement(objectAssignment):
     colors = [(173,156,146), (203,56,23), (100,78,20), (249,178,75)]
@@ -51,14 +80,6 @@ def visualizeObjectAssignement(objectAssignment):
 
 visualizeObjectAssignement(objectAssignment)
 
-
-isBoundary = np.zeros((discretization[0],discretization[1]))
-for i in range(discretization[0]):
-    for j in range(discretization[1]):
-        if objectAssignment[i,j] == objectIndex['stone']:
-            if objectAssignment[i+1][j] !=objectIndex['stone'] or objectAssignment[i-1][j] !=objectIndex['stone'] or objectAssignment[i][j+1] !=objectIndex['stone'] or objectAssignment[i][j-1] !=objectIndex['stone']:
-                isBoundary[i][j] = 1
-
 def visualizeIsBoundary(isBoundary):
     colors = [(1,1,1), (0,0,0)]
     cmap = LinearSegmentedColormap.from_list('colorMapIsBoundaryAssignment', colors, N= 3)
@@ -66,23 +87,7 @@ def visualizeIsBoundary(isBoundary):
     plt.savefig(f'{dir_path}/isBoundary.png')
     plt.close()
 
-for i in range(discretization[0]):
-    for j in range(discretization[1]):
-        if isBoundary[i,j] == 1:
-            boundaryParticel = (i,j)
-            break
-
 visualizeIsBoundary(isBoundary)
-
-temperatureArray = np.ones((discretization[0],discretization[1])) * 270
-temperatureArray[coalTopPosition:coalBottomPosition,:] = 1070
-temperatureArray[soilTopPosition:soilBottomPosition,:] = 270
-for i in range(discretization[0]):
-    for j in range(discretization[1]):
-        d = ((j - stoneCenterOfGravity[1])**2 + (i - stoneCenterOfGravity[0])**2)**0.5
-        if d <=  int((stoneDiameter/2)/meshSize):
-            temperatureArray[i,j] = 390
-
 
 def visualizeTemperatureField(temperatureArray, filename):
     # cmap = LinearSegmentedColormap.from_list('colorMaptempArray', N= 4)
@@ -90,20 +95,18 @@ def visualizeTemperatureField(temperatureArray, filename):
     plt.savefig(f'{dir_path}/{filename}')
     plt.close()
 
-
-cpDict = {objectIndex['stone']: 1, objectIndex['coal']: 1.02, objectIndex['soil']: 0.8, objectIndex['hotAir']: 1.005} #in kJ kg-1 K-1  ; urch Erhöhung der Pyrolyseendtemperatur von 400 auf 1200 °C steigt die spezifische Wärme der H. von 1,02 auf 1,60 kJ/kg K an
-densityDict = {objectIndex['stone']: 2.5e3, objectIndex['coal']: 0.25e3, objectIndex['soil']: 0.92e3, objectIndex['hotAir']: 0.783e3 } # in g cm-3 
-thermalConductivityDict = {objectIndex['stone']: 2.0, objectIndex['hotAir']: 0.02} #in J s-1 m-1 K-1
-
 def getcp(i,j):
-    oa = objectAssignment[i,j]
-    cp = cpDict[oa]
-    return cp
-
+    return lambda i,j: cpDict[objectAssignment[i,j]]
+# def getcp(i,j):
+#     oa = objectAssignment[i,j]
+#     cp = cpDict[oa]
+#     return cp
 def getDensity(i,j):
-    oa = objectAssignment[i,j]
-    density = densityDict[oa]
-    return density
+    return lambda i,j: densityDict[objectAssignment[i,j]]
+# def getDensity(i,j):
+#     oa = objectAssignment[i,j]
+#     density = densityDict[oa]
+#     return density
 
 def getMass(i,j):
     volumen = meshSize**2
@@ -117,34 +120,32 @@ def getEnthalpyArray(temperatureArray):
                 enthalpyArray[i,j] = getMass(i,j) * getcp(i,j) * temperatureArray[i,j]
     return enthalpyArray
 
+def visualizeEnthalpyArray(enthalpyArray,filename):
+    plt.imshow(enthalpyArray, cmap='hot')
+    plt.savefig(f'{dir_path}/{filename}')
+    plt.close()
+
 def getTempArrayFromEnthalpie(enthalpyArray):
     temperatureArray = np.ones((discretization[0],discretization[1])) 
     for i in range(discretization[0]):
         for j in range(discretization[1]):
             temperatureArray[i,j] = enthalpyArray[i,j] / (getcp(i,j) * getMass(i,j))
     return temperatureArray
-def visualizeEnthalpyArray(enthalpyArray,filename):
-    plt.imshow(enthalpyArray, cmap='hot')
-    plt.savefig(f'{dir_path}/{filename}')
-    plt.close()
 
-temperatureAtIJBoundary = []
 enthalpyArray = getEnthalpyArray(temperatureArray)
-t = 0
-tmax = 100
-dt = 0.1
-iteration = 0
-picNumber = 1
+#begin simulation
 while t < tmax:
+    #increase counter
     t = t + dt
     temperatureArray = getTempArrayFromEnthalpie(enthalpyArray)
-    temperatureAtIJBoundary.append(temperatureArray[boundaryParticel])
+    # apply physics
     enthalpyRateArray = np.zeros((discretization[0], discretization[1]))
     for i in range(discretization[0]):
         for j in range(discretization[1]):
             if isBoundary[i,j] == 1:
                 enthalpyRateArray[i,j] = -epsilon * sigma * A * ((temperatureArray[i,j])**4 - Ta**4)
     enthalpyArray = enthalpyArray + enthalpyRateArray * dt
+    #visual output
     iteration += 1
     if iteration % 100 == 0:
         picNumber += 1
@@ -154,9 +155,7 @@ while t < tmax:
         visualizeEnthalpyArray(enthalpyArray, filenameEnthalpy)
 
 
-plt.plot(temperatureAtIJBoundary)
-plt.savefig(f'{dir_path}/Temp_at_Boundary')
-plt.close()
+
 
 
 
