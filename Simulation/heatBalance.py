@@ -77,7 +77,7 @@ A = meshSize**2 #m
 Ta = 278 # ambient surrounding temperature K
 
 t = 0
-tmax = 10
+tmax = 100
 dt = 0.1
 iteration = 0
 picNumber = 0
@@ -106,7 +106,7 @@ def visualizeIsBoundary(isBoundary):
     plt.close()
 
 
-def visualizeTemperatureField(temperatureArray, filename):
+def visualizeTemperatureField(temperatureArray, filename, time):
     ax = plt.subplot()
     plt.axis('off')
     im = plt.imshow(temperatureArray-273, cmap='hot')
@@ -114,6 +114,7 @@ def visualizeTemperatureField(temperatureArray, filename):
     cax = divider.append_axes("right", size = "5%", pad = 0.05)
     cbar = plt.colorbar(im,cax= cax)
     cbar.set_label('$T$ in degree C', rotation = 270)
+    plt.title(f't = {time:1.2f}')
     plt.savefig(f'{dir_path}/Images/{filename}')
     plt.close()
 
@@ -167,7 +168,7 @@ visualizeIsBoundary(isBoundary)
 enthalpyArray = getEnthalpyArray(temperatureArray)
 
 #begin simulation
-with alive_bar(int(numberOfIterations)) as bar:
+with alive_bar(int(numberOfIterations)+1) as bar:
     while t < tmax:
 
         # recover temperature array from enthalpy
@@ -188,8 +189,8 @@ with alive_bar(int(numberOfIterations)) as bar:
 
                 if isBoundaryToCoal[i,j] == 1:
                     convectionEnthalpy = getHeatTransferCoefficient(objectIndex['coal']) * A * (temperatureArray[i,j]-temperatureArray[i+1,j])
-                    enthalpyRateArray[i,j] += convectionEnthalpy
-                    enthalpyRateArray[i+1,j] -= convectionEnthalpy
+                    enthalpyRateArray[i,j] -= convectionEnthalpy
+                    enthalpyRateArray[i+1,j] += convectionEnthalpy
 
 
         enthalpyArray = enthalpyArray + enthalpyRateArray * dt
@@ -198,7 +199,7 @@ with alive_bar(int(numberOfIterations)) as bar:
         if iteration % 100 == 0:
             filenameTemperature = (f'temperature-{picNumber:02d}.png')
             filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
-            visualizeTemperatureField(temperatureArray, filenameTemperature)
+            visualizeTemperatureField(temperatureArray, filenameTemperature, t)
             visualizeEnthalpyArray(enthalpyArray, filenameEnthalpy)
             picNumber += 1
         
