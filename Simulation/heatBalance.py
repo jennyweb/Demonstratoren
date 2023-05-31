@@ -4,12 +4,14 @@ import os
 from matplotlib.colors import LinearSegmentedColormap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from alive_progress import alive_bar
+import shutil
 
 # paths
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # create intermediate folders
-if not os.path.isdir(f'{dir_path}/Images'):
+if os.path.isdir(f'{dir_path}/Images'):
+    shutil.rmtree(f'{dir_path}/Images')
     os.mkdir(f'{dir_path}/Images')
 
 # index assignment
@@ -70,15 +72,15 @@ for i in range(discretization[0]):
 
 #physical constants and used variables
 sigma = 5.67037321 * 10**-8 # Boltzmann constant W m-2 K-4
-epsilon = 0.3 # emissivity factor
-A = meshSize #m
+epsilon = 0.3 # emissivity factor without unit
+A = meshSize**2 #m
 Ta = 278 # ambient surrounding temperature K
 
 t = 0
-tmax = 100
+tmax = 10
 dt = 0.1
 iteration = 0
-picNumber = 1
+picNumber = 0
 numberOfIterations = tmax/dt
 
 cpDict = {objectIndex['stone']: 1, objectIndex['coal']: 1.02, objectIndex['soil']: 0.8, objectIndex['hotAir']: 1.005} #in kJ kg-1 K-1  ; urch Erhöhung der Pyrolyseendtemperatur von 400 auf 1200 °C steigt die spezifische Wärme der H. von 1,02 auf 1,60 kJ/kg K an
@@ -129,9 +131,9 @@ def getHeatTransferCoefficient(interface):
         getHeatTransferCoefficient(objectIndex['hotAir'])
     """
     if interface == objectIndex['hotAir']:
-        return 1
+        return 25.
     elif interface == objectIndex['coal']:
-        return 2
+        return 1000.
      
 
 
@@ -179,20 +181,26 @@ with alive_bar(int(numberOfIterations)) as bar:
                 if isBoundaryToAir[i,j] == 1:
 
                     # radiation
-                    enthalpyRateArray[i,j] = -epsilon * sigma * A * ((temperatureArray[i,j])**4 - Ta**4)
+                    enthalpyRateArray[i,j] += -epsilon * sigma * A * ((temperatureArray[i,j])**4 - Ta**4)
 
                     # convection
-                    enthalpyRateArray[i,j] = getHeatTransferCoefficient(objectIndex['hotAir']) * A * (temperatureArray[i,j]-Tair[i,j])
+                    enthalpyRateArray[i,j] += getHeatTransferCoefficient(objectIndex['hotAir']) * A * (temperatureArray[i,j]-Tair[i,j])
+
+                if isBoundaryToCoal[i,j] == 1:
+                    convectionEnthalpy = getHeatTransferCoefficient(objectIndex['coal']) * A * (temperatureArray[i,j]-temperatureArray[i+1,j])
+                    enthalpyRateArray[i,j] += convectionEnthalpy
+                    enthalpyRateArray[i+1,j] -= convectionEnthalpy
+
 
         enthalpyArray = enthalpyArray + enthalpyRateArray * dt
 
         #visual output
         if iteration % 100 == 0:
-            picNumber += 1
             filenameTemperature = (f'temperature-{picNumber:02d}.png')
             filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
             visualizeTemperatureField(temperatureArray, filenameTemperature)
             visualizeEnthalpyArray(enthalpyArray, filenameEnthalpy)
+            picNumber += 1
         
         #increase counter
         t = t + dt
