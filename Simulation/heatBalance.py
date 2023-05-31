@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import os
 from matplotlib.colors import LinearSegmentedColormap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from alive_progress import alive_bar
 
 # paths
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -41,11 +42,22 @@ objectAssignment[coalTopPosition:coalBottomPosition,:] = objectIndex['coal']
 objectAssignment[soilTopPosition:soilBottomPosition,:] = objectIndex['soil']
 
 isBoundary = np.zeros((discretization[0],discretization[1]))
+isBoundaryToCoal = np.zeros((discretization[0],discretization[1]))
+isBoundaryToAir = np.zeros((discretization[0],discretization[1]))
 for i in range(discretization[0]):
     for j in range(discretization[1]):
         if objectAssignment[i,j] == objectIndex['stone']:
             if objectAssignment[i+1][j] !=objectIndex['stone'] or objectAssignment[i-1][j] !=objectIndex['stone'] or objectAssignment[i][j+1] !=objectIndex['stone'] or objectAssignment[i][j-1] !=objectIndex['stone']:
                 isBoundary[i][j] = 1
+        if isBoundary[i,j] == 1:
+            if objectAssignment[i+1][j] !=objectIndex['coal'] or objectAssignment[i-1][j] !=objectIndex['coal'] or objectAssignment[i][j+1] !=objectIndex['coal'] or objectAssignment[i][j-1] !=objectIndex['coal']:
+                isBoundaryToCoal[i][j] = 1
+            if objectAssignment[i+1][j] !=objectIndex['hotAir'] or objectAssignment[i-1][j] !=objectIndex['hotAir'] or objectAssignment[i][j+1] !=objectIndex['hotAir'] or objectAssignment[i][j-1] !=objectIndex['hotAir']:
+                isBoundaryToAir[i][j] = 1
+
+
+
+Tair = np.ones((discretization[0],discretization[1])) * 270
 
 temperatureArray = np.ones((discretization[0],discretization[1])) * 270
 temperatureArray[coalTopPosition:coalBottomPosition,:] = 1070
@@ -61,13 +73,13 @@ sigma = 5.67037321 * 10**-8 # Boltzmann constant W m-2 K-4
 epsilon = 0.3 # emissivity factor
 A = meshSize #m
 Ta = 278 # ambient surrounding temperature K
-Tair = 278 # surrounding air temperature K
 
 t = 0
 tmax = 100
 dt = 0.1
 iteration = 0
 picNumber = 1
+numberOfIterations = tmax/dt
 
 cpDict = {objectIndex['stone']: 1, objectIndex['coal']: 1.02, objectIndex['soil']: 0.8, objectIndex['hotAir']: 1.005} #in kJ kg-1 K-1  ; urch Erhöhung der Pyrolyseendtemperatur von 400 auf 1200 °C steigt die spezifische Wärme der H. von 1,02 auf 1,60 kJ/kg K an
 densityDict = {objectIndex['stone']: 2.5e3, objectIndex['coal']: 0.25e3, objectIndex['soil']: 0.92e3, objectIndex['hotAir']: 0.783e3 } # in kg cm-3 
@@ -107,6 +119,22 @@ getcp = lambda i,j: cpDict[objectAssignment[i,j]]
 getDensity = lambda i,j: densityDict[objectAssignment[i,j]]
 getMass = lambda i,j: getDensity(i,j) * meshSize**2
 
+def getHeatTransferCoefficient(interface):
+    """
+    the heat transfer coefficient depends on whether the stone has contact to air or coal.
+    Input:
+        interface : int
+        interface either objectIndex['hotAir'] or objectIndex['coal']
+    Usage:
+        getHeatTransferCoefficient(objectIndex['hotAir'])
+    """
+    if interface == objectIndex['hotAir']:
+        return 1
+    elif interface == objectIndex['coal']:
+        return 2
+     
+
+
 def getEnthalpyArray(temperatureArray):
     enthalpyArray = np.ones((discretization[0],discretization[1])) 
     for i in range(discretization[0]):
@@ -137,31 +165,39 @@ visualizeIsBoundary(isBoundary)
 enthalpyArray = getEnthalpyArray(temperatureArray)
 
 #begin simulation
-while t < tmax:
+with alive_bar(int(numberOfIterations)) as bar:
+    while t < tmax:
 
-    # recover temperature array from enthalpy
-    temperatureArray = getTempArrayFromEnthalpie(enthalpyArray)
+        # recover temperature array from enthalpy
+        temperatureArray = getTempArrayFromEnthalpie(enthalpyArray)
 
-    # apply physics
-    enthalpyRateArray = np.zeros((discretization[0], discretization[1]))
-    for i in range(discretization[0]):
-        for j in range(discretization[1]):
-            # boundary related physics
-            if isBoundary[i,j] == 1:
-                enthalpyRateArray[i,j] = -epsilon * sigma * A * ((temperatureArray[i,j])**4 - Ta**4)
-    enthalpyArray = enthalpyArray + enthalpyRateArray * dt
+        # apply physics
+        enthalpyRateArray = np.zeros((discretization[0], discretization[1]))
+        for i in range(discretization[0]):
+            for j in range(discretization[1]):
+                # boundary related physics
+                if isBoundaryToAir[i,j] == 1:
 
-    #visual output
-    if iteration % 100 == 0:
-        picNumber += 1
-        filenameTemperature = (f'temperature-{picNumber:02d}.png')
-        filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
-        visualizeTemperatureField(temperatureArray, filenameTemperature)
-        visualizeEnthalpyArray(enthalpyArray, filenameEnthalpy)
-    
-    #increase counter
-    t = t + dt
-    iteration += 1
+                    # radiation
+                    enthalpyRateArray[i,j] = -epsilon * sigma * A * ((temperatureArray[i,j])**4 - Ta**4)
+
+                    # convection
+                    enthalpyRateArray[i,j] = getHeatTransferCoefficient(objectIndex['hotAir']) * A * (temperatureArray[i,j]-Tair[i,j])
+
+        enthalpyArray = enthalpyArray + enthalpyRateArray * dt
+
+        #visual output
+        if iteration % 100 == 0:
+            picNumber += 1
+            filenameTemperature = (f'temperature-{picNumber:02d}.png')
+            filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
+            visualizeTemperatureField(temperatureArray, filenameTemperature)
+            visualizeEnthalpyArray(enthalpyArray, filenameEnthalpy)
+        
+        #increase counter
+        t = t + dt
+        bar()
+        iteration += 1
 
 
 
