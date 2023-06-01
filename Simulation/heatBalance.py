@@ -120,10 +120,20 @@ def visualizeArray(objectAssignment, testArray, filename):
     plt.close()
 
 
-def visualizeTemperatureField(temperatureArray, filename, time):
+def visualizeTemperatureField(filename, time):
+    temperatureOutput = np.zeros((discretization[0], discretization[1]))
+    for i in range(discretization[0]):
+        for j in range(discretization[1]):
+            if objectAssignment[i,j] == objectIndex['hotAir']:
+                temperatureOutput[i,j] = Tair[i,j]
+            elif objectAssignment[i,j] == objectIndex['soil'] or objectAssignment[i,j] == objectIndex['coal'] or objectAssignment[i,j] == objectIndex['stone']:
+                temperatureOutput[i,j] = temperatureArray[i,j]
+            else:
+                raise RuntimeError('Jenny, you need to implement this!')
+
     ax = plt.subplot()
     plt.axis('off')
-    im = plt.imshow(temperatureArray-273, cmap='hot')
+    im = plt.imshow(temperatureOutput-273, cmap='hot')
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size = "5%", pad = 0.05)
     cbar = plt.colorbar(im,cax= cax)
@@ -149,6 +159,24 @@ def getHeatTransferCoefficient(interface):
         return 25.
     elif interface == objectIndex['coal']:
         return 1000.
+     
+def getHeatConductivity(object):
+    """
+    this function returns the heat conductivity in W / (m K) for a given object
+    
+    Input:
+        object: int
+        object either objectIndex['soil'] or objectIndex['coal'] or objectIndex['stone']
+    Usage:
+        getHeatConductivity(objectIndex['soil'])
+    """
+    heatConductivity = {objectIndex['coal']: 0.3, objectIndex['soil']: 1, objectIndex['stone']: 10}
+    if object not in heatConductivity.keys():
+        raise RuntimeError(f'heatconductivity for object {object} is not available')
+    return heatConductivity[object]
+    
+
+  
      
 
 
@@ -217,7 +245,7 @@ with alive_bar(int(numberOfIterations)+1) as bar:
         if iteration % 100 == 0:
             filenameTemperature = (f'temperature-{picNumber:02d}.png')
             filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
-            visualizeTemperatureField(temperatureArray, filenameTemperature, t)
+            visualizeTemperatureField(filenameTemperature, t)
             visualizeEnthalpyArray(enthalpyArray, filenameEnthalpy)
             picNumber += 1
         
