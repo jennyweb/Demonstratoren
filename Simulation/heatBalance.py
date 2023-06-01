@@ -52,9 +52,9 @@ for i in range(discretization[0]):
             if objectAssignment[i+1][j] !=objectIndex['stone'] or objectAssignment[i-1][j] !=objectIndex['stone'] or objectAssignment[i][j+1] !=objectIndex['stone'] or objectAssignment[i][j-1] !=objectIndex['stone']:
                 isBoundary[i][j] = 1
         if isBoundary[i,j] == 1:
-            if objectAssignment[i+1][j] !=objectIndex['coal'] or objectAssignment[i-1][j] !=objectIndex['coal'] or objectAssignment[i][j+1] !=objectIndex['coal'] or objectAssignment[i][j-1] !=objectIndex['coal']:
+            if objectAssignment[i+1][j] == objectIndex['coal'] or objectAssignment[i-1][j] == objectIndex['coal'] or objectAssignment[i][j+1] == objectIndex['coal'] or objectAssignment[i][j-1] == objectIndex['coal']:
                 isBoundaryToCoal[i][j] = 1
-            if objectAssignment[i+1][j] !=objectIndex['hotAir'] or objectAssignment[i-1][j] !=objectIndex['hotAir'] or objectAssignment[i][j+1] !=objectIndex['hotAir'] or objectAssignment[i][j-1] !=objectIndex['hotAir']:
+            if objectAssignment[i+1][j] == objectIndex['hotAir'] or objectAssignment[i-1][j] == objectIndex['hotAir'] or objectAssignment[i][j+1] == objectIndex['hotAir'] or objectAssignment[i][j-1] == objectIndex['hotAir']:
                 isBoundaryToAir[i][j] = 1
 
 
