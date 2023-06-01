@@ -46,11 +46,18 @@ objectAssignment[soilTopPosition:soilBottomPosition,:] = objectIndex['soil']
 isBoundary = np.zeros((discretization[0],discretization[1]))
 isBoundaryToCoal = np.zeros((discretization[0],discretization[1]))
 isBoundaryToAir = np.zeros((discretization[0],discretization[1]))
+isWithinStone = np.zeros((discretization[0], discretization[1]))
+isWithinCoal = np.zeros((discretization[0], discretization[1]))
 for i in range(discretization[0]):
     for j in range(discretization[1]):
         if objectAssignment[i,j] == objectIndex['stone']:
             if objectAssignment[i+1][j] !=objectIndex['stone'] or objectAssignment[i-1][j] !=objectIndex['stone'] or objectAssignment[i][j+1] !=objectIndex['stone'] or objectAssignment[i][j-1] !=objectIndex['stone']:
                 isBoundary[i][j] = 1
+            if objectAssignment[i+1][j] == objectIndex['stone'] and objectAssignment[i-1][j] ==objectIndex['stone'] and objectAssignment[i][j+1] ==objectIndex['stone'] and objectAssignment[i][j-1] ==objectIndex['stone']:
+                isWithinStone[i][j] = 1
+        if objectAssignment[i,j] == objectIndex['coal']:
+            if objectAssignment[min(i+1,discretization[0]-1)][j] == objectIndex['coal'] and objectAssignment[max(i-1,0)][j] ==objectIndex['coal'] and objectAssignment[i][min(j+1,discretization[1]-1)] ==objectIndex['coal'] and objectAssignment[i][max(j-1, 0)] ==objectIndex['coal']:
+                isWithinCoal[i][j] = 1
         if isBoundary[i,j] == 1:
             if objectAssignment[i+1][j] == objectIndex['coal'] or objectAssignment[i-1][j] == objectIndex['coal'] or objectAssignment[i][j+1] == objectIndex['coal'] or objectAssignment[i][j-1] == objectIndex['coal']:
                 isBoundaryToCoal[i][j] = 1
