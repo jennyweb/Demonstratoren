@@ -133,7 +133,7 @@ def visualizeTemperatureField(filename, time):
 
     ax = plt.subplot()
     plt.axis('off')
-    im = plt.imshow(temperatureOutput-273, cmap='hot')
+    im = plt.imshow(temperatureOutput-273, cmap='hot', vmin=0,vmax=400)
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size = "5%", pad = 0.05)
     cbar = plt.colorbar(im,cax= cax)
@@ -163,7 +163,7 @@ def getHeatTransferCoefficient(interface):
 def getHeatConductivity(object):
     """
     this function returns the heat conductivity in W / (m K) for a given object
-    
+
     Input:
         object: int
         object either objectIndex['soil'] or objectIndex['coal'] or objectIndex['stone']
@@ -205,6 +205,7 @@ def getTempArrayFromEnthalpie(enthalpyArray):
             temperatureArray[i,j] = enthalpyArray[i,j] / (getcp(i,j) * getMass(i,j))
     return temperatureArray
 
+
 visualizeObjectAssignement(objectAssignment)
 visualizeArray(objectAssignment, isBoundary, 'isBoundary.png')
 visualizeArray(objectAssignment, isBoundaryToAir, 'isBoundaryToAir.png')
@@ -234,15 +235,37 @@ with alive_bar(int(numberOfIterations)+1) as bar:
                     enthalpyRateArray[i,j] += getHeatTransferCoefficient(objectIndex['hotAir']) * A * (temperatureArray[i,j]-Tair[i,j])
 
                 if isBoundaryToCoal[i,j] == 1:
+                    # convection
                     convectionEnthalpy = getHeatTransferCoefficient(objectIndex['coal']) * A * (temperatureArray[i,j]-temperatureArray[i+1,j])
                     enthalpyRateArray[i,j] -= convectionEnthalpy
                     enthalpyRateArray[i+1,j] += convectionEnthalpy
+
+                if objectAssignment[i,j] == objectIndex['stone']:
+                    if objectAssignment[i+1,j] == objectIndex['stone']:
+                        conductionEnthalpy = A * getHeatConductivity(objectIndex['stone']) * (temperatureArray[i,j]- temperatureArray[i+1,j]) / meshSize
+                        enthalpyRateArray[i,j] -= conductionEnthalpy
+                        enthalpyRateArray[i+1,j] += conductionEnthalpy
+
+                    if objectAssignment[i-1,j] == objectIndex['stone']:
+                        conductionEnthalpy = A * getHeatConductivity(objectIndex['stone']) * (temperatureArray[i,j]- temperatureArray[i-1,j]) / meshSize
+                        enthalpyRateArray[i,j] -= conductionEnthalpy
+                        enthalpyRateArray[i-1,j] += conductionEnthalpy
+
+                    if objectAssignment[i,j+1] == objectIndex['stone']:
+                        conductionEnthalpy = A * getHeatConductivity(objectIndex['stone']) * (temperatureArray[i,j]- temperatureArray[i,j+1]) / meshSize
+                        enthalpyRateArray[i,j] -= conductionEnthalpy
+                        enthalpyRateArray[i,j+1] += conductionEnthalpy
+
+                    if objectAssignment[i,j-1] == objectIndex['stone']:
+                        conductionEnthalpy = A * getHeatConductivity(objectIndex['stone']) * (temperatureArray[i,j]- temperatureArray[i,j-1]) / meshSize
+                        enthalpyRateArray[i,j] -= conductionEnthalpy
+                        enthalpyRateArray[i,j-1] += conductionEnthalpy
 
 
         enthalpyArray = enthalpyArray + enthalpyRateArray * dt
 
         #visual output
-        if iteration % 100 == 0:
+        if iteration % 50 == 0:
             filenameTemperature = (f'temperature-{picNumber:02d}.png')
             filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
             visualizeTemperatureField(filenameTemperature, t)
