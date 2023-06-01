@@ -66,6 +66,8 @@ for i in range(discretization[0]):
 
 
 
+
+
 Tair = np.ones((discretization[0],discretization[1])) * 270
 
 temperatureArray = np.ones((discretization[0],discretization[1])) * 270
@@ -98,18 +100,23 @@ thermalConductivityDict = {objectIndex['stone']: 2.0, objectIndex['hotAir']: 0.0
 def visualizeObjectAssignement(objectAssignment):
     colors = [(173,156,146), (203,56,23), (100,78,20), (249,178,75)]
     colorsNormalized = [[x/256. for x in rgbCode] for rgbCode in colors]
-    # bins = [-0.5, 0.5, 1.5, 2.5, 3.5]
     cmap = LinearSegmentedColormap.from_list('colorMapObjectAssignment', colorsNormalized, N= 4)
     plt.imshow(objectAssignment, cmap=cmap)
     plt.savefig(f'{dir_path}/Images/objectAssignment.png')
     plt.close()
 
-
-def visualizeIsBoundary(isBoundary):
-    colors = [(1,1,1), (0,0,0)]
-    cmap = LinearSegmentedColormap.from_list('colorMapIsBoundaryAssignment', colors, N= 3)
-    plt.imshow(isBoundary, cmap=cmap)
-    plt.savefig(f'{dir_path}/Images/isBoundary.png')
+def visualizeArray(objectAssignment, testArray, filename):
+    colors = [(173,156,146), (203,56,23), (100,78,20), (249,178,75)]
+    colorsNormalized = [[x/256. for x in rgbCode] for rgbCode in colors]
+    blackAndWhiteRGB = [(1,1,1), (0,0,0)]
+    cmap = LinearSegmentedColormap.from_list('colorMapObjectAssignment', colorsNormalized, N= 4)
+    cmapBW = LinearSegmentedColormap.from_list('colorMapIsBoundaryAssignment', blackAndWhiteRGB, N= 3)
+    fig, axs = plt.subplots(1, 2, figsize=(9, 3))
+    plt.axis('off')
+    axs[0].imshow(objectAssignment, cmap=cmap)
+    axs[1].imshow(testArray, cmap=cmapBW)
+    fig.suptitle(filename[:-4])
+    plt.savefig(f'{dir_path}/Images/{filename}')
     plt.close()
 
 
@@ -171,7 +178,11 @@ def getTempArrayFromEnthalpie(enthalpyArray):
     return temperatureArray
 
 visualizeObjectAssignement(objectAssignment)
-visualizeIsBoundary(isBoundary)
+visualizeArray(objectAssignment, isBoundary, 'isBoundary.png')
+visualizeArray(objectAssignment, isBoundaryToAir, 'isBoundaryToAir.png')
+visualizeArray(objectAssignment, isBoundaryToCoal, 'isBoundaryToCoal.png')
+visualizeArray(objectAssignment, isWithinCoal, 'isWithinCoal.png')
+visualizeArray(objectAssignment, isWithinStone, 'isWithinStone.png')
 enthalpyArray = getEnthalpyArray(temperatureArray)
 
 #begin simulation
