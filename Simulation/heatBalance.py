@@ -205,6 +205,33 @@ def getTempArrayFromEnthalpie(enthalpyArray):
             temperatureArray[i,j] = enthalpyArray[i,j] / (getcp(i,j) * getMass(i,j))
     return temperatureArray
 
+def applyHeatConduction(i,j):
+    for object in ['stone', 'soil', 'coal']:
+        if objectAssignment[i,j] == objectIndex[object]:
+            if i+1 < discretization[0]:
+                if objectAssignment[i+1,j] == objectIndex[object]:
+                    conductionEnthalpy = A * getHeatConductivity(objectIndex[object]) * (temperatureArray[i,j]- temperatureArray[i+1,j]) / meshSize
+                    enthalpyRateArray[i,j] -= conductionEnthalpy
+                    enthalpyRateArray[i+1,j] += conductionEnthalpy
+
+            if i-1 > 0:
+                if objectAssignment[i-1,j] == objectIndex[object]:
+                    conductionEnthalpy = A * getHeatConductivity(objectIndex[object]) * (temperatureArray[i,j]- temperatureArray[i-1,j]) / meshSize
+                    enthalpyRateArray[i,j] -= conductionEnthalpy
+                    enthalpyRateArray[i-1,j] += conductionEnthalpy
+
+            if j+1 < discretization[1]:
+                if objectAssignment[i,j+1] == objectIndex[object]:
+                    conductionEnthalpy = A * getHeatConductivity(objectIndex[object]) * (temperatureArray[i,j]- temperatureArray[i,j+1]) / meshSize
+                    enthalpyRateArray[i,j] -= conductionEnthalpy
+                    enthalpyRateArray[i,j+1] += conductionEnthalpy
+
+            if j-1 > 0:
+                if objectAssignment[i,j-1] == objectIndex[object]:
+                    conductionEnthalpy = A * getHeatConductivity(objectIndex[object]) * (temperatureArray[i,j]- temperatureArray[i,j-1]) / meshSize
+                    enthalpyRateArray[i,j] -= conductionEnthalpy
+                    enthalpyRateArray[i,j-1] += conductionEnthalpy
+
 
 visualizeObjectAssignement(objectAssignment)
 visualizeArray(objectAssignment, isBoundary, 'isBoundary.png')
@@ -239,28 +266,8 @@ with alive_bar(int(numberOfIterations)+1) as bar:
                     convectionEnthalpy = getHeatTransferCoefficient(objectIndex['coal']) * A * (temperatureArray[i,j]-temperatureArray[i+1,j])
                     enthalpyRateArray[i,j] -= convectionEnthalpy
                     enthalpyRateArray[i+1,j] += convectionEnthalpy
-
-                if objectAssignment[i,j] == objectIndex['stone']:
-                    if objectAssignment[i+1,j] == objectIndex['stone']:
-                        conductionEnthalpy = A * getHeatConductivity(objectIndex['stone']) * (temperatureArray[i,j]- temperatureArray[i+1,j]) / meshSize
-                        enthalpyRateArray[i,j] -= conductionEnthalpy
-                        enthalpyRateArray[i+1,j] += conductionEnthalpy
-
-                    if objectAssignment[i-1,j] == objectIndex['stone']:
-                        conductionEnthalpy = A * getHeatConductivity(objectIndex['stone']) * (temperatureArray[i,j]- temperatureArray[i-1,j]) / meshSize
-                        enthalpyRateArray[i,j] -= conductionEnthalpy
-                        enthalpyRateArray[i-1,j] += conductionEnthalpy
-
-                    if objectAssignment[i,j+1] == objectIndex['stone']:
-                        conductionEnthalpy = A * getHeatConductivity(objectIndex['stone']) * (temperatureArray[i,j]- temperatureArray[i,j+1]) / meshSize
-                        enthalpyRateArray[i,j] -= conductionEnthalpy
-                        enthalpyRateArray[i,j+1] += conductionEnthalpy
-
-                    if objectAssignment[i,j-1] == objectIndex['stone']:
-                        conductionEnthalpy = A * getHeatConductivity(objectIndex['stone']) * (temperatureArray[i,j]- temperatureArray[i,j-1]) / meshSize
-                        enthalpyRateArray[i,j] -= conductionEnthalpy
-                        enthalpyRateArray[i,j-1] += conductionEnthalpy
-
+           
+                applyHeatConduction(i,j)
 
         enthalpyArray = enthalpyArray + enthalpyRateArray * dt
 
