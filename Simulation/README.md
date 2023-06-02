@@ -9,7 +9,8 @@ We apply a mesh spacing $\Delta x = 0.005 m$
 
 ## Underlying physical model
 
-The underlying model is based on an energy balance, i.e. the enthalpy. Enthalpy is strongly related to temperature via the heat capacity $c_p$ and the mass $m$. 
+The underlying model is based on an energy balance, i.e. the enthalpy. Enthalpy is strongly related to temperature via the specific heat capacity $c_p$ and the mass $m$. 
+
 $$
 H = c_p m T
 $$
@@ -25,6 +26,7 @@ We apply the following constants
 | ambient surrounding temperature   | $T_a$            | 278                     | $K$                      | educated guess                      |
 | surrounding air temperature       | $T_\text{air}$   | 278                     | $K$                      | educated guess                      |
 | heat transfer coefficient         | $h$              | x                       | $\frac{W}{m^2 K}$        |                       |
+| reaction enthalpie         | $\Delta_R H^°$              | 393.5                       | $\frac{kJ}{mol}$        | Bildungsenthalpie CO2                      |
 
 
 
@@ -53,5 +55,22 @@ $$
 
 $$
 \dot{H}_\text{convection} = h A (T - T_\text{air})
+$$
+
+3. Heat conduction is based on Fourier's first law which in 2D is given by
+
+$$
+k \frac{\partial^2 T}{\partial x^2} + k \frac{\partial^2 T}{\partial y^2} = \rho c_p \frac{\partial T}{ \partial t}
+$$
+
+hence 
+$$
+\dot{H}_\text{conduction} = m k \left(\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2}\right )
+$$
+
+4. Heat source. Verbrennungsenthalpie von Holzkohle
+
+$$
+\Delta_R H^° = - 393.5 kJ/mol
 $$
 
