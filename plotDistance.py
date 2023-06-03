@@ -1,3 +1,8 @@
+import csv
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
 with open('workingWithGivenData\givenData.dat','r') as fin:
     time = []
     velocity = []
@@ -11,6 +16,7 @@ with open('workingWithGivenData\givenData.dat','r') as fin:
         velocity.append(float(df[1]))
         distance.append(float(df[2]))
     # print(time)
+
 
 with open('workingWithGivenData\givenData.dat','r') as fin:
     time = []
@@ -30,7 +36,15 @@ with open('workingWithGivenData\givenData.dat','r') as fin:
         distance_calc.append(velocity[i]*dt)
     for i in range(1,len(distance_calc)):
         distance_calc[i] += distance_calc[i-1]
-    # plt.plot(time, distance_calc)
+
+    calc_distance = plt.figure(figsize=(6, 6))
+    plt.plot(time, distance_calc)
+    calc_distance.savefig('workingWithGivenData\calculated_distance.png', dpi=calc_distance.dpi)
+   
+    ref = plt.figure(figsize=(6, 6))
+    plt.plot(time, distance) 
+    ref.savefig('workingWithGivenData\givenData.png', dpi=ref.dpi)
+
 df = pd.read_csv('workingWithGivenData\givenData.dat', delimiter=' ')
 
 
