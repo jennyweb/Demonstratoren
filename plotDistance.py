@@ -20,6 +20,17 @@ with open('workingWithGivenData\givenData.dat','r') as fin:
         time.append(float(line['time']))
         velocity.append(float(line['velocity']))
         distance.append(float(line['distance']))
+    # dt = []
+    # for i in range(len(time)-1):
+    #     dt.append(time[i+1]-time[i])
+    dt = time[1] - time[0]
+    distance_calc = []
+    distance_sum = []
+    for i in range(len(velocity)):
+        distance_calc.append(velocity[i]*dt)
+    for i in range(1,len(distance_calc)):
+        distance_calc[i] += distance_calc[i-1]
+    # plt.plot(time, distance_calc)
 df = pd.read_csv('workingWithGivenData\givenData.dat', delimiter=' ')
 
 
