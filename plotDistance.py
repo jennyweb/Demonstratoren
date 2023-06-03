@@ -11,3 +11,12 @@ with open('workingWithGivenData\givenData.dat','r') as fin:
         velocity.append(float(df[1]))
         distance.append(float(df[2]))
     # print(time)
+
+with open('workingWithGivenData\givenData.dat','r') as fin:
+    time = []
+    velocity = []
+    distance = []
+    for line in csv.DictReader(fin,delimiter=' '):
+        time.append(float(line['time']))
+        velocity.append(float(line['velocity']))
+        distance.append(float(line['distance']))
