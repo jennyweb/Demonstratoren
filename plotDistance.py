@@ -39,10 +39,16 @@ with open('workingWithGivenData\givenData.dat','r') as fin:
 
     calc_distance = plt.figure(figsize=(6, 6))
     plt.plot(time, distance_calc)
+    plt.title('Calculated Distance')
+    plt.xlabel('time')
+    plt.ylabel('distance')
     calc_distance.savefig('workingWithGivenData\calculated_distance.png', dpi=calc_distance.dpi)
    
     ref = plt.figure(figsize=(6, 6))
     plt.plot(time, distance) 
+    plt.title('Reference Data')
+    plt.xlabel('time')
+    plt.ylabel('distance')
     ref.savefig('workingWithGivenData\givenData.png', dpi=ref.dpi)
 
 df = pd.read_csv('workingWithGivenData\givenData.dat', delimiter=' ')
