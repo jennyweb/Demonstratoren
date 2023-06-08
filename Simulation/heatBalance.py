@@ -20,7 +20,7 @@ meshSize = 0.005
 totalSize = (0.5, 1.) #in meters
 discretization = (np.array(totalSize)/meshSize).astype(int) #number of discretization points
 soilSize = (0.05, 1.)
-coalSize = (0.1, 1.)
+coalSize = (0.1, 0.75)
 stoneDiameter = 0.2
 soilBottomPosition = discretization[0]
 soilTopPosition = soilBottomPosition - int(soilSize[0]/meshSize)
@@ -37,8 +37,9 @@ for i in range(discretization[0]):
         if d <=  int((stoneDiameter/2)/meshSize):
             objectAssignment[i,j] = objectIndex['stone']
 
-objectAssignment[coalTopPosition:coalBottomPosition,:] = objectIndex['coal']
-objectAssignment[soilTopPosition:soilBottomPosition,:] = objectIndex['soil']
+objectAssignment[coalTopPosition:soilBottomPosition,:] = objectIndex['soil']
+edges = int((totalSize[1] - coalSize[1]) / meshSize / 2)
+objectAssignment[coalTopPosition:coalBottomPosition,edges:int(totalSize[1] / meshSize)-edges] = objectIndex['coal']
 
 isBoundary = np.zeros((discretization[0],discretization[1]))
 for i in range(discretization[0]):
