@@ -67,18 +67,22 @@ for i in range(discretization[0]):
 
 
 
-
+IndexToHeight = lambda i : totalSize[1]-totalSize[1]/discretization[0]*i
+heightToTemperature = lambda h : 800/(totalSize[0]-(soilSize[0]+coalSize[0]))*(h-(soilSize[0]+coalSize[0]))+600
 
 Tair = np.ones((discretization[0],discretization[1])) * 270
+for i in range(discretization[0]):
+    Tair[i,edges:int(totalSize[1] / meshSize)-edges] = heightToTemperature(IndexToHeight(i))
+
 
 temperatureArray = np.ones((discretization[0],discretization[1])) * 270
 temperatureArray[coalTopPosition:coalBottomPosition,:] = 1070
-temperatureArray[soilTopPosition:soilBottomPosition,:] = 270
-for i in range(discretization[0]):
-    for j in range(discretization[1]):
-        d = ((j - stoneCenterOfGravity[1])**2 + (i - stoneCenterOfGravity[0])**2)**0.5
-        if d <=  int((stoneDiameter/2)/meshSize):
-            temperatureArray[i,j] = 390
+# temperatureArray[soilTopPosition:soilBottomPosition,:] = 270
+# for i in range(discretization[0]):
+#     for j in range(discretization[1]):
+#         d = ((j - stoneCenterOfGravity[1])**2 + (i - stoneCenterOfGravity[0])**2)**0.5
+#         if d <=  int((stoneDiameter/2)/meshSize):
+#             temperatureArray[i,j] = 390
 
 #physical constants and used variables
 sigma = 5.67037321 * 10**-8 # Boltzmann constant W m-2 K-4
@@ -94,7 +98,7 @@ picNumber = 0
 numberOfIterations = tmax/dt
 
 cpDict = {objectIndex['stone']: 1, objectIndex['coal']: 1.02, objectIndex['soil']: 0.8, objectIndex['hotAir']: 1.005} #in kJ kg-1 K-1  ; urch Erhöhung der Pyrolyseendtemperatur von 400 auf 1200 °C steigt die spezifische Wärme der H. von 1,02 auf 1,60 kJ/kg K an
-densityDict = {objectIndex['stone']: 2.5e3, objectIndex['coal']: 0.25e3, objectIndex['soil']: 0.92e3, objectIndex['hotAir']: 0.783e3 } # in kg cm-3 
+densityDict = {objectIndex['stone']: 2.5e3, objectIndex['coal']: 0.25e3, objectIndex['soil']: 0.92e3, objectIndex['hotAir']: 0.783 } # in kg cm-3 
 thermalConductivityDict = {objectIndex['stone']: 2.0, objectIndex['hotAir']: 0.02} #in J s-1 m-1 K-1
 
 
@@ -134,12 +138,12 @@ def visualizeTemperatureField(filename, time):
 
     ax = plt.subplot()
     plt.axis('off')
-    im = plt.imshow(temperatureOutput-273, cmap='hot', vmin=0,vmax=400)
+    im = plt.imshow(temperatureOutput-273, cmap='hot')
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size = "5%", pad = 0.05)
     cbar = plt.colorbar(im,cax= cax)
     cbar.set_label('$T$ in degree C', rotation = 270)
-    plt.title(f't = {time:1.2f}')
+    plt.title(f't = {time/60:1.2f} min')
     plt.savefig(f'{dir_path}/Images/{filename}')
     plt.close()
 
@@ -269,9 +273,9 @@ with alive_bar(int(numberOfIterations)+1) as bar:
         enthalpyArray = enthalpyArray + enthalpyRateArray * dt
 
         #visual output
-        if iteration % 50 == 0:
-            filenameTemperature = (f'temperature-{picNumber:02d}.png')
-            filenameEnthalpy = (f'enthalpy-{picNumber:02d}.png')
+        if iteration % 20 == 0:
+            filenameTemperature = (f'temperature-{picNumber:04d}.png')
+            filenameEnthalpy = (f'enthalpy-{picNumber:04d}.png')
             visualizeTemperatureField(filenameTemperature, t)
             visualizeEnthalpyArray(enthalpyArray, filenameEnthalpy)
             picNumber += 1
