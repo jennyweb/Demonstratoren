@@ -177,10 +177,6 @@ def getHeatConductivity(object):
     return heatConductivity[object]
     
 
-  
-     
-
-
 def getEnthalpyArray(temperatureArray):
     enthalpyArray = np.ones((discretization[0],discretization[1])) 
     for i in range(discretization[0]):
