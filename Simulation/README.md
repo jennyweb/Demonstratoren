@@ -1,13 +1,39 @@
 # Physical model for a stone in a campfire
 
+- Popo-Berg story
+- kalt
+- 
+- This example is a demonstrator and hence focuses on the implementation and makes educated guesses for the physical variables where necessary. We know the physical model is incomplete. In particular, the dynamics related to the gas phase are completely neglected. 
 
-This example is a demonstrator and hence focuses on the implementation and makes educated guesses for the physical variables where necessary. 
+
+
+This stimulation only considers heat transfer from an underlying 
+
+The situation we are about to model looks as follow. We have a stone that sits on burning coal. The coal is transfering heat onto the stone. The stony is heating up. 
+
+![Alt text](ReadMeImages/ObjectAssignment.png)
+
+Wie groß ist alles. Discretization
+
+Der Stein hat diese Größe. 
+
 
 ## Discretization
 
-We apply a mesh spacing $\Delta x = 0.005 m$
+- finite difference
+
+- we set a mesh on the continuum. Physical values are available at the mesh nodes. 
+
+![Alt text](ReadMeImages/Discretization.png)
+
+We apply a mesh spacing $\Delta x = 0.001 m$
+
+
 
 ## Underlying physical model
+
+![Alt text](ReadMeImages/HeatTransportPhenomena.png)
+
 
 The underlying model is based on an energy balance, i.e. the enthalpy. Enthalpy is strongly related to temperature via the specific heat capacity $c_p$ and the mass $m$. 
 
@@ -25,8 +51,10 @@ We apply the following constants
 | 1-dimensional surface size        | $A$              | 0.005                   | $m$                      | is  mesh spacing $\Delta x$                      |
 | ambient surrounding temperature   | $T_a$            | 278                     | $K$                      | educated guess                      |
 | surrounding air temperature       | $T_\text{air}$   | 278                     | $K$                      | educated guess                      |
-| heat transfer coefficient         | $h$              | x                       | $\frac{W}{m^2 K}$        |                       |
-| reaction enthalpie         | $\Delta_R H^°$              | 393.5                       | $\frac{kJ}{mol}$        | Bildungsenthalpie CO2                      |
+| heat transfer coefficient stone coal        | $h$              | 0.22                       | $\frac{W}{m^2 K}$        |                       |
+| heat transfer coefficient stone air        | $h$              | x                       | $\frac{W}{m^2 K}$        |                       |
+| heat conductivity coal         | $\lambda$              | 0.3                       | $\frac{W}{m K}$        |                       |
+| heat conductivity stone        | $\lambda$              | 10                       | $\frac{W}{m K}$        |                       |
 
 
 
@@ -68,9 +96,7 @@ $$
 \dot{H}_\text{conduction} = m k \left(\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2}\right )
 $$
 
-4. Heat source. Verbrennungsenthalpie von Holzkohle
 
-$$
-\Delta_R H^° = - 393.5 kJ/mol
-$$
+
+## Result
 
