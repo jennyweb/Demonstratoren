@@ -40,7 +40,7 @@ for i in range(discretization[0]):
         if d <=  int((stoneDiameter/2)/meshSize):
             objectAssignment[i,j] = objectIndex['stone']
 
-objectAssignment[coalTopPosition:soilBottomPosition,:] = objectIndex['soil']
+objectAssignment[coalTopPosition:soilBottomPosition,:] = objectIndex['hotAir']
 edges = int((totalSize[1] - coalSize[1]) / meshSize / 2)
 objectAssignment[coalTopPosition:coalBottomPosition,edges:int(totalSize[1] / meshSize)-edges] = objectIndex['coal']
 
