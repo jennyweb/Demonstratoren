@@ -1,13 +1,10 @@
 # Physical model for a stone in a campfire
 
-- Popo-Berg story
-- kalt
-- 
-- This example is a demonstrator and hence focuses on the implementation and makes educated guesses for the physical variables where necessary. We know the physical model is incomplete. In particular, the dynamics related to the gas phase are completely neglected. 
+-  On a recent trip to Mexico my partner and I decided to climb the Iztaccihuatl volcano, which allows great views on the active volcano Popocatépetl. Using public transport it was impossible to get there, climb the volcano and go back on the same day, so we planned to camp there. We found a nice place to set up our tent on 4000 m. As we were looking for firewood to men working in a cabin close to our tent offered to gift us some more wood as it would get quite cold at night. We were comfortably sitting around our campfire. When I got up to get something out of the backpack I noticed frost all around us. I was going to be a freezing night! That's when we decided to but a stone in the campfire to keep us warm at night.That's also when the idea for this simulation grew. We had an okay night thanks to the stone and an amazing sunrise behind Popocatépetl. After all it was one of the most memorable excursions in Mexico. If you are interested, have a look at the bottom of this page for some pictures.
+
+- This example is a demonstrator of my programming skills and hence focuses on the implementation. Educated guesses were made for the physical variables where necessary. I am aware that the physical model is incomplete. In particular, the dynamics related to the gas phase are completely neglected. This stimulation only considers heat transfer from
 
 
-
-This stimulation only considers heat transfer from an underlying 
 
 The situation we are about to model looks as follow. We have a stone that sits on burning coal. The coal is transfering heat onto the stone. The stony is heating up. 
 
@@ -99,4 +96,6 @@ $$
 
 
 ## Result
+
+## Impressions of the hike
 
