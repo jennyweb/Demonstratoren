@@ -72,12 +72,12 @@ $$
 \dot{H}_\text{convection} = h_\text{stone, other} \, A \, (T - T_\text{other}), \quad \text{other} = \{\text{air}, \text{coal}\} 
 $$
 
-where $h$ is the heat transfer coefficient and its value is given in the table below. 
+where $h$ is the heat transfer coefficient and its value is given in the table below. $T_\text{air}$ is chosen as such that it has a temperature of $T=800$ K directly at the surface on the coal and reaches a temperature of $T=1400$ K at the top simulation domain while having a linear temperature profile in between. $T_\text{coal}$ is fixed at $T=1070$ K. 
 
 3. Third, heat conduction is based on Fourier's first law which in 2D is given by:
 
 $$
-k \frac{\partial^2 T}{\partial x^2} + k \frac{\partial^2 T}{\partial y^2} = \rho c_p \frac{\partial T}{ \partial t}
+k \frac{\partial^2 T}{\partial x^2} + k \frac{\partial^2 T}{\partial y^2} = \rho \,  c_p \, \frac{\partial T}{ \partial t}
 $$
 
 out of which follows. 
