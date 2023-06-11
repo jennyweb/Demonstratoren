@@ -20,7 +20,7 @@ I assume the stone diameter to be 20 cm and it sits on a 10 cm high and 75 cm wi
 
 ## Discretization
 
-For this simulation, we apply a finite difference scheme to discretize the continuum. A mesh size of  $\Delta x = 0.001 m$ was chosen. 
+For this simulation, we apply a finite difference scheme to discretize the continuum. A mesh size of  $\Delta x = 0.002 m$ was chosen. 
 
 ![Alt text](ReadMeVisualization/Discretization.png)
 
@@ -109,7 +109,7 @@ The following constants were applied:
 ## Result
 The following video shows how the stone slowly heats up from the outside.
 
-[label](ReadMeVisualization/result-temperature.avi)
+[Evolution of temperature over time](ReadMeVisualization/result-temperature.avi)
 
 ## Impressions of the hike
 
