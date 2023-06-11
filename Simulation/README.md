@@ -8,7 +8,7 @@ On a recent trip to Mexico my partner and I decided to climb the Iztaccihuatl vo
 
 The situation we are about to model looks as follow:
 
-![Alt text](ReadMeImages/ObjectAssignment.png)
+![Alt text](ReadMeVisualization/ObjectAssignment.png)
 
 We have a stone that sits on burning coal in the campfire, the stone is perfectly round. The coal is transferring heat onto the stone which is slowly heating up. The fire is represented by hot air.
 
@@ -16,13 +16,13 @@ We have a stone that sits on burning coal in the campfire, the stone is perfectl
 
 I assume the stone diameter to be 20 cm and it sits on a 10 cm high and 75 cm wide patch of coal. The soil thickness is 5 cm. The simulation domains covers an area of 100 cm $\times$ 50 cm.
 
-![Alt text](ReadMeImages/Dimensions.png)
+![Alt text](ReadMeVisualization/Dimensions.png)
 
 ## Discretization
 
 For this simulation, we apply a finite difference scheme to discretize the continuum. A mesh size of  $\Delta x = 0.001 m$ was chosen. 
 
-![Alt text](ReadMeImages/Discretization.png)
+![Alt text](ReadMeVisualization/Discretization.png)
 
 ## Underlying physical model
 
@@ -44,7 +44,7 @@ $$
 with a time step $\Delta t$.
 
 I consider the following heat transport phenomena: 
-![Alt text](ReadMeImages/HeatTransportPhenomena.png)
+![Alt text](ReadMeVisualization/HeatTransportPhenomena.png)
 
 - internal heat transport within the stone due to heat conduction
 - heat transport across the boundary by heat convection 
