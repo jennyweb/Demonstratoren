@@ -108,6 +108,9 @@ The following constants were applied:
 
 ## Result
 The following video shows how the stone slowly heats up from the outside.
+
+[label](ReadMeVisualization/result-temperature.avi)
+
 ## Impressions of the hike
 
 ![Setting up the tent](IMG20221227174659.jpg)
