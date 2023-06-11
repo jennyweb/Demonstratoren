@@ -62,7 +62,7 @@ where each constituent is given as follows.
 1. First, change in enthalpy at the stone boundary due to radiation $\dot{H}_\text{radiation}$  is given by:
 
 $$
-\dot{H}_\text{radiation} = \epsilon \, \sigma \, A \, (T^4 - T_a^4)
+\dot{H}\_\text{radiation} = \epsilon \, \sigma \, A \, (T^4 - T\_a^4)
 $$
 where $A = $\Delta x^2$ is the surface area, $\sigma = 5.670 373 (21) \cdot 10^{−8} \, \frac{W}{m^2 K^4}$ is the Boltzmann constant, $\sigma = 0.3$ is the emissivity factor and $T_a = 278 K$ is the ambient surrounding temperature. 
 
