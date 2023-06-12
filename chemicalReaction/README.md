@@ -16,7 +16,9 @@ Therefore chemical reactions taking place can be described through the following
 ```
 The differential equations can be solved as follows:
 ```math
-\frac {\text{d}[P_2]} {\text{d}t} = r\, [M][M] & \rightarrow & \Delta [P_2] \, \Delta t = r [M][M]  
+\begin{align}
+\frac {\text{d}[P_2]} {\text{d}t} = r\, [M][M] & \rightarrow & \Delta [P_2] \, \Delta t = r [M][M]
+\end{align}
 ```
 Which can be rearranged to:
 $$
