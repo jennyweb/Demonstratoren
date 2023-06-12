@@ -8,8 +8,8 @@ Therefore chemical reactions taking place can be described through the following
 
 ```math
 \begin{align}
-\text{M} + \text{M} &-> \text{P}_2 && \frac {\text{d}[P_2]} {\text{d}t} &= r\, [M][M] \\
-\text{M} + \text{P}_2 &-> \text{P}_3 && \frac {\text{d}[P_3]} {\text{d}t} &= r \,[M][P_2]
+\text{M} + \text{M} &\rightarrow \text{P}_2 & \frac {\text{d}[P_2]} {\text{d}t} &= r\, [M][M] \\
+\text{M} + \text{P}_2 &\rightarrow \text{P}_3 & \frac {\text{d}[P_3]} {\text{d}t} &= r \,[M][P_2]
 \end{align}
 ```
 $$
