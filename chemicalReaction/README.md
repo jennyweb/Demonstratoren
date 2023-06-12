@@ -14,7 +14,7 @@ Therefore chemical reactions taking place can be described through the following
 ```
 ```math
 \begin{align}
-\text{M} + \text{P}_3 &\rightarrow \text{P}_4 & \frac {\text{d}[P_4]} {\text{d}t} &= r\, [M][P_3]
+\text{M} + \text{P}_3 &\rightarrow \text{P}_4 & \frac {\text{d}[P_4]} {\text{d}t} &= r\, [M][P_3] \\
 \text{M} + \text{P}_i &\rightarrow \text{P}_{i+1} & \frac {\text{d}[P_i]} {\text{d}t} &= r\, [M][P_{i-1}]
 \end{align}
 ```
