@@ -10,6 +10,7 @@ Therefore chemical reactions taking place can be described through the following
 \begin{align}
 \text{M} + \text{M} &-> \text{P}_2 && \frac {\text{d}[P_2]} {\text{d}t} &= r\, [M][M] \\
 \text{M} + \text{P}_2 &-> \text{P}_3 && \frac {\text{d}[P_3]} {\text{d}t} &= r \,[M][P_2]
+\end{align}
 ```
 $$
 \text{M} + \text{P}_3 -> \text{P}_4 \quad \quad\quad \quad\quad \frac {\text{d}[P_4]} {\text{d}t} = r\, [M][P_3]
