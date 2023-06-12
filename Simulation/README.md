@@ -109,7 +109,7 @@ The following constants were applied:
 ## Result
 The following video shows how the stone slowly heats up from the outside.
 
-[Evolution of temperature over time](ReadMeVisualization/result-temperature.gif)
+![Evolution of temperature over time](ReadMeVisualization/result-temperature.gif)
 
 ## Impressions of the hike
 
