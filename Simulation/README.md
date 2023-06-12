@@ -8,7 +8,7 @@ On a recent trip to Mexico my partner and I decided to climb the Iztaccihuatl vo
 
 The situation we are about to model looks as follow:
 
-![Alt text](ReadMeVisualization/ObjectAssignment.png)
+![The kinds of objects involved in the simulation](ReadMeVisualization/ObjectAssignment.png)
 
 We have a stone that sits on burning coal in the campfire, the stone is perfectly round. The coal is transferring heat onto the stone which is slowly heating up. The fire is represented by hot air.
 
@@ -16,13 +16,13 @@ We have a stone that sits on burning coal in the campfire, the stone is perfectl
 
 I assume the stone diameter to be 20 cm and it sits on a 10 cm high and 75 cm wide patch of coal. The soil thickness is 5 cm. The simulation domains covers an area of 100 cm $\times$ 50 cm.
 
-![Alt text](ReadMeVisualization/Dimensions.png)
+![Dimension of the simulation domain](ReadMeVisualization/Dimensions.png)
 
 ## Discretization
 
 For this simulation, we apply a finite difference scheme to discretize the continuum. A mesh size of  $\Delta x = 0.002 m$ was chosen. 
 
-![Alt text](ReadMeVisualization/Discretization.png)
+![The discretization scheme](ReadMeVisualization/Discretization.png)
 
 ## Underlying physical model
 
@@ -35,7 +35,7 @@ The underlying model is based on an energy balance, i.e. the enthalpy. The entha
 H = c_p \, m \, T
 ```
 
-The enthalpie change is given by:
+The enthalpy change is given by:
 
 ```math
 \frac{\text{d}H}{\text{d}\text{t}} = \dot{H} \, \text{d}\text{t} \approx \dot{H} \, \Delta t
@@ -44,7 +44,7 @@ The enthalpie change is given by:
 with a time step $\Delta t$.
 
 I consider the following heat transport phenomena: 
-![Alt text](ReadMeVisualization/HeatTransportPhenomena.png)
+![Transport phenomena included in the simulation](ReadMeVisualization/HeatTransportPhenomena.png)
 
 - internal heat transport within the stone due to heat conduction
 - heat transport across the boundary by heat convection 
@@ -64,7 +64,7 @@ where each constituent is given as follows.
 ```math
 \dot{H}_\text{radiation} = \epsilon \, \sigma \, A \, (T^4 - T_a^4)
 ```
-where $A = $\Delta x^2$ is the surface area, $\sigma = 5.670 373 (21) \cdot 10^{−8} \, \frac{W}{m^2 K^4}$ is the Boltzmann constant, $\sigma = 0.3$ is the emissivity factor and $T_a = 278 K$ is the ambient surrounding temperature. 
+where $A = $\Delta x^2$ is the surface area, $\sigma = 5.670 373 (21) \cdot 10^{−8} \frac{W}{m^2 K^4}$ is the Boltzmann constant, $\sigma = 0.3$ is the emissivity factor and $T_a = 278 K$ is the ambient surrounding temperature. 
 
 2. Second, heat transport at the stone boundary to air and coal due to convection is given by
 
@@ -86,7 +86,7 @@ out of which follows.
 \dot{H}_\text{conduction} = m \, k \left(\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2}\right )
 ```
 
-where $k = 10 \frac{W}{m K}$ is the heat conductivity, $c_p = 1 \frac{kJ}{kg\,K}$ is the specific heat capacity and $\rho = 2500 \frac{kg}{m^3}$ is the density of stone. 
+where $k = 10 \frac{W}{m K}$ is the heat conductivity, $c_p = 1 \frac{kJ}{kg K}$ is the specific heat capacity and $\rho = 2500 \frac{kg}{m^3}$ is the density of stone. 
 
 
 The following constants were applied:
