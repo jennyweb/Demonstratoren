@@ -6,25 +6,17 @@
 
 The chemical reactions taking place in the reaction mixture can be described as follows:
 
-M + M -> P$_2$      chainlength = 2
-
-M + P$_2$ -> P$_3$ chainlength = 3
-
-M + P$_3$ -> P$_4$ chainlength = 4
-
-M + P$_i$ -> P$_i$$_+$$_1$ chainlength = i
-
 $$
-\frac {\text{d}[P_2]} {\text{d}t} = r\, [M][M]
+\text{M} + \text{M} -> \text{P}_2 \quad \quad\quad \quad\quad \frac {\text{d}[P_2]} {\text{d}t} = r\, [M][M]
 $$
 $$
-\frac {\text{d}[P_3]} {\text{d}t} = r \,[M][P_2]
+\text{M} + \text{P}_2 -> \text{P}_3 \quad \quad\quad \quad\quad\frac {\text{d}[P_3]} {\text{d}t} = r \,[M][P_2]
 $$
 $$
-\frac {\text{d}[P_4]} {\text{d}t} = r\, [M][P_3]
+\text{M} + \text{P}_3 -> \text{P}_4 \quad \quad\quad \quad\quad \frac {\text{d}[P_4]} {\text{d}t} = r\, [M][P_3]
 $$
 $$
-\frac {\text{d}[P_i]} {\text{d}t} = r\, [M][P_{i-1}]
+\text{M} + \text{P}_i -> \text{P}_{i+1}\quad \quad\quad \quad\quad \frac {\text{d}[P_i]} {\text{d}t} = r\, [M][P_{i-1}]
 $$
 
 the differential equations can be solved as follows
