@@ -26,7 +26,7 @@ For this simulation, we apply a finite difference scheme to discretize the conti
 
 ## Underlying physical model
 
-This example is a demonstrator of my programming skills and hence focuses on the implementation. Educated guesses were made for the physical variables where necessary. I am aware that the physical model is incomplete. 
+This example is a demonstrator of my programming skills and hence focuses on the implementation. Educated guesses were made for the physical variables where necessary. I am aware that the dynamics of the gas phase are neglected.
 
 
 The underlying model is based on an energy balance, i.e. the enthalpy. The enthalpy is related to temperature via the specific heat capacity $c_p$ and the mass $m$. 
@@ -109,7 +109,7 @@ The following constants were applied:
 ## Result
 The following video shows how the stone slowly heats up from the outside.
 
-[Evolution of temperature over time](ReadMeVisualization/result-temperature.avi)
+[Evolution of temperature over time](ReadMeVisualization/result-temperature.mp4)
 
 ## Impressions of the hike
 
