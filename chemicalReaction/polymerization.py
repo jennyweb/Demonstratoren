@@ -25,7 +25,7 @@ def plotConcentration(concentrations):
     plt.xlabel('chain length')
     plt.xlim([0,15])
     plt.ylabel('concentration')
-    plt.title(f'{t} s')
+    plt.title(f'{t:1.01f} s')
     plt.axhline(color='grey', zorder=1, lw=0.5)
     plt.savefig(os.path.join(picDir,f'concentrationProfile-{imageCounter:04d}.png'))
     plt.close()
