@@ -53,9 +53,9 @@ I consider the following heat transport phenomena:
 
 Therefore, $\dot{H}$ is given by
  
-$$
+```math
 \dot{H}  = \dot{H}_\text{radiation} + \dot{H}_\text{convection} + \dot{H}_\text{conduction} 
-$$
+```
 
 where each constituent is given as follows.
 
