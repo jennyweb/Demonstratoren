@@ -12,12 +12,10 @@ Therefore chemical reactions taking place can be described through the following
 \text{M} + \text{P}_2 &\rightarrow \text{P}_3 & \frac {\text{d}[P_3]} {\text{d}t} &= r \,[M][P_2]
 \end{align}
 ```
-$$
-\text{M} + \text{P}_3 -> \text{P}_4 \quad \quad\quad \quad\quad \frac {\text{d}[P_4]} {\text{d}t} = r\, [M][P_3]
-$$
-$$
-\text{M} + \text{P}_i -> \text{P}_{i+1} \quad\quad \quad\quad \frac {\text{d}[P_i]} {\text{d}t} = r\, [M][P_{i-1}]
-$$
+```math
+\text{M} + \text{P}_3 &rightarrow \text{P}_4 & \frac {\text{d}[P_4]} {\text{d}t} &= r\, [M][P_3]
+\text{M} + \text{P}_i &rightarrow \text{P}_{i+1} & \frac {\text{d}[P_i]} {\text{d}t} &= r\, [M][P_{i-1}]
+```
 
 The differential equations can be solved as follows:
 $$
