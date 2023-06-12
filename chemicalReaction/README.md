@@ -16,7 +16,6 @@ Therefore chemical reactions taking place can be described through the following
 \text{M} + \text{P}_3 &rightarrow \text{P}_4 & \frac {\text{d}[P_4]} {\text{d}t} &= r\, [M][P_3]
 \text{M} + \text{P}_i &rightarrow \text{P}_{i+1} & \frac {\text{d}[P_i]} {\text{d}t} &= r\, [M][P_{i-1}]
 ```
-
 The differential equations can be solved as follows:
 $$
 \frac {\text{d}[P_2]} {\text{d}t} = r\, [M][M] \quad --> \quad \Delta [P_2] \, \Delta t = r [M][M]  
