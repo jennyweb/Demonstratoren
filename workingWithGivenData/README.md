@@ -17,5 +17,5 @@ $$
 $$
 In order to calculate the complete distance covered up to a time $t$ the sum was formed.
 $$
-distance = summenzeichen \text{velocity}(t) * \text{d}t
+distance = \sum \text{velocity}(t) * \text{d}t
 $$
