@@ -61,28 +61,28 @@ where each constituent is given as follows.
 
 1. First, change in enthalpy at the stone boundary due to radiation $\dot{H}_\text{radiation}$  is given by:
 
-$$
+```math
 \dot{H}_\text{radiation} = \epsilon \, \sigma \, A \, (T^4 - T_a^4)
-$$
+```
 where $A = $\Delta x^2$ is the surface area, $\sigma = 5.670 373 (21) \cdot 10^{−8} \, \frac{W}{m^2 K^4}$ is the Boltzmann constant, $\sigma = 0.3$ is the emissivity factor and $T_a = 278 K$ is the ambient surrounding temperature. 
 
 2. Second, heat transport at the stone boundary to air and coal due to convection is given by
 
-$$
+```math
 \dot{H}_\text{convection} = h_\text{stone, other} \, A \, (T - T_\text{other}), \quad \text{other} = \{\text{air}, \text{coal}\} 
-$$
+```
 
 where $h$ is the heat transfer coefficient and its value is given in the table below. $T_\text{air}$ is chosen as such that it has a temperature of $T=800$ K directly at the surface on the coal and reaches a temperature of $T=1400$ K at the top simulation domain while having a linear temperature profile in between. $T_\text{coal}$ is fixed at $T=1070$ K. 
 
 3. Third, heat conduction is based on Fourier's first law which in 2D is given by:
 
-$$
+```math
 k \frac{\partial^2 T}{\partial x^2} + k \frac{\partial^2 T}{\partial y^2} = \rho \,  c_p \, \frac{\partial T}{ \partial t}
-$$
+```
 
 out of which follows. 
 
-$$
+```math
 \dot{H}_\text{conduction} = m \, k \left(\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2}\right )
 $$
 
