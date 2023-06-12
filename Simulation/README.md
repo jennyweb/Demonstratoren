@@ -118,4 +118,4 @@ The following video shows how the stone slowly heats up from the outside.
 ![Tent frozen from the inside](IMG20221228071846.jpg)
 ![View of Popocatépetl](IMG20221228095545.jpg)
 ![View of Popocatépetl](IMG20221228131605.jpg)
-![View of Popocatépetl from the top](P1010289-1.JPG)
+![View of Popocatépetl from the top](P1010289.JPG)
