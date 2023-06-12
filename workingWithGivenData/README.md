@@ -16,6 +16,6 @@ $$
 \text{distance}(t) = \text{velocity}(t) * \text{d}t
 $$
 In order to calculate the complete distance covered up to a time $t$ the sum was formed.
-```math
-distance = \sum \text{velocity}(t) * \text{d}t
-```
+$$
+distance = \sum_{t_i=0}^t \text{velocity}(t) * \text{d}t
+$$
