@@ -31,15 +31,15 @@ This example is a demonstrator of my programming skills and hence focuses on the
 
 The underlying model is based on an energy balance, i.e. the enthalpy. The enthalpy is related to temperature via the specific heat capacity $c_p$ and the mass $m$. 
 
-$$
+```math
 H = c_p \, m \, T
-$$
+```
 
 The enthalpie change is given by:
 
-$$
+```math
 \frac{\text{d}H}{\text{d}\text{t}} = \dot{H} \, \text{d}\text{t} \approx \dot{H} \, \Delta t
-$$
+```
 
 with a time step $\Delta t$.
 
@@ -84,7 +84,7 @@ out of which follows.
 
 ```math
 \dot{H}_\text{conduction} = m \, k \left(\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2}\right )
-$$
+```
 
 where $k = 10 \frac{W}{m K}$ is the heat conductivity, $c_p = 1 \frac{kJ}{kg\,K}$ is the specific heat capacity and $\rho = 2500 \frac{kg}{m^3}$ is the density of stone. 
 
