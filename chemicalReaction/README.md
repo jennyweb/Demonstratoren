@@ -21,14 +21,20 @@ The differential equations can be solved as follows:
 \end{align}
 ```
 Which can be rearranged to:
-$$
+```math
+\begin{align}
 \Delta [P_2] = r\, [M][M]\,\Delta t
-$$
+\end{align}
+```
 The concentration change for one time increment is given by:
-$$
+```math
+\begin{align}
 [P_2] (t+1) = [P_2](t)\, + \, r\, [M][M]\,\Delta t
-$$
+\end{align}
+```
 Analogous for chainlength = i
-$$
+```math
+\begin{align}
 [P_i] (t+1) = [P_i](t)\, + \, r\, [M][P_{i-1}]\,\Delta t
-$$
+\end{align}
+```
