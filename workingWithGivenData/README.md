@@ -19,3 +19,9 @@ In order to calculate the complete distance covered up to a time $t$ the sum was
 $$
 distance = \sum_{t_i=0}^t \text{velocity}(t) * \text{d}t
 $$
+# Result
+The plot of the calculated distance is equal to the plot of the given data.
+![Calculated Result](calculated_distance-1.png)
+
+![Given Result](givenData-1.png)
+
