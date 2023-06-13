@@ -24,10 +24,7 @@ where $r = 0.01 \frac{L}{mol s}$ is the reaction rate, $[M]$ is the monomer conc
 ```math
 \begin{align}
 \text{M} + \text{P}_3 & \rightarrow \text{P}_4 & \frac {\text{d}[P_4]} {\text{d}t} &= r\, [M][P_3]
-\end{align}
-```
-```math
-\begin{align}
+
 \text{M} + \text{P}_i & \rightarrow \text{P}_{i+1} & \frac {\text{d}[P_i]} {\text{d}t} = r\, [M][P_{i-1}]
 \end{align}
 ```
