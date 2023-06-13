@@ -2,9 +2,12 @@
 
 ## Motivation
 
-## Model of chemical reaction
-It is assumed that the reaction mixture is homogeneously mixed at all times. The resulting polymers only react with the monomer
-Therefore chemical reactions taking place can be described through the following equations on the left hand side. The change in concentration for the formed polymer in a given time intervall is given by the differential equation on the right hand side, where [$M$] is the concentration of the Monomer and [$P_i$] is the concentration of the polymer with chain length $i$. $r$ is the constant for reaction rate.
+In this example I consider the case of a polymerization reaction taking place in a perfectly mixed batch reactor. 
+
+![Icon of a batch reactor](ReadMeObjects/IconReactor.png)
+
+## Model of the chemical reaction
+The polymers only react with the monomer. Therefore, the chemical reactions are described by the following set of chemical equations
 
 ```math
 \begin{align}
@@ -12,6 +15,9 @@ Therefore chemical reactions taking place can be described through the following
 \text{M} + \text{P}_2 &\rightarrow \text{P}_3 & \frac {\text{d}[P_3]} {\text{d}t} &= r \,[M][P_2]
 \end{align}
 ```
+
+where $r = 0.01 \frac{L}{mol s}$ is the reaction rate, $[M]$ is the monomer concentration and $[P_i]$ is the concentration of the polymer of chain length $i$. 
+
 $$
 \text{M} + \text{P}_3 -> \text{P}_4 \quad \quad\quad \quad\quad \frac {\text{d}[P_4]} {\text{d}t} = r\, [M][P_3]
 $$
@@ -19,19 +25,17 @@ $$
 \text{M} + \text{P}_i -> \text{P}_{i+1} \quad\quad \quad\quad \frac {\text{d}[P_i]} {\text{d}t} = r\, [M][P_{i-1}]
 $$
 
-The differential equations can be solved as follows:
+Numerically, the differential equation, of the dimer for example, is solved as
 $$
-\frac {\text{d}[P_2]} {\text{d}t} = r\, [M][M] \quad --> \quad \Delta [P_2] \, \Delta t = r [M][M]  
+\frac {\text{d}[P_2]} {\text{d}t} = r\, [M][M] \quad \approx \quad \frac {\Delta [P_2]}{\Delta t} = r [M][M]  \quad \leftrightarrow \Delta [P_2] = r\, [M][M]\,\Delta t
 $$
-Which can be rearranged to:
-$$
-\Delta [P_2] = r\, [M][M]\,\Delta t
-$$
-The concentration change for one time increment is given by:
+
+with $\Delta t = 0.01$ s. The concentration change for one time increment is given by:
 $$
 [P_2] (t+1) = [P_2](t)\, + \, r\, [M][M]\,\Delta t
 $$
-Analogous for chainlength = i
+For an arbitrary chain length $i$, I apply
 $$
 [P_i] (t+1) = [P_i](t)\, + \, r\, [M][P_{i-1}]\,\Delta t
 $$
+
