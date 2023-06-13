@@ -21,17 +21,23 @@ The polymers only react with the monomer. Therefore, the chemical reactions are 
 
 where $r = 0.01 \frac{L}{mol s}$ is the reaction rate, $[M]$ is the monomer concentration and $[P_i]$ is the concentration of the polymer of chain length $i$. 
 
-$$
-\text{M} + \text{P}_3 -> \text{P}_4 \quad \quad\quad \quad\quad \frac {\text{d}[P_4]} {\text{d}t} = r\, [M][P_3]
-$$
-$$
-\text{M} + \text{P}_i -> \text{P}_{i+1} \quad\quad \quad\quad \frac {\text{d}[P_i]} {\text{d}t} = r\, [M][P_{i-1}]
-$$
+```math
+\begin{align}
+\text{M} + \text{P}_3 & \rightarrow \text{P}_4 & \frac {\text{d}[P_4]} {\text{d}t} &= r\, [M][P_3]
+\end{align}
+```
+```math
+\begin{align}
+\text{M} + \text{P}_i & \rightarro \text{P}_{i+1} & \frac {\text{d}[P_i]} {\text{d}t} = r\, [M][P_{i-1}]
+\end{align}
+```
 
 Numerically, the differential equation, of the dimer for example, is solved as
-$$
-\frac {\text{d}[P_2]} {\text{d}t} = r\, [M][M] \quad \approx \quad \frac {\Delta [P_2]}{\Delta t} = r [M][M]  \quad \leftrightarrow \Delta [P_2] = r\, [M][M]\,\Delta t
-$$
+```math
+\begin{align}
+\frac {\text{d}[P_2]} {\text{d}t} = r\, [M][M] & \approx & \frac {\Delta [P_2]}{\Delta t} = r [M][M]  & \leftrightarrow \Delta [P_2] = r\, [M][M]\,\Delta t
+\end{align}
+```
 
 with $\Delta t = 0.01$ s. The concentration change for one time increment is given by:
 $$
