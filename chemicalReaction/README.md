@@ -14,12 +14,13 @@ The polymers only react with the monomer. Therefore, the chemical reactions are 
 \text{M} + \text{M} &\rightarrow \text{P}_2 & \frac {\text{d}[P_2]} {\text{d}t} &= r\, [M][M] \\
 \text{M} + \text{P}_2 &\rightarrow \text{P}_3 & \frac {\text{d}[P_3]} {\text{d}t} &= r \,[M][P_2] \\
 \text{M} + \text{P}_3 &\rightarrow \text{P}_4 & \frac {\text{d}[P_4]} {\text{d}t} &= r\, [M][P_3] \\
+& \vdots && \\
 \text{M} + \text{P}_i & \rightarrow \text{P}_{i+1} & \frac {\text{d}[P_i]} {\text{d}t} &= r\, [M][P_{i-1}]
 \end{align}
 ```
 
 
-where $r = 0.01 \frac{L}{mol s}$ is the reaction rate, $[M]$ is the monomer concentration and $[P_i]$ is the concentration of the polymer of chain length $i$. 
+where $r = 0.01 \frac{L}{mol~s}$ is the reaction rate, $[M]$ is the monomer concentration and $[P_i]$ is the concentration of the polymer of chain length $i$. 
 
 ```math
 \begin{align}
