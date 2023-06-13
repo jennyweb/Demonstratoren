@@ -113,9 +113,9 @@ The following video shows how the stone slowly heats up from the outside.
 
 ## Impressions of the hike
 
-![Setting up the tent](IMG20221227174659.jpg)
-![The morning after](P1010239.JPG)
-![Tent frozen from the inside](IMG20221228071846.jpg)
-![View of Popocatépetl](IMG20221228095545.jpg)
-![View of Popocatépetl](IMG20221228131605.jpg)
-![View of Popocatépetl from the top](P1010289.JPG)
+![Setting up the tent](ReadMeVisualization/IMG20221227174659.jpg)
+![The morning after](ReadMeVisualization/P1010239.JPG)
+![Tent frozen from the inside](ReadMeVisualization/IMG20221228071846.jpg)
+![View of Popocatépetl](ReadMeVisualization/IMG20221228095545.jpg)
+![View of Popocatépetl](ReadMeVisualization/IMG20221228131605.jpg)
+![View of Popocatépetl from the top](ReadMeVisualization/P1010289.JPG)
