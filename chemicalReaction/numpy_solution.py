@@ -32,8 +32,20 @@ def DGL(concentrations,t):
 
 # chainLength = np.linspace(0,15)
 y = odeint(DGL,concentrations, t)
-plt.plot(t,y)
-plt.xlabel('time')
-plt.ylabel('y(t)')
-plt.show()
+# liste von listemit 1008 einträgen für jeden Zeitpunkt  dann 15 einträge für jede Kettenlänge
+currentWorkingDir = os.path.dirname(__file__)
+picDirNp = os.path.join(currentWorkingDir, 'picNp')
+
+if os.path.isdir(picDirNp):
+    shutil.rmtree(picDirNp)
+    os.mkdir(picDirNp)
+imageCounter = 0
+for i in range(len(y)):
+    for j in range(len(y[i])):
+        plt.plot(list(range(15)),y[i])
+        plt.xlabel('chainlength')
+        plt.ylabel('concentration')
+        plt.savefig(os.path.join(picDirNp,f'concentrationProfile-{imageCounter:04d}.png'))
+        plt.close()
+    imageCounter += 1
 
