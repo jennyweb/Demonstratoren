@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os, shutil
+from scipy.integrate import odeint
+
 
 maxChainLength = 15
 concentrations = np.zeros(maxChainLength)
@@ -45,6 +47,7 @@ def getTotalMolarMass(conc):
 
 initialConcMon = getTotalMolarMass(concentrations)
 # print(f'Initial concentration before reaction: {initialConcMon:1.02f} mol/L')
+timepointsToBeUsedForNumpy = []
 
 while concentrations[0] > 1e-4:
 
@@ -68,14 +71,14 @@ while concentrations[0] > 1e-4:
         concentrationRates[i-2] -= concRate
 
     concentrations += concentrationRates * dt
-    
+
     if iteration % 200 == 0:
         plotConcentration(concentrations)
         imageCounter += 1
+        timepointsToBeUsedForNumpy.append(t)
 
     iteration += 1
     t += dt
-
 finalAmountOfSubstance = getTotalMolarMass(concentrations)
 # print(f'Final amount of substance after reaction: {finalAmountOfSubstance:1.02f} mol/L')
 
@@ -83,3 +86,36 @@ assert abs(finalAmountOfSubstance - initialConcMon) < 1e-3, "There has been a lo
 
 print('Finished the simulation successfully')
 
+# ### NUmpy solution
+maxChainLength = 15
+concentrations = []
+for i in range(maxChainLength):
+    concentrations.append(0)
+concentrations[0] = 1
+r = 0.01 # L/(mol s)
+
+def DGL(concentrations, timepointsToBeUsedForNumpy):
+    concentrationChange = []
+    for i in range(maxChainLength):
+        concentrationChange.append(0)
+    r = 0.01 # L/(mol s)
+    for i in range(2,len(concentrations)):
+        concRate =  r * concentrations[0] * concentrations[i-2] # mol/(L s)
+
+        # increase polymer concentration
+        concentrationChange[i-1] +=  concRate
+
+        # decrease monomer concentration
+        concentrationChange[0] -= concRate
+
+        # decrease concentration of the smaller polymer
+        concentrationChange[i-2] -= concRate
+    
+    return concentrationChange
+
+chainLength = np.linspace(0,15)
+y = odeint(DGL,concentrations, timepointsToBeUsedForNumpy)
+plt.plot(timepointsToBeUsedForNumpy,y)
+plt.xlabel('time')
+plt.ylabel('y(t)')
+plt.show()
