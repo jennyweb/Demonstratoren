@@ -30,7 +30,6 @@ def DGL(concentrations,t):
     
     return concentrationChange
 
-# chainLength = np.linspace(0,15)
 y = odeint(DGL,concentrations, t)
 # liste von listemit 1008 einträgen für jeden Zeitpunkt  dann 15 einträge für jede Kettenlänge
 currentWorkingDir = os.path.dirname(__file__)
@@ -39,6 +38,7 @@ picDirNp = os.path.join(currentWorkingDir, 'picNp')
 if os.path.isdir(picDirNp):
     shutil.rmtree(picDirNp)
     os.mkdir(picDirNp)
+
 imageCounter = 0
 for i in range(len(y)):
     for j in range(len(y[i])):
