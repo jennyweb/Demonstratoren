@@ -13,6 +13,7 @@ def getDiveProfile(depth):
                     currentDepth = currentDepth
                 else:
                     currentDepth -= i * 0.3
+                    currentDepth = max(currentDepth, depth)
                 fout.write(f'{currentTime}\t{currentDepth}\n')
             else: 
                 currentDepth = depth
@@ -31,6 +32,7 @@ def visualizeDivingProfile(time,depth,filename):
     plt.xlabel('time')
     plt.ylabel('depth')
     plt.savefig(f'DivingComputer\{filename}.png')
+    plt.close()
 
 
 getDiveProfile(-13)
