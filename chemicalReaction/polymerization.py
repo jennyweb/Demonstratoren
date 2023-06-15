@@ -71,14 +71,16 @@ while concentrations[0] > 1e-4:
         concentrationRates[i-2] -= concRate
 
     concentrations += concentrationRates * dt
-
+    concentrationPerTimeStamp = []
     if iteration % 200 == 0:
-        plotConcentration(concentrations)
+        # plotConcentration(concentrations)
         imageCounter += 1
         timepointsToBeUsedForNumpy.append(t)
+        concentrationPerTimeStamp.append(concentrations.tolist)####????
 
     iteration += 1
     t += dt
+print(concentrations)
 finalAmountOfSubstance = getTotalMolarMass(concentrations)
 # print(f'Final amount of substance after reaction: {finalAmountOfSubstance:1.02f} mol/L')
 
@@ -88,19 +90,19 @@ print('Finished the simulation successfully')
 
 # ### NUmpy solution
 maxChainLength = 15
-concentrations = []
+concentrationNP = []
 for i in range(maxChainLength):
-    concentrations.append(0)
-concentrations[0] = 1
+    concentrationNP.append(0)
+concentrationNP[0] = 1
 r = 0.01 # L/(mol s)
 
-def DGL(concentrations, timepointsToBeUsedForNumpy):
+def DGL(concentrationNP, timepointsToBeUsedForNumpy):
     concentrationChange = []
     for i in range(maxChainLength):
         concentrationChange.append(0)
     r = 0.01 # L/(mol s)
-    for i in range(2,len(concentrations)):
-        concRate =  r * concentrations[0] * concentrations[i-2] # mol/(L s)
+    for i in range(2,len(concentrationNP)):
+        concRate =  r * concentrationNP[0] * concentrationNP[i-2] # mol/(L s)
 
         # increase polymer concentration
         concentrationChange[i-1] +=  concRate
@@ -113,9 +115,20 @@ def DGL(concentrations, timepointsToBeUsedForNumpy):
     
     return concentrationChange
 
-chainLength = np.linspace(0,15)
-y = odeint(DGL,concentrations, timepointsToBeUsedForNumpy)
-plt.plot(timepointsToBeUsedForNumpy,y)
-plt.xlabel('time')
-plt.ylabel('y(t)')
-plt.show()
+y = odeint(DGL,concentrationNP, timepointsToBeUsedForNumpy)
+currentWorkingDir = os.path.dirname(__file__)
+picDirNp = os.path.join(currentWorkingDir, 'picNp')
+
+if os.path.isdir(picDirNp):
+    shutil.rmtree(picDirNp)
+    os.mkdir(picDirNp)
+
+imageCounter = 0
+for i in range(len(y)):
+    for j in range(len(y[i])):
+        plt.plot(list(range(15)),y[i])
+        plt.xlabel('chainlength')
+        plt.ylabel('concentration')
+        plt.savefig(os.path.join(picDirNp,f'concentrationProfile-{imageCounter:04d}.png'))
+        plt.close()
+    imageCounter += 1
