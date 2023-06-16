@@ -6,6 +6,7 @@ import os
 currentWorkingDir = os.path.dirname(__file__)
 dataPath = os.path.join(currentWorkingDir, 'givenData.dat')
 
+# reading file line by line
 with open(dataPath,'r') as fin:
     time = []
     velocity = []
@@ -19,6 +20,7 @@ with open(dataPath,'r') as fin:
         velocity.append(float(df[1]))
         distance.append(float(df[2]))
 
+# using csv DictReader to read file lines
 with open(dataPath,'r') as fin:
     time = []
     velocity = []
@@ -37,6 +39,12 @@ with open(dataPath,'r') as fin:
         distance_calc.append(velocity[i]*dt)
     for i in range(1,len(distance_calc)):
         distance_calc[i] += distance_calc[i-1]
+
+# using pandas to read file
+df = pd.read_csv(dataPath, delimiter=' ')
+
+for i in range(len(df['time'])-1):
+    dt = df['time'].iloc[i+1] - df['time'].iloc[i]
 
 
     plt.plot(time,distance_calc, label='Calculated Distance', linewidth=3, color='green')
@@ -61,8 +69,3 @@ with open(dataPath,'r') as fin:
     # plt.savefig(f'{currentWorkingDir}\Subplot.png')
     # plt.close()
 
-df = pd.read_csv(dataPath, delimiter=' ')
-
-for i in range(len(df['time'])-1):
-    dt = df['time'].iloc[i+1] - df['time'].iloc[i]
-    # print(dt)
