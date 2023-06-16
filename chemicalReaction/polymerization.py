@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os, shutil
 from scipy.integrate import odeint
-
+from alive_progress import alive_bar
 
 maxChainLength = 15
 concentrations = np.zeros(maxChainLength)
@@ -10,7 +10,6 @@ concentrations[0] = 1
 t = 0
 dt = 1e-2
 r = 0.01 # L/(mol s)
-imageCounter = 0
 iteration = 0
 
 # create folder into which data will be written 
@@ -20,14 +19,14 @@ picDir = os.path.join(currentWorkingDir, 'pic')
 if os.path.isdir(picDir):
     shutil.rmtree(picDir)
     os.mkdir(picDir)
-    
 
-def plotConcentration(concentrations):
+def plotConcentration(concentrations, concentrationNumpy, imageCounter, t):
     plt.plot(list(range(1,maxChainLength+1)),concentrations, zorder=2)
+    plt.plot(list(range(1,maxChainLength+1)),concentrationNumpy, zorder=2)
     plt.xlabel('chain length')
     plt.xlim([0,15])
     plt.ylabel('concentration')
-    plt.title(f'{t:1.01f} s')
+    plt.title(f'$t$ = {t:1.01f} s')
     plt.axhline(color='grey', zorder=1, lw=0.5)
     plt.savefig(os.path.join(picDir,f'concentrationProfile-{imageCounter:04d}.png'))
     plt.close()
@@ -49,54 +48,62 @@ initialConcMon = getTotalMolarMass(concentrations)
 # print(f'Initial concentration before reaction: {initialConcMon:1.02f} mol/L')
 timepointsToBeUsedForNumpy = []
 
-while concentrations[0] > 1e-4:
+endConcentrationToBeReached = 1e-4
 
-    concentrationRates = np.zeros(maxChainLength)
+print('start own simulation')
+with alive_bar() as bar:
+    while concentrations[0] > endConcentrationToBeReached:
 
-    for i in range(2, maxChainLength+1):
+        concentrationRates = np.zeros(maxChainLength)
 
-        # starts with i == 2 -> look at the dimer
-        # works also for the Dimer, because for P2, there is i == 2 -> i-2 = 0, hence the Monomer is subtracted twice and the concentrationRate is building up on the monomer concentration to the power of 2
+        for i in range(2, maxChainLength+1):
 
-        # concentration rate according to differential equation
-        concRate =  r * concentrations[0] * concentrations[i-2] # mol/(L s)
+            # starts with i == 2 -> look at the dimer
+            # works also for the Dimer, because for P2, there is i == 2 -> i-2 = 0, hence the Monomer is subtracted twice and the concentrationRate is building up on the monomer concentration to the power of 2
 
-        # increase polymer concentration
-        concentrationRates[i-1] +=  concRate
+            # concentration rate according to differential equation
+            concRate =  r * concentrations[0] * concentrations[i-2] # mol/(L s)
 
-        # decrease monomer concentration
-        concentrationRates[0] -= concRate
+            # increase polymer concentration
+            concentrationRates[i-1] +=  concRate
 
-        # decrease concentration of the smaller polymer
-        concentrationRates[i-2] -= concRate
+            # decrease monomer concentration
+            concentrationRates[0] -= concRate
 
-    concentrations += concentrationRates * dt
-    concentrationPerTimeStamp = []
-    if iteration % 200 == 0:
-        # plotConcentration(concentrations)
-        imageCounter += 1
-        timepointsToBeUsedForNumpy.append(t)
-        concentrationPerTimeStamp.append(concentrations.tolist)####????
+            # decrease concentration of the smaller polymer
+            concentrationRates[i-2] -= concRate
 
-    iteration += 1
-    t += dt
-print(concentrations)
+        concentrations += concentrationRates * dt
+
+        concentrationPerTimeStamp = []
+        
+        if iteration % 250 == 0:
+            timepointsToBeUsedForNumpy.append(t)
+            concentrationPerTimeStamp.append(concentrations.tolist)
+
+        # increase counter
+        iteration += 1
+        t += dt
+
+        # update progress bar
+        simulationProgress = -1/(1-endConcentrationToBeReached)*(concentrations[0]-1)
+        bar(simulationProgress)
+
 finalAmountOfSubstance = getTotalMolarMass(concentrations)
 # print(f'Final amount of substance after reaction: {finalAmountOfSubstance:1.02f} mol/L')
 
 assert abs(finalAmountOfSubstance - initialConcMon) < 1e-3, "There has been a loss or gain of mass during the simulation"
 
-print('Finished the simulation successfully')
+print('Finished own simulation successfully')
 
 # ### NUmpy solution
-maxChainLength = 15
 concentrationNP = []
 for i in range(maxChainLength):
     concentrationNP.append(0)
 concentrationNP[0] = 1
 r = 0.01 # L/(mol s)
 
-def DGL(concentrationNP, timepointsToBeUsedForNumpy):
+def DGL(concentrationNP, t):
     concentrationChange = []
     for i in range(maxChainLength):
         concentrationChange.append(0)
@@ -115,20 +122,15 @@ def DGL(concentrationNP, timepointsToBeUsedForNumpy):
     
     return concentrationChange
 
+
+print('start numpy simulation')
 y = odeint(DGL,concentrationNP, timepointsToBeUsedForNumpy)
-currentWorkingDir = os.path.dirname(__file__)
-picDirNp = os.path.join(currentWorkingDir, 'picNp')
 
-if os.path.isdir(picDirNp):
-    shutil.rmtree(picDirNp)
-    os.mkdir(picDirNp)
 
-imageCounter = 0
-for i in range(len(y)):
-    for j in range(len(y[i])):
-        plt.plot(list(range(15)),y[i])
-        plt.xlabel('chainlength')
-        plt.ylabel('concentration')
-        plt.savefig(os.path.join(picDirNp,f'concentrationProfile-{imageCounter:04d}.png'))
-        plt.close()
-    imageCounter += 1
+print('Start plotting')
+with alive_bar(len(concentrationPerTimeStamp)) as bar:
+    for i in range(len(concentrationPerTimeStamp)):
+        plotConcentration(concentrationPerTimeStamp[i], y[i], i, timepointsToBeUsedForNumpy[i])
+        bar()
+
+print('Finished script')
