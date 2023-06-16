@@ -26,8 +26,8 @@ def plotConcentration(concentrations, concentrationNumpy, imageCounter, t):
     plt.legend(loc='upper right')
     plt.xlabel('chain length')
     plt.xlim([0,15])
-    plt.ylabel('concentration')
-    plt.xticks([1,2,3,4,6, 8,10,12,14], ['Mon','Di',3,4,6,8,10,12,14])
+    plt.ylabel('concentration [mol/L]')
+    plt.xticks([1,2,3,4,6, 8,10,12,14], ['Mon','Di','Tri',4,6,8,10,12,14])
     plt.title(f'$t$ = {t:1.01f} s')
     plt.axhline(color='grey', zorder=1, lw=0.5)
     plt.savefig(os.path.join(picDir,f'concentrationProfile-{imageCounter:04d}.png'))
@@ -89,7 +89,6 @@ with alive_bar() as bar:
         # update progress bar
         simulationProgress = -1/(1-endConcentrationToBeReached)*(concentrations[0]-1)
         bar(simulationProgress)
-print(concentrationPerTimeStamp)
 
 finalAmountOfSubstance = getTotalMolarMass(concentrations)
 # print(f'Final amount of substance after reaction: {finalAmountOfSubstance:1.02f} mol/L')
