@@ -9,7 +9,9 @@ def getDiveProfile(depth):
         for i in range(240):
             currentTime = i * 10
             if currentDepth > depth:
-                if currentTime % 4 == 0:
+                if currentTime % 3 == 0:
+                    currentDepth = currentDepth
+                elif currentTime % 4 == 0:
                     currentDepth = currentDepth
                 else:
                     currentDepth -= i * 0.3
@@ -27,7 +29,7 @@ def getDiveProfile(depth):
     visualizeDivingProfile(time,depth, filename)
     
 def visualizeDivingProfile(time,depth,filename):    
-    plt.plot(time, depth)
+    plt.plot((time)/60, depth)
     plt.title(filename)
     plt.xlabel('time')
     plt.ylabel('depth')
