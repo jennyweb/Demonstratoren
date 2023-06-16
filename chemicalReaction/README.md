@@ -42,3 +42,6 @@ For an arbitrary chain length $i$, I apply
 ```math
 [P_i] (t+1) = [P_i](t)\, + \, r\, [M][P_{i-1}]\,\Delta t
 ```
+# Result
+The following video shows the cjange of concentration of die different polymers over time.
+![Alt text](progress-polymerization-over-time.gif)
