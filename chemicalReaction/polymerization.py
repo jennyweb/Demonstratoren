@@ -21,8 +21,9 @@ if os.path.isdir(picDir):
     os.mkdir(picDir)
 
 def plotConcentration(concentrations, concentrationNumpy, imageCounter, t):
-    plt.plot(list(range(1,maxChainLength+1)),concentrations, zorder=2)
-    plt.plot(list(range(1,maxChainLength+1)),concentrationNumpy, zorder=2)
+    plt.plot(list(range(1,maxChainLength+1)),concentrations, zorder=2, label='Simulation', linewidth=3, color='green')
+    plt.plot(list(range(1,maxChainLength+1)),concentrationNumpy, zorder=2, label='Numpy Solution', linestyle='dashed', color = 'orange')
+    plt.legend(loc='upper right')
     plt.xlabel('chain length')
     plt.xlim([0,15])
     plt.ylabel('concentration')
@@ -51,6 +52,7 @@ timepointsToBeUsedForNumpy = []
 endConcentrationToBeReached = 1e-4
 
 print('start own simulation')
+concentrationPerTimeStamp = []
 with alive_bar() as bar:
     while concentrations[0] > endConcentrationToBeReached:
 
@@ -74,12 +76,10 @@ with alive_bar() as bar:
             concentrationRates[i-2] -= concRate
 
         concentrations += concentrationRates * dt
-
-        concentrationPerTimeStamp = []
         
         if iteration % 250 == 0:
             timepointsToBeUsedForNumpy.append(t)
-            concentrationPerTimeStamp.append(concentrations.tolist)
+            concentrationPerTimeStamp.append(concentrations.tolist())
 
         # increase counter
         iteration += 1
@@ -88,6 +88,7 @@ with alive_bar() as bar:
         # update progress bar
         simulationProgress = -1/(1-endConcentrationToBeReached)*(concentrations[0]-1)
         bar(simulationProgress)
+print(concentrationPerTimeStamp)
 
 finalAmountOfSubstance = getTotalMolarMass(concentrations)
 # print(f'Final amount of substance after reaction: {finalAmountOfSubstance:1.02f} mol/L')
