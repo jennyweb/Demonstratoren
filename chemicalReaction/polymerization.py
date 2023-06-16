@@ -27,6 +27,7 @@ def plotConcentration(concentrations, concentrationNumpy, imageCounter, t):
     plt.xlabel('chain length')
     plt.xlim([0,15])
     plt.ylabel('concentration')
+    plt.xticks([1,2,3,4,6, 8,10,12,14], ['Mon','Di',3,4,6,8,10,12,14])
     plt.title(f'$t$ = {t:1.01f} s')
     plt.axhline(color='grey', zorder=1, lw=0.5)
     plt.savefig(os.path.join(picDir,f'concentrationProfile-{imageCounter:04d}.png'))
