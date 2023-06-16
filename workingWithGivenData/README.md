@@ -16,7 +16,13 @@ $$
 s(t) = \int_{t_i=0}^{t} v(t) \, \text{d}t \approx \sum_{i=0}^t v(t) \, \Delta t
 $$
 
+
 where $\Delta t = t_i - t_{i-1}$ using a backward scheme. 
 
 
-## Result
+
+# Result
+The plot of the calculated distance is equal to the plot of the given data.
+![Calculated Result](calculated_distance-1.png)
+
+![Given Result](givenData-1.png)
