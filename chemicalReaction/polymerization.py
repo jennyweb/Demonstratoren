@@ -54,7 +54,7 @@ endConcentrationToBeReached = 1e-4
 
 print('start own simulation')
 concentrationPerTimeStamp = []
-with alive_bar() as bar:
+with alive_bar(manual=True) as bar:
     while concentrations[0] > endConcentrationToBeReached:
 
         concentrationRates = np.zeros(maxChainLength)
