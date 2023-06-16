@@ -18,8 +18,6 @@ with open(dataPath,'r') as fin:
         time.append(float(df[0]))
         velocity.append(float(df[1]))
         distance.append(float(df[2]))
-    # print(time)
-
 
 with open(dataPath,'r') as fin:
     time = []
@@ -46,24 +44,22 @@ with open(dataPath,'r') as fin:
     plt.legend(loc='upper right')
     plt.xlabel('time')
     plt.ylabel('distance')
-    plt.savefig(f'{currentWorkingDir}\inOne.png')
+    plt.savefig(f'{currentWorkingDir}\calc-distanceVSgiven-distance.png')
     plt.close()
 
-    plt.subplot(1,2,1)
-    plt.plot(time, distance_calc)
-    plt.title('Calculated Distance')
-    plt.xlabel('time')
-    plt.ylabel('distance')
-    # calc_distance.savefig('workingWithGivenData\calculated_distance.png', dpi=calc_distance.dpi)
+    # plt.subplot(1,2,1)
+    # plt.plot(time, distance_calc)
+    # plt.title('Calculated Distance')
+    # plt.xlabel('time')
+    # plt.ylabel('distance')
    
-    plt.subplot(1,2,2)
-    plt.plot(time, distance) 
-    plt.title('Reference Data')
-    plt.xlabel('time')
-    plt.ylabel('distance')
-    # ref.savefig('workingWithGivenData\givenData.png', dpi=ref.dpi)
-    plt.savefig(f'{currentWorkingDir}\Subplot.png')
-    plt.close()
+    # plt.subplot(1,2,2)
+    # plt.plot(time, distance) 
+    # plt.title('Reference Data')
+    # plt.xlabel('time')
+    # plt.ylabel('distance')
+    # plt.savefig(f'{currentWorkingDir}\Subplot.png')
+    # plt.close()
 
 df = pd.read_csv(dataPath, delimiter=' ')
 
