@@ -1,8 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import os, shutil
 
-df = pd.read_excel('fitEquationToData\sizeDistribution.xlsx', header=1)
+currentWorkingDir = os.path.dirname(__file__)
+dataPath = os.path.join(currentWorkingDir, 'sizeDistribution.xlsx')
+
+df = pd.read_excel(dataPath, header=1)
 size = []
 volume = []
 for i in range(len(df['Größe (μm)'])):
