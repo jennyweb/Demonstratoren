@@ -22,7 +22,5 @@ where $\Delta t = t_i - t_{i-1}$ using a backward scheme.
 
 
 # Result
-The plot of the calculated distance is equal to the plot of the given data.
-![Calculated Result](calculated_distance-1.png)
-
-![Given Result](givenData-1.png)
+The plot of the calculated distance is equal to the plot of the given data as shown in the following figure:
+![Alt text](calc-distanceVSgiven-distance-1.png)
