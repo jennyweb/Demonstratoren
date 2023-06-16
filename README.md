@@ -14,8 +14,8 @@
 \text{M} + \text{P}_i & \rightarrow \text{P}_{i+1} & \frac {\text{d}[P_{i+1}]} {\text{d}t} &= r\, [M][P_{i}]
 \end{align}
 ```
-The resulting video shows the change of concentration of the polymers(with different chain length) over time.
-![Alt text](progress-polymerization-over-time.gif)
+The resulting video shows the change of concentration of the polymers (with different chain length i) over time.
+![Alt text](/chemicalReaction/progress-polymerization-over-time.gif)
 
 
 
