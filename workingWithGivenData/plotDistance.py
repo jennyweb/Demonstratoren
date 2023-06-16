@@ -37,19 +37,28 @@ with open('workingWithGivenData\givenData.dat','r') as fin:
     for i in range(1,len(distance_calc)):
         distance_calc[i] += distance_calc[i-1]
 
-    calc_distance = plt.figure(figsize=(6, 6))
+
+#     fig, (ax1, ax2) = plt.subplots(1, 2)
+# fig.suptitle('Horizontally stacked subplots')
+# ax1.plot(x, y)
+# ax2.plot(x, -y)
+
+    # calc_distance = plt.figure(figsize=(6, 6))
+    plt.subplot(1,2,1)
     plt.plot(time, distance_calc)
     plt.title('Calculated Distance')
     plt.xlabel('time')
     plt.ylabel('distance')
-    calc_distance.savefig('workingWithGivenData\calculated_distance.png', dpi=calc_distance.dpi)
+    # calc_distance.savefig('workingWithGivenData\calculated_distance.png', dpi=calc_distance.dpi)
    
-    ref = plt.figure(figsize=(6, 6))
+    # ref = plt.figure(figsize=(6, 6))
+    plt.subplot(1,2,2)
     plt.plot(time, distance) 
     plt.title('Reference Data')
     plt.xlabel('time')
     plt.ylabel('distance')
-    ref.savefig('workingWithGivenData\givenData.png', dpi=ref.dpi)
+    # ref.savefig('workingWithGivenData\givenData.png', dpi=ref.dpi)
+    plt.savefig('workingWithGivenData\subplot.png')
 
 df = pd.read_csv('workingWithGivenData\givenData.dat', delimiter=' ')
 
