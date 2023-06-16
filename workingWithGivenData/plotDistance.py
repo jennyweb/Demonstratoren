@@ -1,9 +1,12 @@
 import csv
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
+currentWorkingDir = os.path.dirname(__file__)
+dataPath = os.path.join(currentWorkingDir, 'givenData.dat')
 
-with open('workingWithGivenData\givenData.dat','r') as fin:
+with open(dataPath,'r') as fin:
     time = []
     velocity = []
     distance = []
@@ -18,7 +21,7 @@ with open('workingWithGivenData\givenData.dat','r') as fin:
     # print(time)
 
 
-with open('workingWithGivenData\givenData.dat','r') as fin:
+with open(dataPath,'r') as fin:
     time = []
     velocity = []
     distance = []
@@ -38,12 +41,14 @@ with open('workingWithGivenData\givenData.dat','r') as fin:
         distance_calc[i] += distance_calc[i-1]
 
 
-#     fig, (ax1, ax2) = plt.subplots(1, 2)
-# fig.suptitle('Horizontally stacked subplots')
-# ax1.plot(x, y)
-# ax2.plot(x, -y)
+    plt.plot(time,distance_calc, label='Calculated Distance', linewidth=3, color='green')
+    plt.plot(time, distance, label='Reference Data', linestyle='dashed', color = 'orange')
+    plt.legend(loc='upper right')
+    plt.xlabel('time')
+    plt.ylabel('distance')
+    plt.savefig(f'{currentWorkingDir}\inOne.png')
+    plt.close()
 
-    # calc_distance = plt.figure(figsize=(6, 6))
     plt.subplot(1,2,1)
     plt.plot(time, distance_calc)
     plt.title('Calculated Distance')
@@ -51,17 +56,16 @@ with open('workingWithGivenData\givenData.dat','r') as fin:
     plt.ylabel('distance')
     # calc_distance.savefig('workingWithGivenData\calculated_distance.png', dpi=calc_distance.dpi)
    
-    # ref = plt.figure(figsize=(6, 6))
     plt.subplot(1,2,2)
     plt.plot(time, distance) 
     plt.title('Reference Data')
     plt.xlabel('time')
     plt.ylabel('distance')
     # ref.savefig('workingWithGivenData\givenData.png', dpi=ref.dpi)
-    plt.savefig('workingWithGivenData\subplot.png')
+    plt.savefig(f'{currentWorkingDir}\Subplot.png')
+    plt.close()
 
-df = pd.read_csv('workingWithGivenData\givenData.dat', delimiter=' ')
-
+df = pd.read_csv(dataPath, delimiter=' ')
 
 for i in range(len(df['time'])-1):
     dt = df['time'].iloc[i+1] - df['time'].iloc[i]
