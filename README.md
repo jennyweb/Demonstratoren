@@ -1,9 +1,9 @@
 # Demonstrator projects of Jennifer Weber
-- The folder [Simulation](https://github.com/jennyweb/Demonstratoren/tree/heatBalance/Simulation) contains an example of a physical simulation in which heat transfer phenomona are modelled. This example describes are stone heating up while sitting in a fire. 
+- The folder [Simulation](https://github.com/jennyweb/Demonstratoren/tree/main/Simulation) contains an example of a physical simulation in which heat transfer phenomona are modelled. This example describes are stone heating up while sitting in a fire. 
 
 ![Evolution of temperature over time](Simulation/ReadMeVisualization/result-temperature.gif)
 
-- The folder [chemicalReaction](https://github.com/jennyweb/Demonstratoren/tree/chemicalReaction/chemicalReaction) shows an example of a chemical reaction. The following polymerization reaction is taken into account:
+- The folder [chemicalReaction](https://github.com/jennyweb/Demonstratoren/tree/main/chemicalReaction) shows an example of a chemical reaction. The following polymerization reaction is taken into account:
  
 ```math
 \begin{align}
