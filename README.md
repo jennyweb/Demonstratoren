@@ -18,7 +18,5 @@ The resulting video shows the change of concentration of the polymers (with diff
 ![Alt text](/chemicalReaction/progress-polymerization-over-time.gif)
 
 
-- The folder [workWithGivenData](https://github.com/jennyweb/Demonstratoren/tree/main/workingWithGivenData) shows an example of how to read in data from a file and perform basic mathematical operations such as computing integrals. 
- 
-The resulting image shows the computed integral next to the analytical solution proving the correctness of my script. 
+- The folder [workWithGivenData](https://github.com/jennyweb/Demonstratoren/tree/main/workingWithGivenData) shows an example of how to read in data from a file and perform basic mathematical operations such as computing integrals. The resulting image shows the computed integral next to the analytical solution proving the correctness of my script. 
 ![Comparison of computed integral with the analytical solution](workingWithGivenData/calc-distanceVSgiven-distance.png)
