@@ -15,14 +15,18 @@ for i in range(len(df['Größe (μm)'])):
 
 
 
+
 sigma = 0.2
-µ = 40
-p = []
+µ = np.log(40)-0.5*sigma**2
+lognormDistribution = []
 for i in range(len(size)):
-    x = (1/(sigma * size[i] * (2* np.pi)**0.5)) * np.exp(-((np.log(size[i])-µ)**2)/(2*sigma**2))
-    p.append(x)
-    print(max(p))
+    x = (1./(sigma * size[i] * np.sqrt(2* np.pi))) * np.exp(-((np.log(size[i])-µ)**2)/(2*sigma**2))
+    lognormDistribution.append(x)
+
+lognormDistribution = np.array(lognormDistribution)
+lognormDistribution *= 100./np.sum(lognormDistribution)
 
 plt.plot(size, volume, 'b')
-plt.plot(size, p, 'g')
+plt.plot(size, lognormDistribution, 'g')
+plt.xscale('log')
 plt.show()
