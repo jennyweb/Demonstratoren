@@ -1,5 +1,6 @@
+
 # Demonstrator projects of Jennifer Weber
-- The folder [Simulation](https://github.com/jennyweb/Demonstratoren/tree/main/Simulation) contains an example of a physical simulation in which heat transfer phenomona are modelled. This example describes are stone heating up while sitting in a fire. 
+- The folder [Simulation](https://github.com/jennyweb/Demonstratoren/tree/main/Simulation) contains an example of a physical simulation in which heat transfer phenomena are modelled. This example describes are stone heating up while sitting in a fire. 
 
 ![Evolution of temperature over time](Simulation/ReadMeVisualization/result-temperature.gif)
 
@@ -13,9 +14,11 @@
 \text{M} + \text{P}_i & \rightarrow \text{P}_{i+1} & \frac {\text{d}[P_{i+1}]} {\text{d}t} &= r\, [M][P_{i}]
 \end{align}
 ```
-The resulting video shows the change of concentration of the polymers (with different chain length i) over time.
+The resulting video shows the change of concentration of the polymers (with different chain length $i$) over time.
 ![Alt text](/chemicalReaction/progress-polymerization-over-time.gif)
 
 
-
-
+- The folder [workWithGivenData](https://github.com/jennyweb/Demonstratoren/tree/main/workingWithGivenData) shows an example of how to read in data from a file and perform basic mathematical operations such as computing integrals. 
+ 
+The resulting image shows the computed integral next to the analytical solution proving the correctness of my script. 
+![Comparison of computed integral with the analytical solution](workingWithGivenData/calc-distanceVSgiven-distance.png)
