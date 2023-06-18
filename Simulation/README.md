@@ -20,7 +20,7 @@ I assume the stone diameter to be 20 cm and it sits on a 10 cm high and 75 cm wi
 
 ## Discretization
 
-For this simulation, we apply a finite difference scheme to discretize the continuum. A mesh size of  $\Delta x = 0.002 m$ was chosen. 
+For this simulation, we apply a finite difference scheme to discretize the continuum. A mesh size of  $\Delta x = 0.002$ m was chosen. 
 
 ![The discretization scheme](ReadMeVisualization/Discretization.png)
 
@@ -64,7 +64,7 @@ where each constituent is given as follows.
 ```math
 \dot{H}_\text{radiation} = \epsilon \, \sigma \, A \, (T^4 - T_a^4)
 ```
-where $A = \Delta x^2$ is the surface area, $\sigma = 5.670 373 (21) \cdot 10^{−8} \frac{W}{m^2 K^4}$ is the Boltzmann constant, $\sigma = 0.3$ is the emissivity factor and $T_a = 278 K$ is the ambient surrounding temperature. 
+where $A = \Delta x^2$ is the surface area, $\sigma = 5.670 373 (21) \cdot 10^{−8} \frac{W}{m^2 K^4}$ is the Boltzmann constant, $\sigma = 0.3$ is the emissivity factor and $T_a = 278$ K is the ambient surrounding temperature. 
 
 2. Second, heat transport at the stone boundary to air and coal due to convection is given by
 
