@@ -34,3 +34,19 @@ plt.xscale('log')
 plt.xlim([1,1000])
 plt.savefig(os.path.join(currentWorkingDir,f'Distribution-{imageCounter:04d}.png'))
 plt.close()
+
+
+
+class vector:
+    def __init__(self,values) -> None:
+        self.values = values
+        
+    def __sub__(self):
+        pass
+
+
+    def __add__(self):
+        pass
+
+
+v = vector([1,3,2])
