@@ -68,11 +68,10 @@ class vector:
         sumSquare = 0 
         for i in range(len(self.values)):
             sumSquare += (self.values[i])**2
-        # vecLength = np.sqrt(sumSquare)
         return np.sqrt(sumSquare)
 
 
 
 
 v = vector([1,3,2])
-print(v.vectorLength)
+print(v.vectorLength())
