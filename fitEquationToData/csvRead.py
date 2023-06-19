@@ -35,9 +35,12 @@ for i in range(len(columnC)):
 
 plt.plot(size, volume, color = 'blue', label = 'data')
 plt.plot(size, lognormDistribution, color ='green', label = 'lognormDistribution')
-plt.legend(loc='upper right')
+plt.legend(loc='upper left')
 plt.xscale('log')
 plt.xlim([1,xmax])
+plt.xlabel('size in µm')
+plt.ylabel('size distribution in %')
+plt.title(f'current sigma = {sigma}, current µ = {µ:03f}')
 plt.savefig(os.path.join(currentWorkingDir,f'Distribution-{imageCounter:04d}.png'))
 plt.close()
 
