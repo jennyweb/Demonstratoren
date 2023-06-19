@@ -53,7 +53,14 @@ class vector:
         for i in range(len(self.values)):
             new_vector.append(self.values[i] + other[i])
         return new_vector
+    
+    def __mul__(self, number):
+        new_vector = []
+        for i in range(len(self.values)):
+            new_vector.append(self.values[i] * number)
+        return new_vector
+
 
 
 v = vector([1,3,2])
-print(v.__add__([1,1,2]))
+print(v.__mul__(6))
