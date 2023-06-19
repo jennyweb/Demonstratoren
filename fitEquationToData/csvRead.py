@@ -9,11 +9,11 @@ dataPath = os.path.join(currentWorkingDir, 'sizeDistribution.xlsx')
 df = pd.read_excel(dataPath, header=1)
 size = []
 volume = []
+columnC = []
 for i in range(len(df['Größe (μm)'])):
     size.append(df['Größe (μm)'][i])
     volume.append(df['% Volumen In'][i])
-
-
+    columnC.append(df[df.columns[2]][i])
 
 
 sigma = 0.2
@@ -27,11 +27,17 @@ lognormDistribution = np.array(lognormDistribution)
 lognormDistribution *= 100./np.sum(lognormDistribution)
 
 imageCounter = 0
+
+for i in range(len(columnC)):
+    if columnC[i] == 100:
+        xmax = size[i +4]
+        break
+
 plt.plot(size, volume, color = 'blue', label = 'data')
 plt.plot(size, lognormDistribution, color ='green', label = 'lognormDistribution')
 plt.legend(loc='upper right')
 plt.xscale('log')
-plt.xlim([1,1000])
+plt.xlim([1,xmax])
 plt.savefig(os.path.join(currentWorkingDir,f'Distribution-{imageCounter:04d}.png'))
 plt.close()
 
