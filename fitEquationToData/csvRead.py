@@ -40,22 +40,25 @@ plt.close()
 class vector:
     def __init__(self,values) -> None:
         self.values = values
+
+    def __len__(self):
+        return len(self.values)
         
     def __sub__(self,other):
-        if len(self.values) != len(other):
+        if self.len() != other.len():
             return 'unable to perform subtraction'
         new_vector = []
         for i in range(len(self.values)):
-            new_vector.append(self.values[i] - other[i])
+            new_vector.append(self.values[i] - other.values[i])
         return new_vector
 
 
     def __add__(self,other):
-        if len(self.values) != len(other):
+        if self.len() != other.len():
             return 'unable to perform addition'
         new_vector = []
         for i in range(len(self.values)):
-            new_vector.append(self.values[i] + other[i])
+            new_vector.append(self.values[i] + other.values[i])
         return new_vector
     
     def __mul__(self, number):
