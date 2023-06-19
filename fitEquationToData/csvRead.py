@@ -42,6 +42,8 @@ class vector:
         self.values = values
         
     def __sub__(self,other):
+        if len(self.values) != len(other):
+            return 'unable to perform subtraction'
         new_vector = []
         for i in range(len(self.values)):
             new_vector.append(self.values[i] - other[i])
@@ -49,6 +51,8 @@ class vector:
 
 
     def __add__(self,other):
+        if len(self.values) != len(other):
+            return 'unable to perform addition'
         new_vector = []
         for i in range(len(self.values)):
             new_vector.append(self.values[i] + other[i])
@@ -63,4 +67,4 @@ class vector:
 
 
 v = vector([1,3,2])
-print(v.__mul__(6))
+print(v.__mul__(6.2))
