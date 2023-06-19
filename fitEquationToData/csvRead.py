@@ -63,8 +63,16 @@ class vector:
         for i in range(len(self.values)):
             new_vector.append(self.values[i] * number)
         return new_vector
+    
+    def vectorLength(self):
+        sumSquare = 0 
+        for i in range(len(self.values)):
+            sumSquare += (self.values[i])**2
+        # vecLength = np.sqrt(sumSquare)
+        return np.sqrt(sumSquare)
+
 
 
 
 v = vector([1,3,2])
-print(v.__mul__(6.2))
+print(v.vectorLength)
