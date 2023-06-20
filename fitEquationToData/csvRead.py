@@ -26,7 +26,7 @@ for i in range(len(accumulatedVolumeFrequency)):
 sigma = 0.2
 µ = np.log(40)-0.5*sigma**2
 
-def getDeviation(µ, sigma, imageCounter):
+def getDeviation(µ, sigma, imageCounter, drawImage= False):
     lognormDistribution = []
     for i in range(len(sizeDistribution)):
         x = (1./(sigma * sizeDistribution[i] * np.sqrt(2* np.pi))) * np.exp(-((np.log(sizeDistribution[i])-µ)**2)/(2*sigma**2))
@@ -35,16 +35,17 @@ def getDeviation(µ, sigma, imageCounter):
     lognormDistribution = np.array(lognormDistribution)
     lognormDistribution *= 100./np.sum(lognormDistribution)
 
-    plt.plot(sizeDistribution, volumeFrequency, color = 'blue', label = 'data')
-    plt.plot(sizeDistribution, lognormDistribution, color ='green', label = 'lognormDistribution')
-    plt.legend(loc='upper left')
-    plt.xscale('log')
-    plt.xlim([xmin,xmax])
-    plt.xlabel('size in µm')
-    plt.ylabel('size distribution in %')
-    plt.title(f'current sigma = {sigma}, current µ = {µ:03f}')
-    plt.savefig(os.path.join(currentWorkingDir,f'Distribution-{imageCounter:04d}.png'))
-    plt.close()
+    if drawImage == True:
+        plt.plot(sizeDistribution, volumeFrequency, color = 'blue', label = 'data')
+        plt.plot(sizeDistribution, lognormDistribution, color ='green', label = 'lognormDistribution')
+        plt.legend(loc='upper left')
+        plt.xscale('log')
+        plt.xlim([xmin,xmax])
+        plt.xlabel('size in µm')
+        plt.ylabel('size distribution in %')
+        plt.title(f'current sigma = {sigma}, current µ = {µ:03f}')
+        plt.savefig(os.path.join(currentWorkingDir,f'Distribution-{imageCounter:04d}.png'))
+        plt.close()
 
     deviation = 0
     for i in range(len(volumeFrequency)):
