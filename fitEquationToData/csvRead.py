@@ -15,9 +15,18 @@ for i in range(len(df['Größe (μm)'])):
     volumeFrequency.append(df['% Volumen In'][i])
     accumulatedVolumeFrequency.append(df[df.columns[2]][i])
 
-def getDeviation(µ):
-    sigma = 0.2
-    µ = np.log(40)-0.5*sigma**2
+for i in range(len(accumulatedVolumeFrequency)):
+        if accumulatedVolumeFrequency[i] == 100:
+            xmax = sizeDistribution[i+4]
+            break
+for i in range(len(accumulatedVolumeFrequency)):
+        if accumulatedVolumeFrequency[i] != 0:
+            xmin = sizeDistribution[i-4]
+            break
+sigma = 0.2
+µ = np.log(40)-0.5*sigma**2
+
+def getDeviation(µ, sigma, imageCounter):
     lognormDistribution = []
     for i in range(len(sizeDistribution)):
         x = (1./(sigma * sizeDistribution[i] * np.sqrt(2* np.pi))) * np.exp(-((np.log(sizeDistribution[i])-µ)**2)/(2*sigma**2))
@@ -26,12 +35,7 @@ def getDeviation(µ):
     lognormDistribution = np.array(lognormDistribution)
     lognormDistribution *= 100./np.sum(lognormDistribution)
 
-    imageCounter = 0
-
-    for i in range(len(accumulatedVolumeFrequency)):
-        if accumulatedVolumeFrequency[i] == 100:
-            xmax = sizeDistribution[i +4]
-            break
+    
 
     plt.plot(sizeDistribution, volumeFrequency, color = 'blue', label = 'data')
     plt.plot(sizeDistribution, lognormDistribution, color ='green', label = 'lognormDistribution')
@@ -44,7 +48,7 @@ def getDeviation(µ):
     plt.savefig(os.path.join(currentWorkingDir,f'Distribution-{imageCounter:04d}.png'))
     plt.close()
 
-
+getDeviation(µ, sigma)
 
 class vector:
     def __init__(self,values) -> None:
