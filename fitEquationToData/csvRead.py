@@ -52,7 +52,13 @@ def getDeviation(µ, sigma, imageCounter, drawImage= False):
         deviation += abs(volumeFrequency[i] - lognormDistribution[i])
     return deviation
 
+
 getDeviation(µ, sigma, 0)
+
+def interfaceToGetDeviation(µ,sigma):
+    deviation = getDeviation(µ,sigma, imageCounter=0, drawImage=False)
+    return deviation
+
 
 class vector:
     def __init__(self,values) -> None:
