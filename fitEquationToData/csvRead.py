@@ -49,6 +49,7 @@ def getDeviation(µ, sigma, imageCounter):
     deviation = 0
     for i in range(len(volumeFrequency)):
         deviation += abs(volumeFrequency[i] - lognormDistribution[i])
+    return deviation
 
 getDeviation(µ, sigma, 0)
 
@@ -76,11 +77,19 @@ class vector:
             new_vector.append(self.values[i] + other.values[i])
         return new_vector
     
-    def __mul__(self, number):
-        new_vector = []
-        for i in range(len(self.values)):
-            new_vector.append(self.values[i] * number)
-        return new_vector
+    def __mul__(self, factor):
+        skalar = 0
+        if factor == vector:
+            if self.len() != factor.len():
+                return 'unable to perform vektor multiplication'
+            for i in range(len(self.values)):
+                skalar += self.values[i] * factor.values[i]
+                return skalar
+        else:
+            new_vector = []
+            for i in range(len(self.values)):
+                new_vector.append(self.values[i] * factor)
+            return new_vector
     
     def vectorLength(self):
         sumSquare = 0 
