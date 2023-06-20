@@ -35,20 +35,22 @@ def getDeviation(µ, sigma, imageCounter):
     lognormDistribution = np.array(lognormDistribution)
     lognormDistribution *= 100./np.sum(lognormDistribution)
 
-    
-
     plt.plot(sizeDistribution, volumeFrequency, color = 'blue', label = 'data')
     plt.plot(sizeDistribution, lognormDistribution, color ='green', label = 'lognormDistribution')
     plt.legend(loc='upper left')
     plt.xscale('log')
-    plt.xlim([1,xmax])
+    plt.xlim([xmin,xmax])
     plt.xlabel('size in µm')
     plt.ylabel('size distribution in %')
     plt.title(f'current sigma = {sigma}, current µ = {µ:03f}')
     plt.savefig(os.path.join(currentWorkingDir,f'Distribution-{imageCounter:04d}.png'))
     plt.close()
 
-getDeviation(µ, sigma)
+    deviation = 0
+    for i in range(len(volumeFrequency)):
+        deviation += abs(volumeFrequency[i] - lognormDistribution[i])
+
+getDeviation(µ, sigma, 0)
 
 class vector:
     def __init__(self,values) -> None:
