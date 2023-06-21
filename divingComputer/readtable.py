@@ -25,13 +25,13 @@ time = depthAndTime[0][1]
 def getKeyForDepth(depth):
     if depth > keysInFindPressureGroup[0]:
         raise RuntimeError (f'please make sure that the depth does not exceed 42m. I got {depth}')
-    
         
     for i in range(len(keysInFindPressureGroup)):
-        if abs(depth) > keysInFindPressureGroup[i]:
+        if abs(depth) >= keysInFindPressureGroup[i]:
             key = keysInFindPressureGroup[i-1]
             return key
     return keysInFindPressureGroup[-1]
+    
 
 key = getKeyForDepth(depth)
 
@@ -39,7 +39,7 @@ def getPressureGroup(key,time):
     pressureGroupforTt = None
     minutesInCertainDepth = findPressureGroup[key]
     for i in range(len(minutesInCertainDepth)):
-        if minutesInCertainDepth[i] > time:
+        if minutesInCertainDepth[i] >= time:
             pressureGroupforTt = pressureGroup[i]
             return pressureGroupforTt
    
