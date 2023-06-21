@@ -13,17 +13,19 @@ def getDiveProfile(x):
     for i in range(len(timeNp)):
         time.append(time[-1]+1)
         time.append(timeNp[i]+time[-1])
-        
     maxDepth = min(depth)
-    print(time, timeNp)
     filename = f'divingprofile_{maxDepth}'
     visualizeDivingProfile(time,depth, filename)
+    dataForDiveComputerDepthTime = []
+    for i in range(len(timeNp)):
+        dataForDiveComputerDepthTime.append((depthNp[i],timeNp[i]))
+    return dataForDiveComputerDepthTime
     
 def visualizeDivingProfile(time,depth,filename):    
     plt.plot(time,depth)
     plt.title(filename)
-    plt.xlabel('time')
-    plt.ylabel('depth')
+    plt.xlabel('time in s')
+    plt.ylabel('depth in m')
     plt.savefig(f'DivingComputer\{filename}.png')
     plt.close()
 
