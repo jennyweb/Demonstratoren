@@ -40,6 +40,6 @@ def writeDataForDivingComputer(dataForDiveComputerDepthTime,filename):
             fout.write(f'{dataForDiveComputerDepthTime[i]}\n')
     
 
-print(getDiveProfile(3))
+print(getDiveProfile(1))
 
 
