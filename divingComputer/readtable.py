@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import csv
 
 currentWorkingDir = os.path.dirname(__file__)
 dataPath = os.path.join(currentWorkingDir, 'diveTableMeters.xlsx')
@@ -16,30 +17,33 @@ for i,column_name in enumerate(dfFindPressureGroup):
         pressureGroup = dfFindPressureGroup[column_name]
 keysInFindPressureGroup.sort(reverse=True)
 
-T = -15
-t = 12
-def getKeyForDepth(T):
-    if T > keysInFindPressureGroup[0]:
-        raise RuntimeError (f'please make sure that the depth does not exceed 42m. I got {T}')
+depthAndTime = [(-29, 8)]
+
+depth = depthAndTime[0][0]
+time = depthAndTime[0][1]
+
+def getKeyForDepth(depth):
+    if depth > keysInFindPressureGroup[0]:
+        raise RuntimeError (f'please make sure that the depth does not exceed 42m. I got {depth}')
     
         
     for i in range(len(keysInFindPressureGroup)):
-        if abs(T) > keysInFindPressureGroup[i]:
+        if abs(depth) > keysInFindPressureGroup[i]:
             key = keysInFindPressureGroup[i-1]
             return key
     return keysInFindPressureGroup[-1]
 
-key = getKeyForDepth(T)
+key = getKeyForDepth(depth)
 
-def getPressureGroup(key,t):
+def getPressureGroup(key,time):
     pressureGroupforTt = None
     minutesInCertainDepth = findPressureGroup[key]
     for i in range(len(minutesInCertainDepth)):
-        if minutesInCertainDepth[i] > t:
+        if minutesInCertainDepth[i] > time:
             pressureGroupforTt = pressureGroup[i]
             return pressureGroupforTt
    
-print(getPressureGroup(key,t))
+print(getPressureGroup(key,time))
     
 
 
