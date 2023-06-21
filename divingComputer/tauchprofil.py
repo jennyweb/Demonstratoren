@@ -1,6 +1,9 @@
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+
+currentWorkingDir = os.path.dirname(__file__)
 
 def getDiveProfile(x): 
     depth = [0]
@@ -19,6 +22,7 @@ def getDiveProfile(x):
     dataForDiveComputerDepthTime = []
     for i in range(len(timeNp)):
         dataForDiveComputerDepthTime.append((depthNp[i],timeNp[i]))
+    writeDataForDivingComputer(dataForDiveComputerDepthTime, filename)
     return dataForDiveComputerDepthTime
     
 def visualizeDivingProfile(time,depth,filename):    
@@ -26,9 +30,14 @@ def visualizeDivingProfile(time,depth,filename):
     plt.title(filename)
     plt.xlabel('time in s')
     plt.ylabel('depth in m')
-    plt.savefig(f'DivingComputer\{filename}.png')
+    plt.savefig(os.path.join(currentWorkingDir, f'{filename}.png'))
     plt.close()
 
+def writeDataForDivingComputer(dataForDiveComputerDepthTime,filename):
+    with open(os.path.join(currentWorkingDir, f'{filename}.txt'),'w') as fout:
+        for i in range(len(dataForDiveComputerDepthTime)):
+            fout.write(f'{dataForDiveComputerDepthTime[i]}\n')
+    
 
 print(getDiveProfile(3))
 
