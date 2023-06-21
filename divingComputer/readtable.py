@@ -34,11 +34,10 @@ key = getKeyForDepth(T)
 def getPressureGroup(key,t):
     pressureGroupforTt = None
     minutesInCertainDepth = findPressureGroup[key]
-    for i in range(0,len(minutesInCertainDepth)):
+    for i in range(len(minutesInCertainDepth)):
         if minutesInCertainDepth[i] > t:
-            print(minutesInCertainDepth[i])
-            pressureGroupforTt = pressureGroup[i-1]
-    return pressureGroupforTt
+            pressureGroupforTt = pressureGroup[i]
+            return pressureGroupforTt
    
 print(getPressureGroup(key,t))
     
