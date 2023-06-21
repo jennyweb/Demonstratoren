@@ -8,20 +8,39 @@ currentWorkingDir = os.path.dirname(__file__)
 def getDiveProfile(x): 
     depth = [0]
     time = [0]
-    depthNp = np.random.randint(-42,-10, size=x).tolist()
-    timeNp = np.random.randint(5,15, size=x).tolist()
-    for i in range(len(depthNp)):
-        depth.append(depthNp[i])
-        depth.append(depthNp[i])
+    depthNp = np.random.randint(-42,-10, 1).tolist()
+    timeNp = np.random.randint(5,40, 1).tolist()
+    surfaceTime = np.random.randint(10,70,1).tolist()
+    maxDepthSecondDive = depthNp[0]
+    depthSecondDive = np.random.randint(maxDepthSecondDive,-10, 1).tolist()
+    timeNpSecondDive = np.random.randint(5,30, 1).tolist()
+    for i in range(2):
+        depth.append(depthNp[0])
+    for i in range(2):
+        depth.append(0)
+    for i in range(2):
+        depth.append(depthSecondDive[0])
+    depth.append(0)
     for i in range(len(timeNp)):
         time.append(time[-1]+1)
-        time.append(timeNp[i]+time[-1])
+        time.append(timeNp[0]+time[-1])
+    time.append(time[-1]+1)
+    time.append(time[-1] +surfaceTime[0])
+    time.append(time[-1]+1)
+    time.append(timeNpSecondDive[0]+ time[-1])
+    time.append(time[-1]+1)
+
+    print(depth, time)
     maxDepth = min(depth)
+    
     filename = f'divingprofile_{maxDepth}'
     visualizeDivingProfile(time,depth, filename)
     dataForDiveComputerDepthTime = []
-    for i in range(len(timeNp)):
-        dataForDiveComputerDepthTime.append((depthNp[i],timeNp[i]))
+    for i in range(len(time)):
+        if i == 0:
+            dataForDiveComputerDepthTime.append((depth[i],time[i]))
+        elif i % 2 == 0:
+            dataForDiveComputerDepthTime.append((depth[i],(time[i]-time[i-1])))
     writeDataForDivingComputer(dataForDiveComputerDepthTime, filename)
     return dataForDiveComputerDepthTime
     
