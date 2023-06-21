@@ -35,6 +35,7 @@ def visualizeDivingProfile(time,depth,filename):
 
 def writeDataForDivingComputer(dataForDiveComputerDepthTime,filename):
     with open(os.path.join(currentWorkingDir, f'{filename}.txt'),'w') as fout:
+        fout.write('depth time\n')
         for i in range(len(dataForDiveComputerDepthTime)):
             fout.write(f'{dataForDiveComputerDepthTime[i]}\n')
     
