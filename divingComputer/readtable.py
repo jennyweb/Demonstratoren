@@ -62,8 +62,7 @@ for i,column_name in enumerate(pressureGroupAfterSurfaceIntervall):
         continue
     for j in range(len(pressureGroupAfterSurfaceIntervall)):
         if not pd.isnull(pressureGroupAfterSurfaceIntervall[column_name].iloc[j]):
-            print(column_name)
-            mappingSurfaceTimeToNewPgroup[indexToPressureGroup[j]] = {str(pressureGroupAfterSurfaceIntervall[column_name].iloc[j]):column_name}
+            mappingSurfaceTimeToNewPgroup[indexToPressureGroup[j]][str(pressureGroupAfterSurfaceIntervall[column_name].iloc[j])] = column_name
 
 
 print(mappingSurfaceTimeToNewPgroup)
