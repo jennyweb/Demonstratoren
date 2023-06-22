@@ -46,14 +46,17 @@ def getPressureGroup(key,time):
 # print(getPressureGroup(key,time))
 
 pressureGroupAfterSurfaceIntervall = pd.read_excel(dataPath, sheet_name='get new pressure group')
-pressureGroup1stDive = {}
-listPressureGroup1stDive = []
-print(pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'])
-for pGroup in pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group']:
-    print(i)
-    if not pGroup pd.isnull(pGroup):
-        listPressureGroup1stDive.append(pGroup)
-print(listPressureGroup1stDive)
+mappingSurfaceTimeToNewPgroup = {} 
+#index mit abspeichern 
+listmappingSurfaceTimeToNewPgroup = []
+indexToPressureGroup = {}
+for i,oldPGroup in enumerate(pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group']):
+    if not pd.isnull(oldPGroup):
+        listmappingSurfaceTimeToNewPgroup.append(oldPGroup)
+        indexToPressureGroup[i] = oldPGroup
+        indexToPressureGroup[i+1] = oldPGroup
+        mappingSurfaceTimeToNewPgroup[oldPGroup] = {}
+print(indexToPressureGroup)
     
 
 
