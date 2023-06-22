@@ -45,7 +45,7 @@ def getPressureGroup(key,time):
    
 # print(getPressureGroup(key,time))
 
-from datetime import datetime
+import datetime
 pressureGroupAfterSurfaceIntervall = pd.read_excel(dataPath, sheet_name='get new pressure group')
 mappingSurfaceTimeToNewPgroup = {} 
 listmappingSurfaceTimeToNewPgroup = []
@@ -57,16 +57,32 @@ for i,oldPGroup in enumerate(pressureGroupAfterSurfaceIntervall[ 'pressure group
         indexToPressureGroup[i+1] = oldPGroup
         mappingSurfaceTimeToNewPgroup[oldPGroup] = {}
 
+# columnInTable = pressureGroupAfterSurfaceIntervall[column_name]
 for i,column_name in enumerate(pressureGroupAfterSurfaceIntervall):
-    if i == 0:
+    if i == 0: #skip first row
         continue
     for j in range(len(pressureGroupAfterSurfaceIntervall)):
-        if j % 2 != 0:
+        if j % 2 != 0: #skips everysecond row because of time intervall
             continue
         if not pd.isnull(pressureGroupAfterSurfaceIntervall[column_name].iloc[j]):
-            mappingSurfaceTimeToNewPgroup[indexToPressureGroup[j]][str(pressureGroupAfterSurfaceIntervall[column_name].iloc[j])] = column_name
+            mappingSurfaceTimeToNewPgroup[indexToPressureGroup[j]][pressureGroupAfterSurfaceIntervall[column_name].iloc[j]] = column_name
 
-print(mappingSurfaceTimeToNewPgroup)
-    
+oldPG = getPressureGroup(key,time)
+print(oldPG) 
+surfaceTime = datetime.time(0, 30)
+def getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime):
+    adequateTimeIntervall = 0
+    timezones = list(mappingSurfaceTimeToNewPgroup[oldPG].keys())
+    timezones.sort()
+    for i in range(len(timezones)):
+        if surfaceTime < timezones[i]:
+            adequateTimeIntervall = timezones[i-1]
+            break
+    return mappingSurfaceTimeToNewPgroup[oldPG][adequateTimeIntervall]
+
+
+
+
+print(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime))
 
 
