@@ -50,8 +50,8 @@ pressureGroup1stDive = {}
 listPressureGroup1stDive = []
 print(pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'])
 for i in pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group']:
-    # if pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'] != NaN:
-    listPressureGroup1stDive.append(pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'][i])
+    if pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'] !='NaN':
+        listPressureGroup1stDive.append(pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'][i])
 print(listPressureGroup1stDive)
     
 
