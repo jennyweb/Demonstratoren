@@ -17,7 +17,7 @@ for i,column_name in enumerate(dfFindPressureGroup):
         pressureGroup = dfFindPressureGroup[column_name]
 keysInFindPressureGroup.sort(reverse=True)
 
-depthAndTime = [(-29, 8)]
+depthAndTime = [(-34, 13), (0, 42), (-28, 8)]
 
 depth = depthAndTime[0][0]
 time = depthAndTime[0][1]
@@ -43,7 +43,16 @@ def getPressureGroup(key,time):
             pressureGroupforTt = pressureGroup[i]
             return pressureGroupforTt
    
-print(getPressureGroup(key,time))
+# print(getPressureGroup(key,time))
+
+pressureGroupAfterSurfaceIntervall = pd.read_excel(dataPath, sheet_name='get new pressure group')
+pressureGroup1stDive = {}
+listPressureGroup1stDive = []
+print(pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'])
+for i in pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group']:
+    # if pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'] != NaN:
+    listPressureGroup1stDive.append(pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'][i])
+print(listPressureGroup1stDive)
     
 
 
