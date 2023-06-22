@@ -49,9 +49,10 @@ pressureGroupAfterSurfaceIntervall = pd.read_excel(dataPath, sheet_name='get new
 pressureGroup1stDive = {}
 listPressureGroup1stDive = []
 print(pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'])
-for i in pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group']:
-    if pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'] !='NaN':
-        listPressureGroup1stDive.append(pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group'][i])
+for pGroup in pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group']:
+    print(i)
+    if not pGroup pd.isnull(pGroup):
+        listPressureGroup1stDive.append(pGroup)
 print(listPressureGroup1stDive)
     
 
