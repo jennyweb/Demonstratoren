@@ -58,9 +58,12 @@ for i,oldPGroup in enumerate(pressureGroupAfterSurfaceIntervall[ 'pressure group
         mappingSurfaceTimeToNewPgroup[oldPGroup] = {}
 
 for i,column_name in enumerate(pressureGroupAfterSurfaceIntervall):
-    
-    if not pd.isnull(pressureGroupAfterSurfaceIntervall[column_name][i]):
-        mappingSurfaceTimeToNewPgroup[indexToPressureGroup[i]] = {str(pressureGroupAfterSurfaceIntervall[column_name][i]):column_name}
+    if i == 0:
+        continue
+    for j in range(len(pressureGroupAfterSurfaceIntervall)):
+        if not pd.isnull(pressureGroupAfterSurfaceIntervall[column_name].iloc[j]):
+            print(column_name)
+            mappingSurfaceTimeToNewPgroup[indexToPressureGroup[j]] = {str(pressureGroupAfterSurfaceIntervall[column_name].iloc[j]):column_name}
 
 
 print(mappingSurfaceTimeToNewPgroup)
