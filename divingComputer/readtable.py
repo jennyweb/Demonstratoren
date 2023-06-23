@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import csv
+import datetime
 
 currentWorkingDir = os.path.dirname(__file__)
 dataPath = os.path.join(currentWorkingDir, 'diveTableMeters.xlsx')
@@ -45,7 +46,7 @@ def getPressureGroup(key,time):
    
 # print(getPressureGroup(key,time))
 
-import datetime
+
 pressureGroupAfterSurfaceIntervall = pd.read_excel(dataPath, sheet_name='get new pressure group')
 mappingSurfaceTimeToNewPgroup = {} 
 listmappingSurfaceTimeToNewPgroup = []
@@ -80,9 +81,7 @@ def getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime):
             break
     return mappingSurfaceTimeToNewPgroup[oldPG][adequateTimeIntervall]
 
-
-
-
 print(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime))
-
+dfBottomTimeSecondDive = pd.read_excel(dataPath, sheet_name='max bottom time 2nd divegit')
+print(dfBottomTimeSecondDive)
 
