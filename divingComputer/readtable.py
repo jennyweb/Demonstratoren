@@ -82,6 +82,6 @@ def getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime):
     return mappingSurfaceTimeToNewPgroup[oldPG][adequateTimeIntervall]
 
 print(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime))
-dfBottomTimeSecondDive = pd.read_excel(dataPath, sheet_name='max bottom time 2nd divegit')
+dfBottomTimeSecondDive = pd.read_excel(dataPath, sheet_name='max bottom time 2nd dive')
 print(dfBottomTimeSecondDive)
 
