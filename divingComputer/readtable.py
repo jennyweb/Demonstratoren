@@ -83,5 +83,21 @@ def getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime):
 
 print(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime))
 dfBottomTimeSecondDive = pd.read_excel(dataPath, sheet_name='max bottom time 2nd dive')
-print(dfBottomTimeSecondDive)
+residualNitrogenTime = {}
+maxBottomTime = {}
+oldPGInBottomTime = []
+depthsfor2ndDive = []
+for i,column_name in enumerate(dfBottomTimeSecondDive):
+    if i > 0:
+        keyPG = column_name
+        oldPGInBottomTime.append(keyPG)
+for i,depth2ndDive in enumerate(dfBottomTimeSecondDive['depth in m pressure group at the end of surface intervall']):
+    if not pd.isnull(depth2ndDive):
+        depth2ndDive = float(f'{float(depth2ndDive):1.02f}')
+        depthsfor2ndDive.append(depth2ndDive)
+
+# for i in range(len())
+
+
+print(keysInBottomTime, depthsfor2ndDive)
 
