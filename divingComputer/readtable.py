@@ -101,18 +101,29 @@ for i,depth2ndDive in enumerate(dfBottomTimeSecondDive['depth in m pressure grou
         depthsfor2ndDive.append(depth2ndDive)
         indexBottomTime[i+1] =depth2ndDive
         indexResNitrogen[i] = depth2ndDive
+depthsfor2ndDive.sort()
 for i, column_name in enumerate(dfBottomTimeSecondDive):
     if i == 0:
         continue
+    counter = 1
+    counterN2 = 0
     for j in range(len(depthsfor2ndDive)):
-        if j % 2 != 0:
+            
             if not pd.isnull(dfBottomTimeSecondDive[column_name].iloc[j]):
-                maxBottomTime[column_name][depthsfor2ndDive[j]] = dfBottomTimeSecondDive[column_name].iloc[j]
-        else:
+                maxBottomTime[column_name][depthsfor2ndDive[j]] = dfBottomTimeSecondDive[column_name].iloc[counter]
+            counter += 2
             if not pd.isnull(dfBottomTimeSecondDive[column_name].iloc[j]):
-                residualNitrogenTime[column_name][depthsfor2ndDive[j]] = dfBottomTimeSecondDive[column_name].iloc[j]
+                residualNitrogenTime[column_name][depthsfor2ndDive[j]] = dfBottomTimeSecondDive[column_name].iloc[counterN2]
+            counterN2 += 2
 
+def getMaxBottomTime(currenPG, desiredDivingDepth):
+    for i in range(len(depthsfor2ndDive)):
 
+        if desiredDivingDepth < depthsfor2ndDive[i]:
+            desiredDivingDEpthGroup = depthsfor2ndDive[i]
+            break
+    maximumBottomTime = maxBottomTime[currenPG][desiredDivingDEpthGroup]
+    return maximumBottomTime
 
-print(residualNitrogenTime)
+print(getMaxBottomTime('C', 14))
 
