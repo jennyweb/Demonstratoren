@@ -94,31 +94,25 @@ for i,column_name in enumerate(dfBottomTimeSecondDive):
         keyPG = column_name
         oldPGInBottomTime.append(keyPG)
         maxBottomTime[column_name] = {}
-print(maxBottomTime)
+        residualNitrogenTime[column_name] = {}
 for i,depth2ndDive in enumerate(dfBottomTimeSecondDive['depth in m pressure group at the end of surface intervall']):
     if not pd.isnull(depth2ndDive):
         depth2ndDive = float(f'{float(depth2ndDive):1.02f}')
         depthsfor2ndDive.append(depth2ndDive)
         indexBottomTime[i+1] =depth2ndDive
         indexResNitrogen[i] = depth2ndDive
-print(depthsfor2ndDive)
 for i, column_name in enumerate(dfBottomTimeSecondDive):
     if i == 0:
         continue
     for j in range(len(depthsfor2ndDive)):
         if j % 2 != 0:
             if not pd.isnull(dfBottomTimeSecondDive[column_name].iloc[j]):
-        # a= maxBottomTime[column_name][depthsfor2ndDive[j]]= 0
-        # print(dfBottomTimeSecondDive[column_name].iloc[j])
                 maxBottomTime[column_name][depthsfor2ndDive[j]] = dfBottomTimeSecondDive[column_name].iloc[j]
-    # for j in range(len(oldPGInBottomTime)+1):
-    #     if j % 2 == 0:
-    #         continue
-    #     if not pd.isnull(dfBottomTimeSecondDive[column_name].iloc[j]):
-    #         print(maxBottomTime[column_name[j]])
-    #         maxBottomTime[column_name[j]][dfBottomTimeSecondDive[indexBottomTime[j]]] = dfBottomTimeSecondDive[column_name].iloc[j]
+        else:
+            if not pd.isnull(dfBottomTimeSecondDive[column_name].iloc[j]):
+                residualNitrogenTime[column_name][depthsfor2ndDive[j]] = dfBottomTimeSecondDive[column_name].iloc[j]
 
 
 
-print(maxBottomTime)
+print(residualNitrogenTime)
 
