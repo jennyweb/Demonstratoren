@@ -1,7 +1,10 @@
-https://www.a1scubadiving.com/wp-content/uploads/2018/06/PADI-Recreational-Dive-Table-Planner.pdf
+
+
+![table1: pressure group after dive1](/divingComputer/Visualizations/table1.png)
 
 
 
+![table2: pressure group after surface time](/divingComputer/Visualizations/table2SurfaceTime.png)
 
-![Alt text](/divingComputer/Visualizations/table2SurfaceTime.png)
-![table 3](/divingComputer/Visualizations/table3MaxBottomTime.png)
+
+![table3: maximum bottom time after surface intervall](/divingComputer/Visualizations/table3MaxBottomTime.png)
