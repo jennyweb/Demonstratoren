@@ -3,4 +3,5 @@ https://www.a1scubadiving.com/wp-content/uploads/2018/06/PADI-Recreational-Dive-
 
 
 
-[Alt text](Visualizations\table3MaxBottomTime.png)![Alt text](table3MaxBottomTime-3.png)
+
+![Alt text](/divingComputer/Visualizations/table3MaxBottomTime.png)
