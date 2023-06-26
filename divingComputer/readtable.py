@@ -12,7 +12,7 @@ dataPath = os.path.join(currentWorkingDir, 'diveTableMeters.xlsx')
 def getDiveProfile(): 
     depth = [0]
     time = [0]
-    np.random.seed(4297)
+    np.random.seed(497)
     depthNp = np.random.randint(-42,-10, 1).tolist()
     timeNp = np.random.randint(5,40, 1).tolist()
     surfaceTime = np.random.randint(10,70,1).tolist()
@@ -79,10 +79,11 @@ for i,column_name in enumerate(dfFindPressureGroup):
         pressureGroup = dfFindPressureGroup[column_name]
 keysInFindPressureGroup.sort(reverse=True)
 
-depthAndTime = [(-34, 13), (0, 42), (-28, 8)]
+depthAndTime = getDiveProfile()
 
 depth = depthAndTime[0][0]
 time = depthAndTime[0][1]
+print(depth, time)
 
 def getKeyForDepth(depth):
     if depth > keysInFindPressureGroup[0]:
@@ -105,7 +106,7 @@ def getPressureGroup(key,time):
             pressureGroupforTt = pressureGroup[i]
             return pressureGroupforTt
    
-# print(getPressureGroup(key,time))
+print(getPressureGroup(key,time))
 
 # reading in data from table 2: Pressure group after surface intervall
 pressureGroupAfterSurfaceIntervall = pd.read_excel(dataPath, sheet_name='get new pressure group')
@@ -129,8 +130,15 @@ for i,column_name in enumerate(pressureGroupAfterSurfaceIntervall):
             mappingSurfaceTimeToNewPgroup[indexToPressureGroup[j]][pressureGroupAfterSurfaceIntervall[column_name].iloc[j]] = column_name
 
 oldPG = getPressureGroup(key,time)
-print(oldPG) 
-surfaceTime = datetime.time(0, 30)
+
+if depthAndTime[1][1] > 59:
+    hour, minutes= divmod(depthAndTime[1][1], 60)
+else:
+    hour = 0
+    minutes = depthAndTime[1][1]
+
+surfaceTime = datetime.time(hour,minutes)
+
 def getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime):
     adequateTimeIntervall = 0
     timezones = list(mappingSurfaceTimeToNewPgroup[oldPG].keys())
@@ -192,4 +200,4 @@ print(getMaxBottomTime('C', 14))
 
 
 
-print(getDiveProfile(1))
+print(getDiveProfile())
