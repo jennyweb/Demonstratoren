@@ -17,9 +17,6 @@ When spending time at the surface the body gets rid of some of the excessive nit
 
 ![table2: pressure group after surface time](/divingComputer/Visualizations/table2SurfaceTime.png)
 
-
+The following third table gives the maximum time one can spend at a desired depth. The first row shows the depths and the first column the pressure groups after the 1st dive. By finding the intersection of desired depth and new pressure group one can find the maximum bottom time at that depth (bootom row) and the residual nitrogen time (top row). 
+By adding bottom time and  residual nitrogen time the  total bottom time can be calculated and the first table can be used again to calculate the pressure group after the 2nd dive.
 ![table3: maximum bottom time after surface intervall](/divingComputer/Visualizations/table3MaxBottomTime.png)
-
-
-give pressure group at the end of 2nd dive  = res N + bottom time 
-table 1
