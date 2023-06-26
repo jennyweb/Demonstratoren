@@ -4,6 +4,12 @@ In this project the goal is to read in and work with data from .xlsx tables usin
 
 # Dive Theory
 
+Dive tabels or computers are used to determine the time you can stay under water at a certain depth without the neccessity to make a decompression stop when heading back to the surface.
+The pressure increases the deeper we dive and so does the absorbtion of nitrogen into the human body. The surface time is used to get rid of excessive nitrogen in the body and to minimize the rirk of decompression sickness.
+
+
+If the depth of your dive is not shown in the table, use the next greater depth.
+If the time of your dive is not shown in the table, use the next greater time.
 
 ![table1: pressure group after dive1](/divingComputer/Visualizations/table1.png)
 
@@ -13,3 +19,7 @@ In this project the goal is to read in and work with data from .xlsx tables usin
 
 
 ![table3: maximum bottom time after surface intervall](/divingComputer/Visualizations/table3MaxBottomTime.png)
+
+
+give pressure group at the end of 2nd dive  = res N + bottom time 
+table 1
