@@ -4,6 +4,7 @@ import numpy as np
 import os
 
 currentWorkingDir = os.path.dirname(__file__)
+np.random.seed(4297)
 
 def getDiveProfile(x): 
     depth = [0]
@@ -36,10 +37,8 @@ def getDiveProfile(x):
     filename = f'divingprofile_{maxDepth}'
     visualizeDivingProfile(time,depth, filename)
     dataForDiveComputerDepthTime = []
-    for i in range(len(time)):
-        if i == 0:
-            dataForDiveComputerDepthTime.append((depth[i],time[i]))
-        elif i % 2 == 0:
+    for i in range(2,len(time)):
+        if i % 2 == 0:
             dataForDiveComputerDepthTime.append((depth[i],(time[i]-time[i-1])))
     writeDataForDivingComputer(dataForDiveComputerDepthTime, filename)
     return dataForDiveComputerDepthTime
