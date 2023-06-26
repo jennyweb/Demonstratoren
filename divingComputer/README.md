@@ -7,9 +7,9 @@ In this project the goal is to read in and work with data from .xlsx tables usin
 Dive tabels or computers are used to determine the time you can stay under water at a certain depth without the neccessity to make a decompression stop when heading back to the surface.
 The pressure increases the deeper we dive and so does the absorbtion of nitrogen into the human body. The surface time is used to get rid of excessive nitrogen in the body and to minimize the rirk of decompression sickness.
 
-
-If the depth of your dive is not shown in the table, use the next greater depth.
-If the time of your dive is not shown in the table, use the next greater time.
+The following tableis used to determine the pressure group after the first dive of the day. The first row gives the maximum depth of the dive.
+If the depth of the dive is not shown in the table, the next greater depth is used. The desired time at that depth can be found in the column below.
+If the time is not shown, the next greater time is used for the calculation. Following the row to the left, we get the pressure group after the first dive.
 
 ![table1: pressure group after dive1](/divingComputer/Visualizations/table1.png)
 
