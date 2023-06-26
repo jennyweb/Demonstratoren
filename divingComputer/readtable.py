@@ -187,17 +187,21 @@ for i, column_name in enumerate(dfBottomTimeSecondDive):
             counterN2 += 2
 
 def getMaxBottomTime(currenPG, desiredDivingDepth):
+    desiredDivingDepthGroup = None
+    maximumBottomTime = 0
     for i in range(len(depthsfor2ndDive)):
-
-        if desiredDivingDepth < depthsfor2ndDive[i]:
-            desiredDivingDEpthGroup = depthsfor2ndDive[i]
+        print(depthsfor2ndDive)
+        if abs(desiredDivingDepth) < depthsfor2ndDive[i]:
+            desiredDivingDepthGroup = depthsfor2ndDive[i]
+            print(desiredDivingDepthGroup)
             break
-    maximumBottomTime = maxBottomTime[currenPG][desiredDivingDEpthGroup]
+    maximumBottomTime = maxBottomTime[currenPG][desiredDivingDepthGroup]
     return maximumBottomTime
 
-print(getMaxBottomTime('C', 14))
+print(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime))
+print(depthAndTime[2][0])
+print(getMaxBottomTime(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime), depthAndTime[2][0]))
 
 
 
 
-print(getDiveProfile())
