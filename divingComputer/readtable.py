@@ -5,26 +5,44 @@ import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 
+np.random.seed(497)
+
 currentWorkingDir = os.path.dirname(__file__)
 dataPath = os.path.join(currentWorkingDir, 'diveTableMeters.xlsx')
 
+##############################
 # creating random dive profile
+##############################
 
+# start at surface
 depth = [0]
 time = [0]
-np.random.seed(497)
+
+# choose first bottom time
 depthNp = np.random.randint(-42,-10, 1).tolist()
 timeNp = np.random.randint(5,40, 1).tolist()
 surfaceTime = np.random.randint(10,70,1).tolist()
 maxDepthSecondDive = depthNp[0]
+
+# limit first bottom time to maximum first depth. 
 depthSecondDive = np.random.randint(maxDepthSecondDive,-10, 1).tolist()
+
+# add bottom time
 for i in range(2):
     depth.append(depthNp[0])
+
+# add surface time
 for i in range(2):
     depth.append(0)
+
+# add second bottom time
 for i in range(2):
     depth.append(depthSecondDive[0])
+
+# go to surface again
 depth.append(0)
+
+# estimate that changes in depths happen within one minute
 for i in range(len(timeNp)):
     time.append(time[-1]+1)
     time.append(timeNp[0]+time[-1])
@@ -40,13 +58,10 @@ for i in range(2,len(time)):
 
 # visualization of dive profile and pressure groups
 def visualizeDivingProfile(time,depth,filename):    
-    # plt.plot(time,depth)
-    x= time
-    y = depth
     fig, ax = plt.subplots(figsize=(9, 6))
-    ax.plot(x, y, color = 'green',lw=2)
+    ax.plot(time, depth, color = 'green',lw=2)
     plt.title(filename)
-    plt.xlabel('time in s')
+    plt.xlabel('time in min')
     plt.ylabel('depth in m')
     ax.annotate(f'PG1 = {oldPG}', xy=(time[2], 0.25), color= 'blue')
     ax.annotate(f'PG2 = {currenPG}', xy=(time[4]-3,0.25), color= 'blue')
