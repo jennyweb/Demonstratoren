@@ -182,22 +182,22 @@ def getMaxBottomTime(currenPG, desiredDivingDepth):
     for i in range(len(depthsfor2ndDive)):
         if abs(desiredDivingDepth[0]) < depthsfor2ndDive[i]:
             desiredDivingDepthGroup = depthsfor2ndDive[i]
-            print(desiredDivingDepthGroup, i)
             break
     maximumBottomTime = maxBottomTime[currenPG][desiredDivingDepthGroup]
+    resN2Time = residualNitrogenTime[currenPG][desiredDivingDepthGroup]
     time.append(int(time[-1]+maximumBottomTime))
     time.append(time[-1]+1)
-    return maximumBottomTime, time
+    return maximumBottomTime, time, resN2Time
 
-# def getPressureGroupAfter2ndDive(maximumBottomTime):
+def getPressureGroupAfter2ndDive(maximumBottomTime, resN2Time):
+    totalBottomTime = maximumBottomTime + resN2Time
+    key2ndDive = getKeyForDepth(desiredDepth2ndDive[0])
+    PG3 = getPressureGroup(key2ndDive,totalBottomTime)
+    return PG3
 
-
-# add residual nitrogen time and max bottom time to get new pressure group
-
-print(depth, time)
 currenPG = getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime)
-maximumBottomTime, time = getMaxBottomTime(currenPG, desiredDepth2ndDive)
-# PG3 = getPressureGroup(key,maximumBottomTime)
+maximumBottomTime, time, resN2Time = getMaxBottomTime(currenPG, desiredDepth2ndDive)
+PG3 = getPressureGroupAfter2ndDive(maximumBottomTime, resN2Time)
 filename = f'divingprofile_{depthAndTime[0][0]}'
 visualizeDivingProfile(time,depth, filename)
 writeDataForDivingComputer(depthAndTime, filename)
