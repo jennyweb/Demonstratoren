@@ -22,5 +22,6 @@ By adding bottom time and  residual nitrogen time the  total bottom time can be 
 ![table3: maximum bottom time after surface intervall](/divingComputer/Visualizations/table3MaxBottomTime.png)
 
 # Example and Result
-The following images shows a diving profile of a repetitive dive. On the first dive the diver reaches a depth of 30 m and stays there for 19 min. Resulting in  pressure group N (PG1 = N). She stays at the surface for 42 min which reduces her pressure group to G (PG2 = G). On the second dive the diver wants to dive to a depth of 25 m. The maximum time she can spend at this depth is 12 min which will result in pressure group Q (PG3 = Q)
+The following images shows a diving profile of a repetitive dive. On the first dive the diver reaches a depth of 30 m and stays there for 19 min. Resulting in  pressure group N (PG1 = N). She stays at the surface for 42 min which reduces her pressure group to G (PG2 = G). On the second dive the diver wants to dive to a depth of 25 m. The maximum time she can spend at this depth is 12 min which will result in pressure group Q (PG3 = Q).
+
 ![Alt text](/divingComputer/Visualizations/divingprofile_-30.png)
