@@ -50,7 +50,7 @@ def visualizeDivingProfile(time,depth,filename):
     plt.ylabel('depth in m')
     ax.annotate(f'PG1 = {oldPG}', xy=(time[2], 0.25))
     ax.annotate(f'PG2 = {currenPG}', xy=(time[4],0.25))
-    # ax.annotate(f'PG3 = {currenPG}', xy=(time[4],0.25))
+    ax.annotate(f'PG3 = {PG3}', xy=(time[6],0.25))
     plt.savefig(os.path.join(currentWorkingDir, f'{filename}.png'))
     plt.close()
 
