@@ -9,42 +9,35 @@ currentWorkingDir = os.path.dirname(__file__)
 dataPath = os.path.join(currentWorkingDir, 'diveTableMeters.xlsx')
 
 # creating random dive profile
-def getDiveProfile(): 
-    depth = [0]
-    time = [0]
-    np.random.seed(497)
-    depthNp = np.random.randint(-42,-10, 1).tolist()
-    timeNp = np.random.randint(5,40, 1).tolist()
-    surfaceTime = np.random.randint(10,70,1).tolist()
-    maxDepthSecondDive = depthNp[0]
-    depthSecondDive = np.random.randint(maxDepthSecondDive,-10, 1).tolist()
-    timeNpSecondDive = np.random.randint(5,30, 1).tolist()
-    for i in range(2):
-        depth.append(depthNp[0])
-    for i in range(2):
-        depth.append(0)
-    for i in range(2):
-        depth.append(depthSecondDive[0])
-    depth.append(0)
-    for i in range(len(timeNp)):
-        time.append(time[-1]+1)
-        time.append(timeNp[0]+time[-1])
-    time.append(time[-1]+1)
-    time.append(time[-1] +surfaceTime[0])
-    time.append(time[-1]+1)
-    time.append(timeNpSecondDive[0]+ time[-1])
-    time.append(time[-1]+1)
 
-    maxDepth = min(depth)
-    
-    filename = f'divingprofile_{maxDepth}'
-    visualizeDivingProfile(time,depth, filename)
-    dataForDiveComputerDepthTime = []
-    for i in range(2,len(time)):
-        if i % 2 == 0:
-            dataForDiveComputerDepthTime.append((depth[i],(time[i]-time[i-1])))
-    writeDataForDivingComputer(dataForDiveComputerDepthTime, filename)
-    return dataForDiveComputerDepthTime
+depth = [0]
+time = [0]
+np.random.seed(497)
+depthNp = np.random.randint(-42,-10, 1).tolist()
+timeNp = np.random.randint(5,40, 1).tolist()
+surfaceTime = np.random.randint(10,70,1).tolist()
+maxDepthSecondDive = depthNp[0]
+depthSecondDive = np.random.randint(maxDepthSecondDive,-10, 1).tolist()
+for i in range(2):
+    depth.append(depthNp[0])
+for i in range(2):
+    depth.append(0)
+for i in range(2):
+    depth.append(depthSecondDive[0])
+depth.append(0)
+for i in range(len(timeNp)):
+    time.append(time[-1]+1)
+    time.append(timeNp[0]+time[-1])
+time.append(time[-1]+1)
+time.append(time[-1] +surfaceTime[0])
+time.append(time[-1]+1)
+
+dataForDiveComputerDepthTime = []
+for i in range(2,len(time)):
+    if i % 2 == 0:
+        dataForDiveComputerDepthTime.append((depth[i],(time[i]-time[i-1])))
+
+
 
 
 # visualization of dive profile and pressure groups
@@ -64,8 +57,6 @@ def writeDataForDivingComputer(dataForDiveComputerDepthTime,filename):
             fout.write(f'{dataForDiveComputerDepthTime[i]}\n')
     
 
-print(getDiveProfile())
-
 # reading in data from table 1: Pressure group after first dive
 findPressureGroup = {}
 dfFindPressureGroup = pd.read_excel(dataPath, sheet_name='find pressure group (meter)')
@@ -79,10 +70,10 @@ for i,column_name in enumerate(dfFindPressureGroup):
         pressureGroup = dfFindPressureGroup[column_name]
 keysInFindPressureGroup.sort(reverse=True)
 
-depthAndTime = getDiveProfile()
-
-depth = depthAndTime[0][0]
-time = depthAndTime[0][1]
+depthAndTime = dataForDiveComputerDepthTime
+desiredDepth2ndDive = depthSecondDive
+# depth = depthAndTime[0][0]
+# time = depthAndTime[0][1]
 print(depth, time)
 
 def getKeyForDepth(depth):
@@ -96,7 +87,7 @@ def getKeyForDepth(depth):
     return keysInFindPressureGroup[-1]
     
 
-key = getKeyForDepth(depth)
+key = getKeyForDepth(depthAndTime[0][0])
 
 def getPressureGroup(key,time):
     pressureGroupforTt = None
@@ -106,7 +97,7 @@ def getPressureGroup(key,time):
             pressureGroupforTt = pressureGroup[i]
             return pressureGroupforTt
    
-print(getPressureGroup(key,time))
+print(getPressureGroup(key,depthAndTime[0][1]))
 
 # reading in data from table 2: Pressure group after surface intervall
 pressureGroupAfterSurfaceIntervall = pd.read_excel(dataPath, sheet_name='get new pressure group')
@@ -129,7 +120,7 @@ for i,column_name in enumerate(pressureGroupAfterSurfaceIntervall):
         if not pd.isnull(pressureGroupAfterSurfaceIntervall[column_name].iloc[j]):
             mappingSurfaceTimeToNewPgroup[indexToPressureGroup[j]][pressureGroupAfterSurfaceIntervall[column_name].iloc[j]] = column_name
 
-oldPG = getPressureGroup(key,time)
+oldPG = getPressureGroup(key,depthAndTime[0][1])
 
 if depthAndTime[1][1] > 59:
     hour, minutes= divmod(depthAndTime[1][1], 60)
@@ -190,17 +181,19 @@ def getMaxBottomTime(currenPG, desiredDivingDepth):
     desiredDivingDepthGroup = None
     maximumBottomTime = 0
     for i in range(len(depthsfor2ndDive)):
-        print(depthsfor2ndDive)
-        if abs(desiredDivingDepth) < depthsfor2ndDive[i]:
+        if abs(desiredDivingDepth[0]) < depthsfor2ndDive[i]:
             desiredDivingDepthGroup = depthsfor2ndDive[i]
             print(desiredDivingDepthGroup)
             break
     maximumBottomTime = maxBottomTime[currenPG][desiredDivingDepthGroup]
-    return maximumBottomTime
+    time.append(int(time[-1]+maximumBottomTime))
+    time.append(time[-1]+1)
+    return maximumBottomTime, time
 
-print(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime))
-print(depthAndTime[2][0])
-print(getMaxBottomTime(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime), depthAndTime[2][0]))
+maximumBottomTime, time = getMaxBottomTime(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime), desiredDepth2ndDive)
+filename = f'divingprofile_{depthAndTime[0][0]}'
+visualizeDivingProfile(time,depth, filename)
+writeDataForDivingComputer(depthAndTime, filename)
 
 
 
