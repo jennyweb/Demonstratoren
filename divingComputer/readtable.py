@@ -72,9 +72,6 @@ keysInFindPressureGroup.sort(reverse=True)
 
 depthAndTime = dataForDiveComputerDepthTime
 desiredDepth2ndDive = depthSecondDive
-# depth = depthAndTime[0][0]
-# time = depthAndTime[0][1]
-print(depth, time)
 
 def getKeyForDepth(depth):
     if depth > keysInFindPressureGroup[0]:
