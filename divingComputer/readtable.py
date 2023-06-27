@@ -43,14 +43,17 @@ def visualizeDivingProfile(time,depth,filename):
     # plt.plot(time,depth)
     x= time
     y = depth
-    fig, ax = plt.subplots(figsize=(12, 9))
-    ax.plot(x, y, lw=2)
+    fig, ax = plt.subplots(figsize=(9, 6))
+    ax.plot(x, y, color = 'green',lw=2)
     plt.title(filename)
     plt.xlabel('time in s')
     plt.ylabel('depth in m')
-    ax.annotate(f'PG1 = {oldPG}', xy=(time[2], 0.25))
-    ax.annotate(f'PG2 = {currenPG}', xy=(time[4],0.25))
-    ax.annotate(f'PG3 = {PG3}', xy=(time[6],0.25))
+    ax.annotate(f'PG1 = {oldPG}', xy=(time[2], 0.25), color= 'blue')
+    ax.annotate(f'PG2 = {currenPG}', xy=(time[4]-3,0.25), color= 'blue')
+    ax.annotate(f'PG3 = {PG3}', xy=(time[6]-3,0.25), color= 'blue')
+    ax.annotate(f'BT = {depthAndTime[0][1]} min', xy=(time[1]+1,depth[1]+0.25), color= 'orange')
+    ax.annotate(f'ST = {depthAndTime[1][1]} min', xy=(time[4]/2,depth[3]+0.25), color= 'orange')
+    ax.annotate(f'BT = {int(maximumBottomTime)} min', xy=(time[5]+1,depth[5]+0.25), color= 'orange')
     plt.savefig(os.path.join(currentWorkingDir, f'{filename}.png'))
     plt.close()
 
