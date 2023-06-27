@@ -38,14 +38,19 @@ for i in range(2,len(time)):
         dataForDiveComputerDepthTime.append((depth[i],(time[i]-time[i-1])))
 
 
-
-
 # visualization of dive profile and pressure groups
 def visualizeDivingProfile(time,depth,filename):    
-    plt.plot(time,depth)
+    # plt.plot(time,depth)
+    x= time
+    y = depth
+    fig, ax = plt.subplots(figsize=(12, 9))
+    ax.plot(x, y, lw=2)
     plt.title(filename)
     plt.xlabel('time in s')
     plt.ylabel('depth in m')
+    ax.annotate(f'PG1 = {oldPG}', xy=(time[2], 0.25))
+    ax.annotate(f'PG2 = {currenPG}', xy=(time[4],0.25))
+    # ax.annotate(f'PG3 = {currenPG}', xy=(time[4],0.25))
     plt.savefig(os.path.join(currentWorkingDir, f'{filename}.png'))
     plt.close()
 
@@ -93,8 +98,6 @@ def getPressureGroup(key,time):
         if minutesInCertainDepth[i] >= time:
             pressureGroupforTt = pressureGroup[i]
             return pressureGroupforTt
-   
-print(getPressureGroup(key,depthAndTime[0][1]))
 
 # reading in data from table 2: Pressure group after surface intervall
 pressureGroupAfterSurfaceIntervall = pd.read_excel(dataPath, sheet_name='get new pressure group')
@@ -137,7 +140,6 @@ def getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime):
             break
     return mappingSurfaceTimeToNewPgroup[oldPG][adequateTimeIntervall]
 
-print(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime))
 
 # reading in data from table 3: Maximum bottom time at desired depth
 dfBottomTimeSecondDive = pd.read_excel(dataPath, sheet_name='max bottom time 2nd dive')
@@ -180,14 +182,22 @@ def getMaxBottomTime(currenPG, desiredDivingDepth):
     for i in range(len(depthsfor2ndDive)):
         if abs(desiredDivingDepth[0]) < depthsfor2ndDive[i]:
             desiredDivingDepthGroup = depthsfor2ndDive[i]
-            print(desiredDivingDepthGroup)
+            print(desiredDivingDepthGroup, i)
             break
     maximumBottomTime = maxBottomTime[currenPG][desiredDivingDepthGroup]
     time.append(int(time[-1]+maximumBottomTime))
     time.append(time[-1]+1)
     return maximumBottomTime, time
 
-maximumBottomTime, time = getMaxBottomTime(getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime), desiredDepth2ndDive)
+# def getPressureGroupAfter2ndDive(maximumBottomTime):
+
+
+# add residual nitrogen time and max bottom time to get new pressure group
+
+print(depth, time)
+currenPG = getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime)
+maximumBottomTime, time = getMaxBottomTime(currenPG, desiredDepth2ndDive)
+# PG3 = getPressureGroup(key,maximumBottomTime)
 filename = f'divingprofile_{depthAndTime[0][0]}'
 visualizeDivingProfile(time,depth, filename)
 writeDataForDivingComputer(depthAndTime, filename)
