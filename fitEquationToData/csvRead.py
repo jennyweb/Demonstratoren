@@ -62,8 +62,7 @@ def interfaceToGetDeviation(µ,sigma):
 
 print(interfaceToGetDeviation(µ,sigma))
 
-print(scipy.optimize.minimize(interfaceToGetDeviation, x0 = µ, args= ( sigma), method='Nelder-Mead'))
-
+result = scipy.optimize.minimize(interfaceToGetDeviation, x0 = [µ], args= ( sigma), method='Nelder-Mead')
 class vector:
     def __init__(self,values) -> None:
         self.values = values
