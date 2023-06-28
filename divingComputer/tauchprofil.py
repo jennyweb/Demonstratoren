@@ -6,7 +6,7 @@ import os
 currentWorkingDir = os.path.dirname(__file__)
 np.random.seed(4297)
 
-def getDiveProfile(x): 
+def getDiveProfile(): 
     depth = [0]
     time = [0]
     depthNp = np.random.randint(-42,-10, 1).tolist()
@@ -31,7 +31,6 @@ def getDiveProfile(x):
     time.append(timeNpSecondDive[0]+ time[-1])
     time.append(time[-1]+1)
 
-    print(depth, time)
     maxDepth = min(depth)
     
     filename = f'divingprofile_{maxDepth}'
