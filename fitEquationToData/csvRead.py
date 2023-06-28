@@ -24,10 +24,8 @@ for i in range(len(accumulatedVolumeFrequency)):
         if accumulatedVolumeFrequency[i] != 0:
             xmin = sizeDistribution[i-4]
             break
-sigma = 0.2
-µ = np.log(40)-0.5*sigma**2
 
-def getDeviation(µ, sigma, imageCounter, drawImage= False):
+def computeLognormDistribution(µ,sigma):
     lognormDistribution = []
     for i in range(len(sizeDistribution)):
         x = (1./(sigma * sizeDistribution[i] * np.sqrt(2* np.pi))) * np.exp(-((np.log(sizeDistribution[i])-µ)**2)/(2*sigma**2))
@@ -36,9 +34,22 @@ def getDeviation(µ, sigma, imageCounter, drawImage= False):
     lognormDistribution = np.array(lognormDistribution)
     lognormDistribution *= 100./np.sum(lognormDistribution)
 
+    return lognormDistribution
+
+
+
+def getDeviation(µ, sigma, imageCounter, drawImage= False):
+
+    lognormDistribution = computeLognormDistribution(µ, sigma)
+    
+
     if drawImage == True:
+
+        # compute scipy solution
+        lognormScipySolution = computeLognormDistribution(µSciPy, sigmaScipy)
         plt.plot(sizeDistribution, volumeFrequency, color = 'blue', label = 'data')
-        plt.plot(sizeDistribution, lognormDistribution, color ='green', label = 'lognormDistribution')
+        plt.plot(sizeDistribution, lognormDistribution, color ='green', label = 'fit')
+        plt.plot(sizeDistribution, lognormScipySolution, color ='black', label = 'SciPy')
         plt.legend(loc='upper left')
         plt.xscale('log')
         plt.xlim([xmin,xmax])
@@ -53,16 +64,27 @@ def getDeviation(µ, sigma, imageCounter, drawImage= False):
         deviation += abs(volumeFrequency[i] - lognormDistribution[i])
     return deviation
 
-
-getDeviation(µ, sigma, 0)
-
-def interfaceToGetDeviation(µ,sigma):
+def interfaceToGetDeviation(argIn):
+    µ, sigma = argIn[0], argIn[1]
     deviation = getDeviation(µ,sigma, imageCounter=0, drawImage=False)
     return deviation
 
-print(interfaceToGetDeviation(µ,sigma))
 
+<<<<<<< HEAD
 result = scipy.optimize.minimize(interfaceToGetDeviation, x0 = [µ], args= ( sigma), method='Nelder-Mead')
+=======
+# initial guess
+sigma = 0.2
+µ = np.log(40)-0.5*sigma**2
+
+
+# retrieve scipy solution
+result = scipy.optimize.minimize(interfaceToGetDeviation, x0 = [µ, sigma],  method='Nelder-Mead')
+µSciPy, sigmaScipy = result.x[0], result.x[1]
+
+getDeviation(µ, sigma, imageCounter=0, drawImage=True)
+
+>>>>>>> 93bb1a3c31fab8ee8001a7456d5b6a61629053c6
 class vector:
     def __init__(self,values) -> None:
         self.values = values
@@ -110,5 +132,3 @@ class vector:
 
 
 
-v = vector([1,3,2])
-print(v.vectorLength())
