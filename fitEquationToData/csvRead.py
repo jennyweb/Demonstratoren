@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import os, shutil
+import scipy
 
 currentWorkingDir = os.path.dirname(__file__)
 dataPath = os.path.join(currentWorkingDir, 'sizeDistribution.xlsx')
@@ -59,6 +60,9 @@ def interfaceToGetDeviation(µ,sigma):
     deviation = getDeviation(µ,sigma, imageCounter=0, drawImage=False)
     return deviation
 
+print(interfaceToGetDeviation(µ,sigma))
+
+print(scipy.optimize.minimize(interfaceToGetDeviation, x0 = µ, args= ( sigma), method='Nelder-Mead'))
 
 class vector:
     def __init__(self,values) -> None:
