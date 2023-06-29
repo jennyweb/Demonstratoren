@@ -106,7 +106,6 @@ def getKeyForDepth(depth):
             return key
     return keysInFindPressureGroup[-1]
     
-
 key = getKeyForDepth(depthAndTime[0][0])
 
 def getPressureGroup(key,time):
@@ -116,6 +115,8 @@ def getPressureGroup(key,time):
         if minutesInCertainDepth[i] >= time:
             pressureGroupforTt = pressureGroup[i]
             return pressureGroupforTt
+        else:
+            return 'safety stop required'
 
 # reading in data from table 2: Pressure group after surface intervall
 pressureGroupAfterSurfaceIntervall = pd.read_excel(dataPath, sheet_name='get new pressure group')
