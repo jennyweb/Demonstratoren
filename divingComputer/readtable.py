@@ -116,6 +116,7 @@ def getPressureGroup(key,time):
             pressureGroupforTt = pressureGroup[i]
             return pressureGroupforTt
         else:
+            #hier gleich den plot einfügen? die visualize funktion würde allerdings einen error geben, neue visualize for long divemachen?
             return 'safety stop required'
 
 # reading in data from table 2: Pressure group after surface intervall
