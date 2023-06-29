@@ -69,10 +69,6 @@ def interfaceToGetDeviation(argIn):
     deviation = getDeviation(µ,sigma, imageCounter=0, drawImage=False)
     return deviation
 
-
-<<<<<<< HEAD
-result = scipy.optimize.minimize(interfaceToGetDeviation, x0 = [µ], args= ( sigma), method='Nelder-Mead')
-=======
 # initial guess
 sigma = 0.2
 µ = np.log(40)-0.5*sigma**2
@@ -84,7 +80,6 @@ result = scipy.optimize.minimize(interfaceToGetDeviation, x0 = [µ, sigma],  met
 
 getDeviation(µ, sigma, imageCounter=0, drawImage=True)
 
->>>>>>> 93bb1a3c31fab8ee8001a7456d5b6a61629053c6
 class vector:
     def __init__(self,values) -> None:
         self.values = values
@@ -131,4 +126,48 @@ class vector:
 
 
 
+# Nelder Mead
+u = (x1,y1)
+v = (x2,y2)
+w = (x3,y3)
+simplex = [u, v, w]
+u < v < w
+# dreieck aufbauen zw u, v, w
+vektorUV = vector(x2-x1,y2-y1)
+vektorVW = vector(x3-x2, y3-y2)
+vektorWU = vector(x1-x3, y1-y3)
 
+#sort
+#reflect
+def reflectWeakestPoint():
+    reflectWOnVectorUV = (vektorUV/2) - w
+    refelectedVector = 2 * (reflectWOnVectorUV - w)
+    reflectedW = refelectedVector + w
+    if reflectedW < w and reflectedW < v and reflectedW > u:
+        w = v
+        v = reflectedW
+    elif reflectedW < w and reflectedW < v and reflectedW < u:
+        if reflectedW *2 < w and reflectedW *2 < v and reflectedW *2 < u:#extend
+            w = v
+            v = u
+            u = reflectedW*2
+        else:
+            w = v
+            v = u
+            u = reflectedW
+    elif reflectedW > w and reflectedW > v and reflectedW > u:
+        shrinkedVector1stHalf = 0.5 *(w - reflectWOnVectorUV)
+        shrinkedVector2ndHalf = 0.5*(refelectedVector -reflectedW)
+        if shrinkedVector1stHalf < w and shrinkedVector1stHalf < v and shrinkedVector1stHalf > u:
+            w = v
+            v = shrinkedVector1stHalf
+        if shrinkedVector2ndHalf < w and shrinkedVector1stHalf < v and shrinkedVector1stHalf > u:
+            w = v
+            v = shrinkedVector2ndHalf
+    else:
+        w = 0.5 * w
+        v = 0.5 * v
+        u = 0.5 * u
+#extend
+#contract
+#shrink
