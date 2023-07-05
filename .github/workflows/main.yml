@@ -24,3 +24,5 @@ jobs:
         run: |
           cd workingWithGivenData
           python readInDataFromFileAndPerformIntegration.py
+          cd ../Simulation
+          python heatBalance.py

@@ -91,11 +91,11 @@ A = meshSize**2 #m
 Ta = 278 # ambient surrounding temperature K
 
 t = 0
-tmax = 1000
+tend = 1
 dt = 0.1
 iteration = 0
 picNumber = 0
-numberOfIterations = tmax/dt
+numberOfIterations = tend/dt
 
 cpDict = {objectIndex['stone']: 1, objectIndex['coal']: 1.02, objectIndex['soil']: 0.8, objectIndex['hotAir']: 1.005} #in kJ kg-1 K-1 
 densityDict = {objectIndex['stone']: 2.5e3, objectIndex['coal']: 0.25e3, objectIndex['soil']: 0.92e3, objectIndex['hotAir']: 0.783 } # in kg cm-3 
@@ -247,7 +247,7 @@ enthalpyArray = getEnthalpyArray(temperatureArray)
 
 #begin simulation
 with alive_bar(int(numberOfIterations)+1) as bar:
-    while t < tmax:
+    while t < tend:
 
         # recover temperature array from enthalpy
         temperatureArray = getTempArrayFromEnthalpie(enthalpyArray)
@@ -291,7 +291,7 @@ with alive_bar(int(numberOfIterations)+1) as bar:
 
 
 
-
+print('Note: The simulation time has been shortened for demonstration purpose. Re-run the script with again with tend = 1000 in line 94')
 
 
 
