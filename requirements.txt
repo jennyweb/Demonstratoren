@@ -1,5 +1,4 @@
 pandas
 numpy
-csv
 matplotlib
 alive_progress
