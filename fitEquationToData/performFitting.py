@@ -4,6 +4,69 @@ import numpy as np
 import os, shutil
 import scipy
 
+
+class vector:
+    def __init__(self,values) -> None:
+        self.values = values
+
+    def __len__(self):
+        return len(self.values)
+        
+    def __sub__(self,other):
+        if len(self.values) != len(other.values):
+            return 'unable to perform subtraction'
+        new_vector = []
+        for i in range(len(self.values)):
+            new_vector.append(self.values[i] - other.values[i])
+        return vector(new_vector)
+
+
+    def __add__(self,other):
+        if len(self.values) != len(other.values):
+            return 'unable to perform subtraction'
+        new_vector = []
+        for i in range(len(self.values)):
+            new_vector.append(self.values[i] + other.values[i])
+        return vector(new_vector)
+
+    def __getitem__(self,i):
+        return self.values[i]
+    
+    def __mul__(self, factor):
+        scalar = 0
+        if isinstance(vector):
+            if len(self.values) != len(other.values):
+                raise RuntimeError( 'unable to perform vector multiplication' )
+            for i in range(len(self.values)):
+                scalar += self.values[i] * factor.values[i]
+                return scalar
+        else:
+            new_vector = []
+            for i in range(len(self.values)):
+                new_vector.append(self.values[i] * factor)
+            return new_vector
+
+    def __rmul__(self,factor):
+        return self.__mul__(self,factor)
+
+    def slope(self):
+        return self.values[0]/self.values[1]
+
+    def getOrthogonalVector(self):
+        m = self.slope()
+        deltaY = 1
+        deltaX = -1*m*deltaY
+        return vector([deltaX,deltaY])
+
+    
+    def vectorLength(self):
+        sumSquare = 0 
+        for i in range(len(self.values)):
+            sumSquare += (self.values[i])**2
+        return np.sqrt(sumSquare)
+
+
+
 currentWorkingDir = os.path.dirname(__file__)
 dataPath = os.path.join(currentWorkingDir, 'sizeDistribution.xlsx')
 
@@ -38,8 +101,11 @@ def computeLognormDistribution(µ,sigma):
 
 
 
-def getDeviation(µ, sigma, imageCounter, drawImage= False):
+def getDeviation(argIn, imageCounter=0, drawImage= False):
 
+    µ = argIn[0]
+    sigma = argIn[1]
+    
     lognormDistribution = computeLognormDistribution(µ, sigma)
     
 
@@ -65,109 +131,110 @@ def getDeviation(µ, sigma, imageCounter, drawImage= False):
     return deviation
 
 def interfaceToGetDeviation(argIn):
-    µ, sigma = argIn[0], argIn[1]
-    deviation = getDeviation(µ,sigma, imageCounter=0, drawImage=False)
-    return deviation
+    return getDeviation(argIn, imageCounter=0, drawImage=False)
+
+
+
+
+def nelderMead(func, x0):
+
+    # create initial state. We need points u v w 
+
+    def orderByDeviation(func, p1, p2, p3):
+        errorOfP1 = func(p1.values)
+        errorOfP2 = func(p2.values)
+        errorOfP3 = func(p3.values)
+
+        # kamel kleinste Fehler soll u zweitkleinster soll v, drittkleinster soll w sein
+
+        u = p1
+        v = p2 
+        w = p3
+        
+        return u, v, w
+
+    
+    p1 = vector(x0)
+    p2 = vector([x0[0],x0[1]*1.2])
+    p3 = vector([x0[0]*1.2,x0[1]])
+
+    u, v, w = orderByDeviation(func, p1,p2,p3)
+
+    vectorUV = u-v
+
+    orthogonalVector = vectorUV.getOrthogonalVector()
+
+    mu = 1./orthogonalVector[1]-(vectorUV[1]/vectorUV[0]*orthogonalVector[0]) * (u[1]-w[1]+(vectorUV[1]/vectorUV[0]*w[0])-(vectorUV[1]/vectorUV[0]*u[0]) )
+    p = w+orthogonalVector*mu
+
+    potentialNewP = w + 2*(p-w) 
+
+
+
+
+    
 
 # initial guess
 sigma = 0.2
 µ = np.log(40)-0.5*sigma**2
 
-
 # retrieve scipy solution
-result = scipy.optimize.minimize(interfaceToGetDeviation, x0 = [µ, sigma],  method='Nelder-Mead')
-µSciPy, sigmaScipy = result.x[0], result.x[1]
+resultOwnNelderMead = nelderMead(getDeviation, x0 = [µ, sigma])
+# resultSciPy = scipy.optimize.minimize(interfaceToGetDeviation, x0 = [µ, sigma],  method='Nelder-Mead')
 
-getDeviation(µ, sigma, imageCounter=0, drawImage=True)
-
-class vector:
-    def __init__(self,values) -> None:
-        self.values = values
-
-    def __len__(self):
-        return len(self.values)
-        
-    def __sub__(self,other):
-        if self.len() != other.len():
-            return 'unable to perform subtraction'
-        new_vector = []
-        for i in range(len(self.values)):
-            new_vector.append(self.values[i] - other.values[i])
-        return new_vector
-
-
-    def __add__(self,other):
-        if self.len() != other.len():
-            return 'unable to perform addition'
-        new_vector = []
-        for i in range(len(self.values)):
-            new_vector.append(self.values[i] + other.values[i])
-        return new_vector
-    
-    def __mul__(self, factor):
-        skalar = 0
-        if factor == vector:
-            if self.len() != factor.len():
-                return 'unable to perform vektor multiplication'
-            for i in range(len(self.values)):
-                skalar += self.values[i] * factor.values[i]
-                return skalar
-        else:
-            new_vector = []
-            for i in range(len(self.values)):
-                new_vector.append(self.values[i] * factor)
-            return new_vector
-    
-    def vectorLength(self):
-        sumSquare = 0 
-        for i in range(len(self.values)):
-            sumSquare += (self.values[i])**2
-        return np.sqrt(sumSquare)
+# µSciPy, sigmaScipy = resultSciPy.x[0], resultSciPy.x[1]
+# getDeviation(µ, sigma, imageCounter=0, drawImage=True)
 
 
 
-# Nelder Mead
-u = (x1,y1)
-v = (x2,y2)
-w = (x3,y3)
-simplex = [u, v, w]
-u < v < w
-# dreieck aufbauen zw u, v, w
-vektorUV = vector(x2-x1,y2-y1)
-vektorVW = vector(x3-x2, y3-y2)
-vektorWU = vector(x1-x3, y1-y3)
 
-#sort
-#reflect
-def reflectWeakestPoint():
-    reflectWOnVectorUV = (vektorUV/2) - w
-    refelectedVector = 2 * (reflectWOnVectorUV - w)
-    reflectedW = refelectedVector + w
-    if reflectedW < w and reflectedW < v and reflectedW > u:
-        w = v
-        v = reflectedW
-    elif reflectedW < w and reflectedW < v and reflectedW < u:
-        if reflectedW *2 < w and reflectedW *2 < v and reflectedW *2 < u:#extend
-            w = v
-            v = u
-            u = reflectedW*2
-        else:
-            w = v
-            v = u
-            u = reflectedW
-    elif reflectedW > w and reflectedW > v and reflectedW > u:
-        shrinkedVector1stHalf = 0.5 *(w - reflectWOnVectorUV)
-        shrinkedVector2ndHalf = 0.5*(refelectedVector -reflectedW)
-        if shrinkedVector1stHalf < w and shrinkedVector1stHalf < v and shrinkedVector1stHalf > u:
-            w = v
-            v = shrinkedVector1stHalf
-        if shrinkedVector2ndHalf < w and shrinkedVector1stHalf < v and shrinkedVector1stHalf > u:
-            w = v
-            v = shrinkedVector2ndHalf
-    else:
-        w = 0.5 * w
-        v = 0.5 * v
-        u = 0.5 * u
-#extend
-#contract
-#shrink
+
+
+
+
+
+# # Nelder Mead
+# u = (x1,y1)
+# v = (x2,y2)
+# w = (x3,y3)
+# simplex = [u, v, w]
+# u < v < w
+# # dreieck aufbauen zw u, v, w
+# vektorUV = u-v
+# vektorVW = vector(x3-x2, y3-y2)
+# vektorWU = vector(x1-x3, y1-y3)
+
+# #sort
+# #reflect
+# def reflectWeakestPoint():
+#     reflectWOnVectorUV = (vektorUV/2) - w
+#     refelectedVector = 2 * (reflectWOnVectorUV - w)
+#     reflectedW = refelectedVector + w
+#     if reflectedW < w and reflectedW < v and reflectedW > u:
+#         w = v
+#         v = reflectedW
+#     elif reflectedW < w and reflectedW < v and reflectedW < u:
+#         if reflectedW *2 < w and reflectedW *2 < v and reflectedW *2 < u:#extend
+#             w = v
+#             v = u
+#             u = reflectedW*2
+#         else:
+#             w = v
+#             v = u
+#             u = reflectedW
+#     elif reflectedW > w and reflectedW > v and reflectedW > u:
+#         shrinkedVector1stHalf = 0.5 *(w - reflectWOnVectorUV)
+#         shrinkedVector2ndHalf = 0.5*(refelectedVector -reflectedW)
+#         if shrinkedVector1stHalf < w and shrinkedVector1stHalf < v and shrinkedVector1stHalf > u:
+#             w = v
+#             v = shrinkedVector1stHalf
+#         if shrinkedVector2ndHalf < w and shrinkedVector1stHalf < v and shrinkedVector1stHalf > u:
+#             w = v
+#             v = shrinkedVector2ndHalf
+#     else:
+#         w = 0.5 * w
+#         v = 0.5 * v
+#         u = 0.5 * u
+# #extend
+# #contract
+# #shrink
