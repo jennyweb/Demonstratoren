@@ -12,7 +12,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 # create intermediate folders
 if os.path.isdir(f'{dir_path}/Images'):
     shutil.rmtree(f'{dir_path}/Images')
-    os.mkdir(f'{dir_path}/Images')
+os.mkdir(f'{dir_path}/Images')
 
 # index assignment
 objectIndex = {'stone': 0, 'coal': 1, 'soil': 2, 'hotAir': 3}
