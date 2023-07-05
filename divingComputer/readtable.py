@@ -7,8 +7,194 @@ import numpy as np
 
 np.random.seed(497)
 
+
+def getKeyForDepth(depth):
+    if depth > keysInFindPressureGroup[0]:
+        raise RuntimeError (f'please make sure that the depth does not exceed 42m. I got {depth}')
+        
+    for i in range(len(keysInFindPressureGroup)):
+        if abs(depth) >= keysInFindPressureGroup[i]:
+            key = keysInFindPressureGroup[i-1]
+            return key
+    return keysInFindPressureGroup[-1]
+
+def getPressureGroup(key,time):
+    pressureGroupforTt = None
+    minutesInCertainDepth = findPressureGroup[key]
+    for i in range(len(minutesInCertainDepth)):
+        if minutesInCertainDepth[i] >= time:
+            pressureGroupforTt = pressureGroup[i]
+            return pressureGroupforTt
+        else:
+            #hier gleich den plot einfügen? die visualize funktion würde allerdings einen error geben, neue visualize for long divemachen?
+            return 'safety stop required'
+
+
+# visualization of dive profile and pressure groups
+def visualizeDivingProfile(time,depth,filename):    
+    fig, ax = plt.subplots(figsize=(9, 6))
+    ax.plot(time, depth, color = 'green',lw=2)
+    plt.title(filename)
+    plt.xlabel('time in min')
+    plt.ylabel('depth in m')
+    ax.annotate(f'PG1 = {oldPG}', xy=(time[2], 0.25), color= 'blue')
+    ax.annotate(f'PG2 = {currenPG}', xy=(time[4]-3,0.25), color= 'blue')
+    ax.annotate(f'PG3 = {PG3}', xy=(time[6]-3,0.25), color= 'blue')
+    ax.annotate(f'BT = {depthAndTime[0][1]} min', xy=(time[1]+1,depth[1]+0.25), color= 'orange')
+    ax.annotate(f'ST = {depthAndTime[1][1]} min', xy=(time[4]/2,depth[3]+0.25), color= 'orange')
+    ax.annotate(f'BT = {int(maximumBottomTime)} min', xy=(time[5]+1,depth[5]+0.25), color= 'orange')
+    plt.savefig(os.path.join(currentWorkingDir, f'{filename}.png'))
+    plt.close()
+
+
+# saving depth and time to .txt file
+def writeDataForDivingComputer(dataForDiveComputerDepthTime,filename):
+    with open(os.path.join(currentWorkingDir, f'{filename}.txt'),'w') as fout:
+        fout.write('depth time\n')
+        for i in range(len(dataForDiveComputerDepthTime)):
+            fout.write(f'{dataForDiveComputerDepthTime[i]}\n')
+
+
+def getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime):
+    adequateTimeIntervall = 0
+    timezones = list(mappingSurfaceTimeToNewPgroup[oldPG].keys())
+    timezones.sort()
+    for i in range(len(timezones)):
+        if surfaceTime < timezones[i]:
+            adequateTimeIntervall = timezones[i-1]
+            break
+    return mappingSurfaceTimeToNewPgroup[oldPG][adequateTimeIntervall]
+
+
+def getMaxBottomTime(currenPG, desiredDivingDepth):
+    desiredDivingDepthGroup = None
+    maximumBottomTime = 0
+    for i in range(len(depthsfor2ndDive)):
+        if abs(desiredDivingDepth[0]) < depthsfor2ndDive[i]:
+            desiredDivingDepthGroup = depthsfor2ndDive[i]
+            break
+    maximumBottomTime = maxBottomTime[currenPG][desiredDivingDepthGroup]
+    resN2Time = residualNitrogenTime[currenPG][desiredDivingDepthGroup]
+    time.append(int(time[-1]+maximumBottomTime))
+    time.append(time[-1]+1)
+    return maximumBottomTime, time, resN2Time
+
+def getPressureGroupAfter2ndDive(maximumBottomTime, resN2Time):
+    totalBottomTime = maximumBottomTime + resN2Time
+    key2ndDive = getKeyForDepth(desiredDepth2ndDive[0])
+    PG3 = getPressureGroup(key2ndDive,totalBottomTime)
+    return PG3
+
+
+
+########################################################################
+# open Excel sheet
+########################################################################
+
 currentWorkingDir = os.path.dirname(__file__)
 dataPath = os.path.join(currentWorkingDir, 'diveTableMeters.xlsx')
+
+
+
+
+########################################################################
+# reading in data from table 1: Pressure group after first dive
+########################################################################
+
+findPressureGroup = {} # dict that contains the minutes in the excel file for each depth
+dfFindPressureGroup = pd.read_excel(dataPath, sheet_name='find pressure group (meter)')
+keysInFindPressureGroup = []
+for i,column_name in enumerate(dfFindPressureGroup): #iterates through depths, i.e. 10 m, 12 m, ...
+    if i == 0: # first columns contains the new pressure group that we are interested in
+        pressureGroup = dfFindPressureGroup[column_name]
+    else: # other columns contain the depth at which we are
+        key = float(f'{float(column_name):1.02f}') # round the value because it has many digits in the excel file
+        keysInFindPressureGroup.append(key) 
+        findPressureGroup[key] = dfFindPressureGroup[column_name]
+keysInFindPressureGroup.sort(reverse=True) 
+
+
+
+
+########################################################################
+# reading in data from table 2: Pressure group after surface interval
+########################################################################
+
+pressureGroupAfterSurfaceInterval = pd.read_excel(dataPath, sheet_name='get new pressure group')
+mappingSurfaceTimeToNewPgroup = {} 
+listmappingSurfaceTimeToNewPgroup = []
+indexToPressureGroup = {}
+for i,oldPGroup in enumerate(pressureGroupAfterSurfaceInterval['pressure group from table 1 new pressure group']):
+    if not pd.isnull(oldPGroup):
+        listmappingSurfaceTimeToNewPgroup.append(oldPGroup)
+        indexToPressureGroup[i] = oldPGroup
+        indexToPressureGroup[i+1] = oldPGroup
+        mappingSurfaceTimeToNewPgroup[oldPGroup] = {}
+
+for i,column_name in enumerate(pressureGroupAfterSurfaceInterval):
+    if i == 0: #skip first row
+        continue
+    for j in range(len(pressureGroupAfterSurfaceInterval)):
+        if j % 2 != 0: #skips every second row because of the layout of the excel file
+            continue
+        if not pd.isnull(pressureGroupAfterSurfaceInterval[column_name].iloc[j]):
+            mappingSurfaceTimeToNewPgroup[indexToPressureGroup[j]][pressureGroupAfterSurfaceInterval[column_name].iloc[j]] = column_name
+
+
+
+
+
+########################################################################
+# reading in data from table 3: Maximum bottom time at desired depth
+########################################################################
+
+dfBottomTimeSecondDive = pd.read_excel(dataPath, sheet_name='max bottom time 2nd dive')
+residualNitrogenTime = {}
+maxBottomTime = {}
+oldPressureGroupInBottomTime = []
+depthsfor2ndDive = []
+indexBottomTime = {}
+indexResNitrogen = {}
+for i,keyPG in enumerate(dfBottomTimeSecondDive): # iterate through Z Y X W ...
+    if i > 0: # first column contains the depths and it is not a key of interest
+        oldPressureGroupInBottomTime.append(keyPG)
+        maxBottomTime[keyPG] = {}
+        residualNitrogenTime[keyPG] = {}
+for i,depth2ndDive in enumerate(dfBottomTimeSecondDive['depth in m pressure group at the end of surface intervall']):
+    if not pd.isnull(depth2ndDive):
+        depth2ndDive = float(f'{float(depth2ndDive):1.02f}')
+        depthsfor2ndDive.append(depth2ndDive)
+        indexBottomTime[i+1] =depth2ndDive
+        indexResNitrogen[i] = depth2ndDive
+depthsfor2ndDive.sort()
+for i, column_name in enumerate(dfBottomTimeSecondDive):
+    if i == 0:
+        continue
+    counter = 1
+    counterN2 = 0
+    for j in range(len(depthsfor2ndDive)):
+            
+            if not pd.isnull(dfBottomTimeSecondDive[column_name].iloc[j]):
+                maxBottomTime[column_name][depthsfor2ndDive[j]] = dfBottomTimeSecondDive[column_name].iloc[counter]
+            counter += 2
+            if not pd.isnull(dfBottomTimeSecondDive[column_name].iloc[j]):
+                residualNitrogenTime[column_name][depthsfor2ndDive[j]] = dfBottomTimeSecondDive[column_name].iloc[counterN2]
+            counterN2 += 2
+
+
+
+
+
+oldPG = getPressureGroup(key,depthAndTime[0][1])
+
+if depthAndTime[1][1] > 59:
+    hour, minutes= divmod(depthAndTime[1][1], 60)
+else:
+    hour = 0
+    minutes = depthAndTime[1][1]
+
+surfaceTime = datetime.time(hour,minutes)
+
 
 ##############################
 # creating random dive profile
@@ -20,6 +206,8 @@ time = [0]
 
 # choose first bottom time
 depthNp = np.random.randint(-42,-10, 1).tolist()
+# limit maximum time at bottom to whatever is allowed according to the table
+
 timeNp = np.random.randint(5,40, 1).tolist()
 surfaceTime = np.random.randint(10,70,1).tolist()
 maxDepthSecondDive = depthNp[0]
@@ -55,168 +243,19 @@ for i in range(2,len(time)):
     if i % 2 == 0:
         dataForDiveComputerDepthTime.append((depth[i],(time[i]-time[i-1])))
 
-
-# visualization of dive profile and pressure groups
-def visualizeDivingProfile(time,depth,filename):    
-    fig, ax = plt.subplots(figsize=(9, 6))
-    ax.plot(time, depth, color = 'green',lw=2)
-    plt.title(filename)
-    plt.xlabel('time in min')
-    plt.ylabel('depth in m')
-    ax.annotate(f'PG1 = {oldPG}', xy=(time[2], 0.25), color= 'blue')
-    ax.annotate(f'PG2 = {currenPG}', xy=(time[4]-3,0.25), color= 'blue')
-    ax.annotate(f'PG3 = {PG3}', xy=(time[6]-3,0.25), color= 'blue')
-    ax.annotate(f'BT = {depthAndTime[0][1]} min', xy=(time[1]+1,depth[1]+0.25), color= 'orange')
-    ax.annotate(f'ST = {depthAndTime[1][1]} min', xy=(time[4]/2,depth[3]+0.25), color= 'orange')
-    ax.annotate(f'BT = {int(maximumBottomTime)} min', xy=(time[5]+1,depth[5]+0.25), color= 'orange')
-    plt.savefig(os.path.join(currentWorkingDir, f'{filename}.png'))
-    plt.close()
-
-# saving depth and time to .txt file
-def writeDataForDivingComputer(dataForDiveComputerDepthTime,filename):
-    with open(os.path.join(currentWorkingDir, f'{filename}.txt'),'w') as fout:
-        fout.write('depth time\n')
-        for i in range(len(dataForDiveComputerDepthTime)):
-            fout.write(f'{dataForDiveComputerDepthTime[i]}\n')
-    
-
-# reading in data from table 1: Pressure group after first dive
-findPressureGroup = {}
-dfFindPressureGroup = pd.read_excel(dataPath, sheet_name='find pressure group (meter)')
-keysInFindPressureGroup = []
-for i,column_name in enumerate(dfFindPressureGroup):
-    if i > 0:
-        key = float(f'{float(column_name):1.02f}')
-        keysInFindPressureGroup.append(key)
-        findPressureGroup[key] = dfFindPressureGroup[column_name]
-    else:
-        pressureGroup = dfFindPressureGroup[column_name]
-keysInFindPressureGroup.sort(reverse=True)
-
 depthAndTime = dataForDiveComputerDepthTime
 desiredDepth2ndDive = depthSecondDive
 
-def getKeyForDepth(depth):
-    if depth > keysInFindPressureGroup[0]:
-        raise RuntimeError (f'please make sure that the depth does not exceed 42m. I got {depth}')
-        
-    for i in range(len(keysInFindPressureGroup)):
-        if abs(depth) >= keysInFindPressureGroup[i]:
-            key = keysInFindPressureGroup[i-1]
-            return key
-    return keysInFindPressureGroup[-1]
-    
+
 key = getKeyForDepth(depthAndTime[0][0])
-
-def getPressureGroup(key,time):
-    pressureGroupforTt = None
-    minutesInCertainDepth = findPressureGroup[key]
-    for i in range(len(minutesInCertainDepth)):
-        if minutesInCertainDepth[i] >= time:
-            pressureGroupforTt = pressureGroup[i]
-            return pressureGroupforTt
-        else:
-            #hier gleich den plot einfügen? die visualize funktion würde allerdings einen error geben, neue visualize for long divemachen?
-            return 'safety stop required'
-
-# reading in data from table 2: Pressure group after surface intervall
-pressureGroupAfterSurfaceIntervall = pd.read_excel(dataPath, sheet_name='get new pressure group')
-mappingSurfaceTimeToNewPgroup = {} 
-listmappingSurfaceTimeToNewPgroup = []
-indexToPressureGroup = {}
-for i,oldPGroup in enumerate(pressureGroupAfterSurfaceIntervall[ 'pressure group from table 1 new pressure group']):
-    if not pd.isnull(oldPGroup):
-        listmappingSurfaceTimeToNewPgroup.append(oldPGroup)
-        indexToPressureGroup[i] = oldPGroup
-        indexToPressureGroup[i+1] = oldPGroup
-        mappingSurfaceTimeToNewPgroup[oldPGroup] = {}
-
-for i,column_name in enumerate(pressureGroupAfterSurfaceIntervall):
-    if i == 0: #skip first row
-        continue
-    for j in range(len(pressureGroupAfterSurfaceIntervall)):
-        if j % 2 != 0: #skips everysecond row because of time intervall
-            continue
-        if not pd.isnull(pressureGroupAfterSurfaceIntervall[column_name].iloc[j]):
-            mappingSurfaceTimeToNewPgroup[indexToPressureGroup[j]][pressureGroupAfterSurfaceIntervall[column_name].iloc[j]] = column_name
-
-oldPG = getPressureGroup(key,depthAndTime[0][1])
-
-if depthAndTime[1][1] > 59:
-    hour, minutes= divmod(depthAndTime[1][1], 60)
-else:
-    hour = 0
-    minutes = depthAndTime[1][1]
-
-surfaceTime = datetime.time(hour,minutes)
-
-def getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime):
-    adequateTimeIntervall = 0
-    timezones = list(mappingSurfaceTimeToNewPgroup[oldPG].keys())
-    timezones.sort()
-    for i in range(len(timezones)):
-        if surfaceTime < timezones[i]:
-            adequateTimeIntervall = timezones[i-1]
-            break
-    return mappingSurfaceTimeToNewPgroup[oldPG][adequateTimeIntervall]
+   
 
 
-# reading in data from table 3: Maximum bottom time at desired depth
-dfBottomTimeSecondDive = pd.read_excel(dataPath, sheet_name='max bottom time 2nd dive')
-residualNitrogenTime = {}
-maxBottomTime = {}
-oldPGInBottomTime = []
-depthsfor2ndDive = []
-indexBottomTime = {}
-indexResNitrogen = {}
-for i,column_name in enumerate(dfBottomTimeSecondDive):
-    if i > 0:
-        keyPG = column_name
-        oldPGInBottomTime.append(keyPG)
-        maxBottomTime[column_name] = {}
-        residualNitrogenTime[column_name] = {}
-for i,depth2ndDive in enumerate(dfBottomTimeSecondDive['depth in m pressure group at the end of surface intervall']):
-    if not pd.isnull(depth2ndDive):
-        depth2ndDive = float(f'{float(depth2ndDive):1.02f}')
-        depthsfor2ndDive.append(depth2ndDive)
-        indexBottomTime[i+1] =depth2ndDive
-        indexResNitrogen[i] = depth2ndDive
-depthsfor2ndDive.sort()
-for i, column_name in enumerate(dfBottomTimeSecondDive):
-    if i == 0:
-        continue
-    counter = 1
-    counterN2 = 0
-    for j in range(len(depthsfor2ndDive)):
-            
-            if not pd.isnull(dfBottomTimeSecondDive[column_name].iloc[j]):
-                maxBottomTime[column_name][depthsfor2ndDive[j]] = dfBottomTimeSecondDive[column_name].iloc[counter]
-            counter += 2
-            if not pd.isnull(dfBottomTimeSecondDive[column_name].iloc[j]):
-                residualNitrogenTime[column_name][depthsfor2ndDive[j]] = dfBottomTimeSecondDive[column_name].iloc[counterN2]
-            counterN2 += 2
 
-def getMaxBottomTime(currenPG, desiredDivingDepth):
-    desiredDivingDepthGroup = None
-    maximumBottomTime = 0
-    for i in range(len(depthsfor2ndDive)):
-        if abs(desiredDivingDepth[0]) < depthsfor2ndDive[i]:
-            desiredDivingDepthGroup = depthsfor2ndDive[i]
-            break
-    maximumBottomTime = maxBottomTime[currenPG][desiredDivingDepthGroup]
-    resN2Time = residualNitrogenTime[currenPG][desiredDivingDepthGroup]
-    time.append(int(time[-1]+maximumBottomTime))
-    time.append(time[-1]+1)
-    return maximumBottomTime, time, resN2Time
 
-def getPressureGroupAfter2ndDive(maximumBottomTime, resN2Time):
-    totalBottomTime = maximumBottomTime + resN2Time
-    key2ndDive = getKeyForDepth(desiredDepth2ndDive[0])
-    PG3 = getPressureGroup(key2ndDive,totalBottomTime)
-    return PG3
 
-currenPG = getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime)
-maximumBottomTime, time, resN2Time = getMaxBottomTime(currenPG, desiredDepth2ndDive)
+currentPG = getPressureGrAfterSurfaceIntervall(oldPG, surfaceTime)
+maximumBottomTime, time, resN2Time = getMaxBottomTime(currentPG, desiredDepth2ndDive)
 PG3 = getPressureGroupAfter2ndDive(maximumBottomTime, resN2Time)
 filename = f'divingprofile_{depthAndTime[0][0]}'
 visualizeDivingProfile(time,depth, filename)
