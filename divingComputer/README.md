@@ -15,11 +15,11 @@ If the time is not shown, the next greater time is used for the calculation. Fol
 # Table 2: Pressure group after surface intervall
 When spending time at the surface the body gets rid of some of the excessive nitrogen in the blood and body tissue. To find out the pressure group after a certain time at the surface the following table is used. The first column shows the pressure group after the first dive. Following the corresponding row to the right until one finds the time spent at the surface, the corresponding column shows the new pressure group at the very top (pressure group after surface intervall).
 
-![table2: pressure group after surface time](/divingComputer/Visualizations/table2SurfaceTime.png)
+![table2: pressure group after surface time](/divingComputer/Visualizations/table2SurfaceTimeEx.png)
 # Table 3: Maximum bottom time at desired depth
 The following third table gives the maximum time one can spend at a desired depth. The first row shows the depths and the first column the pressure groups after the 1st dive. By finding the intersection of desired depth and new pressure group one can find the maximum bottom time at that depth (bootom row) and the residual nitrogen time (top row). 
 By adding bottom time and  residual nitrogen time the  total bottom time can be calculated and the first table can be used again to calculate the pressure group after the 2nd dive.
-![table3: maximum bottom time after surface intervall](/divingComputer/Visualizations/table3MaxBottomTime.png)
+![table3: maximum bottom time after surface intervall](/divingComputer/Visualizations/table3MaxBottomTimeEx.png)
 
 # Example and Result
 The following images shows a diving profile of a repetitive dive. On the first dive the diver reaches a depth of 30 m and stays there for 19 min. Resulting in  pressure group N (PG1 = N). She stays at the surface for 42 min which reduces her pressure group to G (PG2 = G). On the second dive the diver wants to dive to a depth of 25 m. The maximum time she can spend at this depth is 12 min which will result in pressure group Q (PG3 = Q).
