@@ -26,3 +26,5 @@ jobs:
           python readInDataFromFileAndPerformIntegration.py
           cd ../Simulation
           python heatBalance.py
+          cd ../chemicalReaction
+          python polymerization.py
