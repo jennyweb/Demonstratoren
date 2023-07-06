@@ -9,7 +9,7 @@ The pressure increases the deeper we dive and so does the absorbtion of nitrogen
 # Table 1: Pressure group after first dive
 The following table is used to determine the pressure group after the first dive of the day. The first row gives the maximum depth of the dive.
 If the depth of the dive is not shown in the table, the next greater depth is used. The desired time at that depth can be found in the column below.
-If the time is not shown, the next greater time is used for the calculation. Following the row to the left, we get the pressure group after the first dive.
+If the time is not shown, the next greater time is used for the calculation. Following the row to the left, we get the pressure group after the first dive. In the example the first dive is up to a depth of 30 meters for 19 min. According to table 1 this results in pressure group "N"
 
 ![table1: pressure group after dive1](/divingComputer/Visualizations/table1Ex.png)
 # Table 2: Pressure group after surface intervall
