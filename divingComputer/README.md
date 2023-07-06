@@ -11,7 +11,7 @@ The following table is used to determine the pressure group after the first dive
 If the depth of the dive is not shown in the table, the next greater depth is used. The desired time at that depth can be found in the column below.
 If the time is not shown, the next greater time is used for the calculation. Following the row to the left, we get the pressure group after the first dive.
 
-![table1: pressure group after dive1](/divingComputer/Visualizations/table1.png)
+![table1: pressure group after dive1](/divingComputer/Visualizations/table1Ex.png)
 # Table 2: Pressure group after surface intervall
 When spending time at the surface the body gets rid of some of the excessive nitrogen in the blood and body tissue. To find out the pressure group after a certain time at the surface the following table is used. The first column shows the pressure group after the first dive. Following the corresponding row to the right until one finds the time spent at the surface, the corresponding column shows the new pressure group at the very top (pressure group after surface intervall).
 
