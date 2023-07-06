@@ -135,21 +135,39 @@ def interfaceToGetDeviation(argIn):
 
 
 
+def isSorted(listA):
+    for i in range(len(listA)-1):
+        if listA[i] > listA[i+1]:
+            return False
+    return True
 
 def nelderMead(func, x0):
 
     # create initial state. We need points u v w 
 
     def orderByDeviation(func, p1, p2, p3):
+        errorOfPs = []
+        listOfPs = [p1,p2,p3]
         errorOfP1 = func(p1.values)
+        errorOfPs.append(errorOfP1)
         errorOfP2 = func(p2.values)
+        errorOfPs.append(errorOfP2)
         errorOfP3 = func(p3.values)
+        errorOfPs.append(errorOfP3)
+        while not isSorted(errorOfPs):
+            for i in range(len(errorOfPs)-1):
+                if errorOfPs[i] > errorOfPs[i+1]:
+                    placeholderError = errorOfPs[i]
+                    errorOfPs[i] = errorOfPs[i+1]
+                    errorOfPs[i+1] = placeholderError
+                    placeholderP = listOfPs[i]
+                    listOfPs[i] = listOfPs[i+1]
+                    listOfPs[i+1] = placeholderP
 
-        # kamel kleinste Fehler soll u zweitkleinster soll v, drittkleinster soll w sein
 
-        u = p1
-        v = p2 
-        w = p3
+        u = listOfPs[0]
+        v = listOfPs[1]
+        w = listOfPs[2]
         
         return u, v, w
 
