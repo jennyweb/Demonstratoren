@@ -18,7 +18,7 @@ picDir = os.path.join(currentWorkingDir, 'pic')
 
 if os.path.isdir(picDir):
     shutil.rmtree(picDir)
-    os.mkdir(picDir)
+os.mkdir(picDir)
 
 def plotConcentration(concentrations, concentrationNumpy, imageCounter, t):
     plt.plot(list(range(1,maxChainLength+1)),concentrations, zorder=2, label='Simulation', linewidth=3, color='green')
