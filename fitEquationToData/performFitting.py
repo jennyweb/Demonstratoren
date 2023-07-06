@@ -34,8 +34,8 @@ class vector:
     
     def __mul__(self, factor):
         scalar = 0
-        if isinstance(vector):
-            if len(self.values) != len(other.values):
+        if isinstance(factor,vector):
+            if len(self.values) != len(factor.values):
                 raise RuntimeError( 'unable to perform vector multiplication' )
             for i in range(len(self.values)):
                 scalar += self.values[i] * factor.values[i]
@@ -44,10 +44,10 @@ class vector:
             new_vector = []
             for i in range(len(self.values)):
                 new_vector.append(self.values[i] * factor)
-            return new_vector
+            return vector(new_vector)
 
     def __rmul__(self,factor):
-        return self.__mul__(self,factor)
+        return self.__mul__(factor)
 
     def slope(self):
         return self.values[0]/self.values[1]
