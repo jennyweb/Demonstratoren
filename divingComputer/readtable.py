@@ -25,9 +25,7 @@ def getPressureGroup(key,time):
         if minutesInCertainDepth[i] >= time:
             pressureGroupforTt = pressureGroup[i]
             return pressureGroupforTt
-        else:
-            #hier gleich den plot einfügen? die visualize funktion würde allerdings einen error geben, neue visualize for long divemachen?
-            return 'safety stop required'
+        
 
 
 # visualization of dive profile and pressure groups
@@ -38,7 +36,7 @@ def visualizeDivingProfile(time,depth,filename):
     plt.xlabel('time in min')
     plt.ylabel('depth in m')
     ax.annotate(f'PG1 = {oldPG}', xy=(time[2], 0.25), color= 'blue')
-    ax.annotate(f'PG2 = {currenPG}', xy=(time[4]-3,0.25), color= 'blue')
+    ax.annotate(f'PG2 = {currentPG}', xy=(time[4]-3,0.25), color= 'blue')
     ax.annotate(f'PG3 = {PG3}', xy=(time[6]-3,0.25), color= 'blue')
     ax.annotate(f'BT = {depthAndTime[0][1]} min', xy=(time[1]+1,depth[1]+0.25), color= 'orange')
     ax.annotate(f'ST = {depthAndTime[1][1]} min', xy=(time[4]/2,depth[3]+0.25), color= 'orange')
@@ -182,20 +180,6 @@ for i, column_name in enumerate(dfBottomTimeSecondDive):
             counterN2 += 2
 
 
-
-
-
-oldPG = getPressureGroup(key,depthAndTime[0][1])
-
-if depthAndTime[1][1] > 59:
-    hour, minutes= divmod(depthAndTime[1][1], 60)
-else:
-    hour = 0
-    minutes = depthAndTime[1][1]
-
-surfaceTime = datetime.time(hour,minutes)
-
-
 ##############################
 # creating random dive profile
 ##############################
@@ -248,8 +232,18 @@ desiredDepth2ndDive = depthSecondDive
 
 
 key = getKeyForDepth(depthAndTime[0][0])
-   
+print(key)   
 
+oldPG = getPressureGroup(key,depthAndTime[0][1])
+print(oldPG)
+
+if depthAndTime[1][1] > 59:
+    hour, minutes= divmod(depthAndTime[1][1], 60)
+else:
+    hour = 0
+    minutes = depthAndTime[1][1]
+
+surfaceTime = datetime.time(hour,minutes)
 
 
 
