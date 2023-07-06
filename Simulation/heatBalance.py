@@ -291,7 +291,7 @@ with alive_bar(int(numberOfIterations)+1) as bar:
 
 
 
-print('Note: The simulation time has been shortened for demonstration purpose. Re-run the script with again with tend = 1000 in line 94')
+print('Note: The simulation time has been shortened for demonstration purpose. Re-run the script again with tend = 1000 in line 94')
 
 
 
