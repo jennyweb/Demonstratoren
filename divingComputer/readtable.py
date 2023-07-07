@@ -26,6 +26,13 @@ def getPressureGroup(key,time):
             pressureGroupforTt = pressureGroup[i]
             return pressureGroupforTt
         
+def getmaxTime1stDive(key):
+    maxTimeDive1 = 0
+    for i in range(len(findPressureGroup[key])):
+        if  np.isnan(findPressureGroup[key][i]):
+            maxTimeDive1 = findPressureGroup[key][i-1]
+        return maxTimeDive1
+        
 
 
 # visualization of dive profile and pressure groups
@@ -192,7 +199,8 @@ time = [0]
 depthNp = np.random.randint(-42,-10, 1).tolist()
 # limit maximum time at bottom to whatever is allowed according to the table
 
-timeNp = np.random.randint(5,40, 1).tolist()
+key = getKeyForDepth(depthNp[0])
+timeNp = np.random.randint(3,getmaxTime1stDive(key), 1).tolist()
 surfaceTime = np.random.randint(10,70,1).tolist()
 maxDepthSecondDive = depthNp[0]
 
@@ -232,11 +240,7 @@ desiredDepth2ndDive = depthSecondDive
 
 
 key = getKeyForDepth(depthAndTime[0][0])
-print(key)   
-
 oldPG = getPressureGroup(key,depthAndTime[0][1])
-print(oldPG)
-
 if depthAndTime[1][1] > 59:
     hour, minutes= divmod(depthAndTime[1][1], 60)
 else:
@@ -254,7 +258,4 @@ PG3 = getPressureGroupAfter2ndDive(maximumBottomTime, resN2Time)
 filename = f'divingprofile_{depthAndTime[0][0]}'
 visualizeDivingProfile(time,depth, filename)
 writeDataForDivingComputer(depthAndTime, filename)
-
-
-
 
