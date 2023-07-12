@@ -1,9 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import os, shutil
+import os
 import scipy
 
+
+if not os.path.isdir('pic'):
+    os.mkdir('pic')
 
 class vector:
     def __init__(self,values) -> None:
@@ -124,8 +127,8 @@ def getDeviation(argIn, imageCounter= 0, drawImage= True):
         plt.xlim([xmin,xmax])
         plt.xlabel('size in µm')
         plt.ylabel('size distribution in %')
-        plt.title(f'current sigma = {sigma}, current µ = {µ:03f}')
-        plt.savefig(os.path.join(currentWorkingDir,f'Distribution-{imageCounter:04d}.png'))
+        plt.title(f'current sigma = {sigma:1.04f}, current µ = {µ:1.03f}')
+        plt.savefig(os.path.join(currentWorkingDir,f'pic/Distribution-{imageCounter:04d}.png'))
         plt.close()
 
     deviation = 0
@@ -181,7 +184,7 @@ def nelderMead(func, x0):
 
     u, v, w = orderByDeviation(func, p1,p2,p3)
 
-    for imageCounter in range(100):
+    for imageCounter in range(60):
     
         midPoint = u + (v-u)*0.5
 
@@ -227,7 +230,10 @@ def nelderMead(func, x0):
                 v = v + (u-v)*0.5
                 w = w + (u-w)*0.5
 
+        # make drawing of current progress for video
         getDeviation(u, imageCounter=imageCounter, drawImage=True)
+    
+    return u
 
         
 
@@ -240,10 +246,11 @@ sigma = 0.2
 # retrieve scipy solution
 resultSciPy = scipy.optimize.minimize(interfaceToGetDeviation, x0 = [µ, sigma],  method='Nelder-Mead')
 µSciPy, sigmaScipy = resultSciPy.x[0], resultSciPy.x[1]
+
+# use own algorithm
 resultOwnNelderMead = nelderMead(interfaceToGetDeviation, x0 = [µ, sigma])
+µ, sigma = resultOwnNelderMead[0], resultOwnNelderMead[1]
 
-# getDeviation(µ, sigma, imageCounter=0, drawImage=True)
-
-
-
+print(f'Solution scipy: µ = {µSciPy:1.03e} sigma = {sigmaScipy:1.03e}')
+print(f'Own algorithm : µ = {µ:1.03e} sigma = {sigma:1.03e}')
 
