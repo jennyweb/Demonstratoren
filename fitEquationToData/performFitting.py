@@ -65,6 +65,9 @@ class vector:
             sumSquare += (self.values[i])**2
         return np.sqrt(sumSquare)
 
+    def __repr__(self):
+        return f'[{self.values[0]} {self.values[1]}]'
+
 
 
 currentWorkingDir = os.path.dirname(__file__)
@@ -101,7 +104,7 @@ def computeLognormDistribution(µ,sigma):
 
 
 
-def getDeviation(argIn, imageCounter=0, drawImage= False):
+def getDeviation(argIn, imageCounter= 0, drawImage= True):
 
     µ = argIn[0]
     sigma = argIn[1]
@@ -131,7 +134,7 @@ def getDeviation(argIn, imageCounter=0, drawImage= False):
     return deviation
 
 def interfaceToGetDeviation(argIn):
-    return getDeviation(argIn, imageCounter=0, drawImage=False)
+    return getDeviation(argIn, drawImage=False)
 
 
 
@@ -149,11 +152,12 @@ def nelderMead(func, x0):
         errorOfPs = []
         listOfPs = [p1,p2,p3]
         errorOfP1 = func(p1.values)
-        errorOfPs.append(errorOfP1)
         errorOfP2 = func(p2.values)
-        errorOfPs.append(errorOfP2)
         errorOfP3 = func(p3.values)
+        errorOfPs.append(errorOfP1)
+        errorOfPs.append(errorOfP2)
         errorOfPs.append(errorOfP3)
+
         while not isSorted(errorOfPs):
             for i in range(len(errorOfPs)-1):
                 if errorOfPs[i] > errorOfPs[i+1]:
@@ -164,11 +168,10 @@ def nelderMead(func, x0):
                     listOfPs[i] = listOfPs[i+1]
                     listOfPs[i+1] = placeholderP
 
-
         u = listOfPs[0]
         v = listOfPs[1]
         w = listOfPs[2]
-        
+
         return u, v, w
 
     
@@ -178,17 +181,55 @@ def nelderMead(func, x0):
 
     u, v, w = orderByDeviation(func, p1,p2,p3)
 
-    vectorUV = u-v
+    for imageCounter in range(100):
+    
+        midPoint = u + (v-u)*0.5
 
-    orthogonalVector = vectorUV.getOrthogonalVector()
+        potentialNewP = w + 2*(midPoint-w) 
 
-    mu = 1./orthogonalVector[1]-(vectorUV[1]/vectorUV[0]*orthogonalVector[0]) * (u[1]-w[1]+(vectorUV[1]/vectorUV[0]*w[0])-(vectorUV[1]/vectorUV[0]*u[0]) )
-    p = w+orthogonalVector*mu
+        errorOfPotentialNewP = func(potentialNewP)
+        if errorOfPotentialNewP < func(v) and errorOfPotentialNewP > func(u):
+            w = v
+            v = potentialNewP
+        
+        elif errorOfPotentialNewP < func(u):
+            ExtendedPotentialNewP = w + 3*(midPoint-w) 
 
-    potentialNewP = w + 2*(p-w) 
+            if func(ExtendedPotentialNewP) < errorOfPotentialNewP: 
+                w = v
+                v = u
+                u = ExtendedPotentialNewP
+            
+            else:
+                w = v
+                v = u
+                u = potentialNewP
 
+        else:
+            halfPoint1 = w + 0.5*(midPoint-w) 
+            halfPoint2 = w + 1.5*(midPoint-w) 
 
+            errorHalfPoint1 = func(halfPoint1)
+            errorHalfPoint2 = func(halfPoint2)
 
+            pointOfChoice = halfPoint1 if errorHalfPoint1 < errorHalfPoint2 else halfPoint2
+
+            if func(pointOfChoice) < func(v) and func(pointOfChoice) > func(u):
+                w = v
+                v = pointOfChoice
+            
+            elif func(pointOfChoice) < func(u):
+                w = v
+                v = u
+                u = pointOfChoice
+            
+            else:
+                v = v + (u-v)*0.5
+                w = w + (u-w)*0.5
+
+        getDeviation(u, imageCounter=imageCounter, drawImage=True)
+
+        
 
     
 
@@ -197,62 +238,12 @@ sigma = 0.2
 µ = np.log(40)-0.5*sigma**2
 
 # retrieve scipy solution
-resultOwnNelderMead = nelderMead(getDeviation, x0 = [µ, sigma])
-# resultSciPy = scipy.optimize.minimize(interfaceToGetDeviation, x0 = [µ, sigma],  method='Nelder-Mead')
+resultSciPy = scipy.optimize.minimize(interfaceToGetDeviation, x0 = [µ, sigma],  method='Nelder-Mead')
+µSciPy, sigmaScipy = resultSciPy.x[0], resultSciPy.x[1]
+resultOwnNelderMead = nelderMead(interfaceToGetDeviation, x0 = [µ, sigma])
 
-# µSciPy, sigmaScipy = resultSciPy.x[0], resultSciPy.x[1]
 # getDeviation(µ, sigma, imageCounter=0, drawImage=True)
 
 
 
 
-
-
-
-
-
-# # Nelder Mead
-# u = (x1,y1)
-# v = (x2,y2)
-# w = (x3,y3)
-# simplex = [u, v, w]
-# u < v < w
-# # dreieck aufbauen zw u, v, w
-# vektorUV = u-v
-# vektorVW = vector(x3-x2, y3-y2)
-# vektorWU = vector(x1-x3, y1-y3)
-
-# #sort
-# #reflect
-# def reflectWeakestPoint():
-#     reflectWOnVectorUV = (vektorUV/2) - w
-#     refelectedVector = 2 * (reflectWOnVectorUV - w)
-#     reflectedW = refelectedVector + w
-#     if reflectedW < w and reflectedW < v and reflectedW > u:
-#         w = v
-#         v = reflectedW
-#     elif reflectedW < w and reflectedW < v and reflectedW < u:
-#         if reflectedW *2 < w and reflectedW *2 < v and reflectedW *2 < u:#extend
-#             w = v
-#             v = u
-#             u = reflectedW*2
-#         else:
-#             w = v
-#             v = u
-#             u = reflectedW
-#     elif reflectedW > w and reflectedW > v and reflectedW > u:
-#         shrinkedVector1stHalf = 0.5 *(w - reflectWOnVectorUV)
-#         shrinkedVector2ndHalf = 0.5*(refelectedVector -reflectedW)
-#         if shrinkedVector1stHalf < w and shrinkedVector1stHalf < v and shrinkedVector1stHalf > u:
-#             w = v
-#             v = shrinkedVector1stHalf
-#         if shrinkedVector2ndHalf < w and shrinkedVector1stHalf < v and shrinkedVector1stHalf > u:
-#             w = v
-#             v = shrinkedVector2ndHalf
-#     else:
-#         w = 0.5 * w
-#         v = 0.5 * v
-#         u = 0.5 * u
-# #extend
-# #contract
-# #shrink
