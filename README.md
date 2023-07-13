@@ -19,7 +19,9 @@
 \end{align}
 ```
 The resulting video shows the change of concentration of the polymers (with different chain length $i$) over time.
-![Alt text](chemicalReaction/ReadMeObjects/progress-polymerization-over-time.gif)
+
+![Video of the progress of polymerization over time](chemicalReaction/ReadMeObjects/progress-polymerization-over-time.gif)
+
 
 
 - The folder [workWithGivenData](https://github.com/jennyweb/Demonstratoren/tree/main/workingWithGivenData) shows an example of how to read in data from a file and perform basic mathematical operations such as computing integrals. The resulting image shows the computed integral next to the analytical solution proving the correctness of my script. 
