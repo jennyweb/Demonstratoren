@@ -28,3 +28,7 @@ jobs:
           python heatBalance.py
           cd ../chemicalReaction
           python polymerization.py
+          cd ../divingComputer
+          python readtable.py
+          cd ../fitEquationToData
+          python performFitting.py
