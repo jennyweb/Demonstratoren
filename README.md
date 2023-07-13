@@ -4,7 +4,7 @@
 
 ![Evolution of temperature over time](Simulation/ReadMeVisualization/result-temperature.gif)
 
-- The folder [divingComputer](https://github.com/jennyweb/Demonstratoren/tree/main/divingComputer) simulates the function of a diving computer. The pressure groups after the first dive, the surface intervall and the second dive are calculated. Moreover the maximum bottom time for the second dive is given.
+- The folder [divingComputer](https://github.com/jennyweb/Demonstratoren/tree/main/divingComputer) simulates the function of a diving computer. The difficulty in this task was to read in data from an Excel file where the data had irregular shape. The script reads in the data and maps it into dictionaries. These dictionaries are then used to perform a dive planing as being tought in a PADI diving school. The result of this procedure are so called pressure groups that indicate the accumulated nitrogen intake within the body from which follows the maximum velocity the diver is allowed to come back to the surface. 
  ![Alt text](divingComputer/Visualizations/divingProfile.png)
   
 
