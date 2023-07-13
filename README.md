@@ -4,7 +4,7 @@
 
 ![Evolution of temperature over time](Simulation/ReadMeVisualization/result-temperature.gif)
 
-- The folder [divingComputer](https://github.com/jennyweb/Demonstratoren/tree/main/divingComputer) simulates the function of a diving computer. The difficulty in this task was to read in data from an Excel file where the data had irregular shape. The script reads in the data and maps it into dictionaries. These dictionaries are then used to perform a dive planing as being tought in a PADI diving school. The result of this procedure are so called pressure groups that indicate the accumulated nitrogen intake within the body from which follows the maximum velocity the diver is allowed to come back to the surface. 
+- The folder [divingComputer](https://github.com/jennyweb/Demonstratoren/tree/main/divingComputer) simulates the function of a diving computer. The difficulty in this task was to read in data from an Excel file where the data had irregular shape. The script reads in the data and maps it into dictionaries. These dictionaries are then used to plan a dive as being taught in a diving school. While diving the human body accumulates nitrogen(depending on depths and duration of the dive). The amount of nitrogen is indicated by pressure groups, which are used to determine the maximum time a diver can spend at a certain depth on the second dive. 
  ![Alt text](divingComputer/Visualizations/divingProfile.png)
   
 
