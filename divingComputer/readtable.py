@@ -5,9 +5,7 @@ import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 
-np.random.seed(492)
-
-
+np.random.seed(497)
 
 
 
@@ -31,7 +29,7 @@ def visualizeDivingProfile(time, depth, filename):
     ax.annotate(f'PG2 = {pressureGroupAfterSurfaceInterval}', xy=(time[4]-3,0.25), color= 'blue')
     ax.annotate(f'PG3 = {PG3}', xy=(time[6]-3,0.25), color= 'blue')
     ax.annotate(f'BT = {dataForDiveComputerDepthTime[0][1]} min', xy=(time[1]+1,depth[1]+0.25), color= 'orange')
-    ax.annotate(f'ST = {dataForDiveComputerDepthTime[1][1]} min', xy=(time[4]/2,depth[3]-0.5), color= 'orange')
+    ax.annotate(f'ST = {dataForDiveComputerDepthTime[1][1]} min', xy=(time[4]/2,depth[3]+0.25), color= 'orange')
     ax.annotate(f'BT = {int(maximumBottomTime)} min', xy=(time[5]+1,depth[5]+0.25), color= 'orange')
     plt.savefig(os.path.join(currentWorkingDir, f'{filename}.png'))
     plt.close()
