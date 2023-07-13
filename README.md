@@ -4,6 +4,9 @@
 
 ![Evolution of temperature over time](Simulation/ReadMeVisualization/result-temperature.gif)
 
+- The folder [divingComputer](https://github.com/jennyweb/Demonstratoren/tree/main/divingComputer) simulates the function of a diving computer. The pressure groups after the first dive, the surface intervall and the second dive are calculated. Moreover the maximum bottom time for the second dive is given.
+- ![Alt text](divingComputer/Visualizations/divingProfile.png)
+
 - The folder [chemicalReaction](https://github.com/jennyweb/Demonstratoren/tree/main/chemicalReaction) shows an example of a chemical reaction. The following polymerization reaction is taken into account:
  
 ```math
