@@ -10,10 +10,9 @@ In this example, I demontrate my capabilities to apply object-oriented programmi
 
 The underlying data set that has been used for this set is a particle size distribution as commonly measured in powder problems. Usually, such a particle size distribution follows a lognormal distribution. A variable $x$ has a log-normal distribution if $\log(x)$ is normally distributed with mean $\mu$ and standard deviation $\sigma$. The probability density function for the log-normal distribution is then given by 
 
-$$
+```math
 p(x) = \frac{1}{\sigma \, x \, \sqrt{2 \pi}} e^{\left(-\frac{(\ln(x)-\mu)^2}{2 \, \sigma ^2}\right)}
-$$
-
+```
 
 ## Challenge
 
