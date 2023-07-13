@@ -4,3 +4,4 @@ matplotlib
 alive_progress
 scipy
 openpyxl
+csv
