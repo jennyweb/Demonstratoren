@@ -15,6 +15,7 @@
 \end{align}
 ```
 The resulting video shows the change of concentration of the polymers (with different chain length $i$) over time.
+
 ![Video of the progress of polymerization over time](chemicalReaction/progress-polymerization-over-time.gif)
 
 
