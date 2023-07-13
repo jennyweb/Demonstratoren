@@ -18,7 +18,7 @@ picDir = os.path.join(currentWorkingDir, 'pic')
 
 if os.path.isdir(picDir):
     shutil.rmtree(picDir)
-    os.mkdir(picDir)
+os.mkdir(picDir)
 
 def plotConcentration(concentrations, concentrationNumpy, imageCounter, t):
     plt.plot(list(range(1,maxChainLength+1)),concentrations, zorder=2, label='Simulation', linewidth=3, color='green')
@@ -50,7 +50,7 @@ initialConcMon = getTotalMolarMass(concentrations)
 # print(f'Initial concentration before reaction: {initialConcMon:1.02f} mol/L')
 timepointsToBeUsedForNumpy = []
 
-endConcentrationToBeReached = 1e-4
+endConcentrationToBeReached = 1e-2
 
 print('start own simulation')
 concentrationPerTimeStamp = []
@@ -135,3 +135,5 @@ with alive_bar(len(concentrationPerTimeStamp)) as bar:
         bar()
 
 print('Finished script')
+
+print('Note: The simulation time has been shortened for demonstration purpose. Re-run the script again with endConcentrationToBeReached = 1e-4 in line 53')
