@@ -23,6 +23,6 @@ The implementation of the Nelder-Mead algorithm requires to apply vector algebra
 
 The following video shows the influence of the fitting routine onto the corresponding result. The udnerlying data is the blue curve, i.e. the data that we try to discrebe. The black curve is the solution that is obtained by SciPy and which should be the final result of own 
 
-The video is composed as such that we can follow the alogorithm screening for better candidates of $\sigma$ and $mu$ to describe the data. After approximately 60 iterations, the algorithm has converged to its final solution of $\sigma$ = 0.2918 and $\mu$ = 3.754 which is also the result of the SciPy module. 
+The video is composed as such that we can follow the alogorithm screening for better candidates of $\sigma$ and $\mu$ to describe the data. After approximately 60 iterations, the algorithm has converged to its final solution of $\sigma$ = 0.2918 and $\mu$ = 3.754 which is also the result of the SciPy module. 
 
 ![Alt text](VisualizationOfFittingProgress.gif)
