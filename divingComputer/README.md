@@ -1,6 +1,9 @@
 # Diving Computer
 # Motivation
-In this project the goal is to read in and work with data from .xlsx tables using pandas. The data is then used to calculate the maximum bottom time for the 2nd dive of one day at a given depths. Morover the residual nitrogen time is given (equals to the amout of time considered as already spent at a certain depth for the 2nd dive).
+In this project the goal is to read in and work with data from .xlsx tables using pandas. The data is then used to calculate the maximum bottom time for the second dive of one day at a given depth. Morover the residual nitrogen time is given (equals to the amout of time considered as already spent at a certain depth for the 2nd dive) which is then used to calculate the pressure group after the second dive.
+
+The idea for this demonstartion evolved while doing the open water dive certification in Honduras. It was an exceptional experience, all of a sudden a whole new world opened up in front of my eyes. At the same it was scary as hell: taking out the regulator or even worse taking off the mask wasn't to my taste.
+Now, after being certified I can fully enjoy the laziest extreme sport on the planet (as my teacher said): Go down, don't get out of breath so swim as slow as you can, look at cool fish and go back up.
 
 # Dive Theory
 
