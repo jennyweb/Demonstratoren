@@ -4,9 +4,11 @@
 
 ![Evolution of temperature over time](Simulation/ReadMeVisualization/result-temperature.gif)
 
-- The folder [divingComputer](https://github.com/jennyweb/Demonstratoren/tree/main/divingComputer) simulates the function of a diving computer. The difficulty in this task was to read in data from an Excel file where the data had irregular shape. The script reads in the data and maps it into dictionaries. These dictionaries are then used to perform a dive planing as being tought in a PADI diving school. The result of this procedure are so called pressure groups that indicate the accumulated nitrogen intake within the body from which follows the maximum velocity the diver is allowed to come back to the surface. 
+- The folder [divingComputer](https://github.com/jennyweb/Demonstratoren/tree/main/divingComputer) simulates the function of a diving computer. The difficulty in this task was to read in data from an Excel file where the data had irregular shape. The script reads in the data and maps it into dictionaries. These dictionaries are then used to plan a dive as being taught in a diving school. While diving the human body accumulates nitrogen(depending on depths and duration of the dive). The amount of nitrogen is indicated by pressure groups, which are used to determine the maximum time a diver can spend at a certain depth on the second dive. 
  ![Alt text](divingComputer/Visualizations/divingProfile.png)
-  
+
+ - The folder [fitEquationToData](https://github.com/jennyweb/Demonstratoren/tree/main/fitEquationToData) shows how to fit a given equation to given data (data is shown in blue). This fitting has been performed by two means. First, the Nelder-Mead algorithm has been implemented and applied(shown in green). Second, a third-party library (i.e. Scipy; shown in black) has been used as this library contains the very same nelder-mead algorithm so that the results can be compared to validate the functionality of the own algorithm. 
+  ![VisualizationOfFittingProgress](fitEquationToData/VisualizationOfFittingProgress.gif)
 
 - The folder [chemicalReaction](https://github.com/jennyweb/Demonstratoren/tree/main/chemicalReaction) shows an example of a chemical reaction. The following polymerization reaction is taken into account:
  
