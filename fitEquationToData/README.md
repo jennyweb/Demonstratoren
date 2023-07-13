@@ -8,7 +8,7 @@ In this example, I demontrate my capabilities to apply object-oriented programmi
 
 ## Governing equation for fitting
 
-The underlying data set that has been used for this set is a particle size distribution as commonly measured in powder problems. Usually, such a particle size distribution follows a lognormal distribution. A variable $x$ has a log-normal distribution if $\log(x)$ is normally distributed with mean $\mu$ and standard deviation $\sigma$. The probability density function for the log-normal distribution is then given by 
+The underlying data set that has been used for this set is a particle size distribution as commonly measured in powder problems. Usually, such a particle size distribution follows a log-normal distribution. A variable $x$ has a log-normal distribution if $\log(x)$ is normally distributed with mean $\mu$ and standard deviation $\sigma$. The probability density function for the log-normal distribution is then given by 
 
 ```math
 p(x) = \frac{1}{\sigma \, x \, \sqrt{2 \pi}} e^{\left(-\frac{(\ln(x)-\mu)^2}{2 \, \sigma ^2}\right)}
@@ -21,7 +21,7 @@ The implementation of the Nelder-Mead algorithm requires to apply vector algebra
 
 ## Result 
 
-The following video shows the influence of the fitting routine onto the corresponding result. The udnerlying data is the blue curve, i.e. the data that we try to discrebe. The black curve is the solution that is obtained by SciPy and which should be the final result of own 
+The following video shows the influence of the fitting routine onto the corresponding result. The underlying data is the blue curve, i.e. the data that we try to describe. The black curve is the solution that is obtained by SciPy and which should be the final result of the own fit shown in green.
 
 The video is composed as such that we can follow the alogorithm screening for better candidates of $\sigma$ and $\mu$ to describe the data. After approximately 60 iterations, the algorithm has converged to its final solution of $\sigma$ = 0.2918 and $\mu$ = 3.754 which is also the result of the SciPy module. 
 
