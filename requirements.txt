@@ -3,3 +3,4 @@ numpy
 matplotlib
 alive_progress
 scipy
+openpyxl
