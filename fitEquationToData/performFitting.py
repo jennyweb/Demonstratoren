@@ -4,9 +4,11 @@ import numpy as np
 import os
 import scipy
 
+currentWorkingDir = os.path.dirname(__file__)
+picDir = os.path.join(currentWorkingDir, 'pic')
 
-if not os.path.isdir('pic'):
-    os.mkdir('pic')
+if not os.path.isdir(picDir):
+    os.mkdir(picDir)
 
 class vector:
     def __init__(self,values) -> None:
@@ -233,10 +235,7 @@ def nelderMead(func, x0):
         getDeviation(u, imageCounter=imageCounter, drawImage=True)
     
     return u
-
-        
-
-    
+   
 
 # initial guess
 sigma = 0.2
