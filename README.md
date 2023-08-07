@@ -1,5 +1,5 @@
 
-# Demonstrator projects of Jennifer Weber
+# Demonstrator python projects of Jennifer Weber
 - The folder [Simulation](https://github.com/jennyweb/Demonstratoren/tree/main/Simulation) contains an example of a physical simulation in which heat transfer phenomena are modelled. This example describes are stone heating up while sitting in a fire. 
 
 ![Evolution of temperature over time](Simulation/ReadMeVisualization/result-temperature.gif)
