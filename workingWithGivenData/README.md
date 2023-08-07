@@ -5,7 +5,7 @@ This projects demonstrates my skills to work with existing data. Data is given i
 ## Setup
 The steps executed in this script are the following:
 - reading data using three methods: pure text import, pandas and the csv.DictReader model
-- calculating the time interval d$\t$ and the covered distance during d$\t$
+- calculating the time interval $\text{d}t$ and the covered distance during $\text{d}t$
 - accumulating the covered distance up to a given time
 - plotting the calculated data using matplotlib and comparing it to the reference data
 ## Calculations
